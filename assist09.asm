@@ -335,7 +335,7 @@ SWIDNE  CLR     <SWIBFL         ; CLEAR IN CASE SET
 * INPUT: A=0 INIT CONSOLE AND PRINT STARTUP MESSAGE
 *        A#0 OMIT CONSOLE INIT AND STARTUP MESSAGE
 *************************************************
-
+;BLARGH  FCC     /Bob's Edit/
 SIGNON  FCC     /ASSIST09/      ; SIGNON EYE-CATCHER
         FCB     EOT
 ZMONTR  STS     <RSTACK         ; SAVE FOR BAD STACK RECOVERY
@@ -346,6 +346,9 @@ ZMONTR  STS     <RSTACK         ; SAVE FOR BAD STACK RECOVERY
         LEAX    SIGNON,PCR         ; READY SIGNON EYE-CATCHER
         SWI                     ; PERFORM
         FCB     PDATA           ; PRINT STRING
+        ;LEAX    BLARGH,PCR
+        ;SWI
+        ;FCB     PDATA
 ZMONT2  LDX     <VECTAB+_PTM    ; LOAD PTM ADDRESS
         BEQ     CMD             ; BRANCH IF NOT TO USE A PTM
         CLR     PTMTM1-PTM,X    ; SET LATCH TO CLEAR RESET
