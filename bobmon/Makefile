@@ -3,7 +3,9 @@
 %.hex: %.asm
 	asm6809 --hex --6809 --listing=$*.lst --output=$@ $<
 
-all: assist09.hex mondeb.hex
+all: bobmon.hex
+
+bobmon.hex: disk_io.s io_functions.s string_functions.s system_vectors.s
 
 clean:
 	rm *.hex *.lst
