@@ -1,7 +1,12 @@
+;--------------------------------------------------------
+;
+; system_vectors.s - CPU vector table
+;
+; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 ;		System vector specification
 ;
-		org	vector_table
+		org	vectorTable_start
 		fdb	handle_undef	; $fff0
 		fdb	handle_swi3	; $fff2
 		fdb	handle_swi2	; $fff4

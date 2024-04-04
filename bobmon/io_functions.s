@@ -1,53 +1,55 @@
-putstr		pshs	a,x,cc
-putstr_loop	lda	,x+
-		beq	putstr_done
-		bsr	putchar
-		bra	putstr_loop
-putstr_done	puls	a,x,cc
-		rts
+;--------------------------------------------------------
+;
+; io_functions.s - generic input and output io_functions
+;
+; 	(C) Bob Green <bob@chippers.org.uk> 2024
+;
 
-puthexbyte	pshs	cc
+putChar		jmp	[putChar_fn]
+
+getChar		jmp	[getChar_fn]
+
+putStr		pshs	a,x,cc
+1		lda	,x+
+		beq	2F
+		bsr	putChar
+		bra	1B
+2		puls	a,x,cc,pc
+
+putHexWord	pshs	a,b
+		bsr	putHexByte
+		exg	a,b
+		bsr	putHexByte
+		puls	a,b,pc
+
+putHexByte	pshs	cc
 		rora
 		rora
 		rora
 		rora
-		bsr	puthexdigit
+		bsr	putHexDigit
 		rora
 		rora
 		rora
 		rora
 		rora	; rotate through carry bit
-		bsr	puthexdigit
+		bsr	putHexDigit
 		puls	cc
 		rts
 
-puthexdigit	pshs	a,cc
+putHexDigit	pshs	a,cc
 		anda	#$0f
 		adda	#'0'
 		cmpa	#'9'
-		ble	_puthexdigit1
+		ble	1F
 		adda	#$27
-_puthexdigit1	bsr	putchar
+1		bsr	putChar
 		puls	a,cc
 		rts
 
-putchar		pshs	a
-_putchar1	lda	uart
-		bita	#$02
-		beq	_putchar1
-		puls	a
-		sta	uart+1
-		rts
-
-putnl		pshs	x
+putNL		pshs	x
 		leax	1F,pcr
-		lbsr	putstr
+		lbsr	putStr
 		puls	x,pc
 
-1		fcn	13,10
-
-getchar		lda	uart
-		bita	#$01
-		beq	getchar
-		lda	uart+1
-		rts
+1		fcn	CR,LF

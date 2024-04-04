@@ -5,7 +5,7 @@
 
 all: bobmon.hex
 
-bobmon.hex: disk_io.s io_functions.s string_functions.s system_vectors.s
+bobmon.hex: disk_io.s io_functions.s string_functions.s system_vectors.s serial_io.s sysdefs.s variables.s commands.s constants.s
 
 clean:
 	rm *.hex *.lst

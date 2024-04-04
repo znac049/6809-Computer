@@ -1,3 +1,10 @@
+;--------------------------------------------------------
+;
+; disk_io.s - simulated disk interface
+;
+; 	(C) Bob Green <bob@chippers.org.uk> 2024
+;
+
 fdc		equ	$c008
 
 fdc_SR		equ	fdc
@@ -11,12 +18,12 @@ fdcSR_RDY 	equ	$80
 fdcSR_ERR	equ	$01
 
 dkinfo		leax	1F,pcr
-		lbsr	putstr
+		lbsr	putStr
 
 		lda	fdc_SR
-		lbsr	puthexbyte
+		lbsr	putHexByte
 
-		lbsr	putnl
+		lbsr	putNL
 		
 ; Query each disk status
 dki_wait_1	lda 	fdc_SR
@@ -35,24 +42,24 @@ dki_wait_2	lda	fdc_SR
 		lbne	dki_no_disk
 
 		leax	3F,pcr
-		lbsr	putstr
+		lbsr	putStr
 
 		lda	fdc_SEC2
-		lbsr	puthexbyte
+		lbsr	putHexByte
 		lda	fdc_SEC1
-		lbsr	puthexbyte
+		lbsr	putHexByte
 		lda	fdc_SEC0
-		lbsr	puthexbyte
-		lbsr	putnl
+		lbsr	putHexByte
+		lbsr	putNL
 
 
 		bra	dki_done
 dki_no_disk	leax	2F,pcr
-		lbsr	putstr
+		lbsr	putStr
 
 dki_done	rts
 
-1		fcn	"Disk subsystem info:",13,10
-2		fcn	"disk not present",13,10
-3		fcc	"disk present",13,10
+1		fcn	"Disk subsystem info:",CR,LF
+2		fcn	"disk not present",CR,LF
+3		fcc	"disk present",CR,LF
 		fcn	"number of sectors: "
