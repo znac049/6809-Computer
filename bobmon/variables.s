@@ -18,8 +18,15 @@ MAXLINE			equ	80
 line_buff		rmb	MAXLINE
 line_ptr		rmb	1
 
+ihex_length		rmb	1
+ihex_address		rmb	2
+ihex_type		rmb	1
+ihex_xsum		rmb	1
 
 ; Used by the command parser
 matched_command_ptr	rmb	2
+
+; Used by getHexByte
+upper_nibble		rmb	1
 
 variables_size		equ	*-variables_start

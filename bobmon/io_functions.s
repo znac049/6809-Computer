@@ -53,3 +53,46 @@ putNL		pshs	x
 		puls	x,pc
 
 1		fcn	CR,LF
+
+getLChar	lbsr	getChar
+		cmpa	#'A'
+		blt	1F
+		cmpa	#'Z'
+		bgt	1F
+		ora	#$60
+1		rts
+
+getHexDigit	bsr	getLChar
+		cmpa	#'0'
+		blt	1F
+		cmpa	#'9'
+		bgt	2F
+		suba	#'0'
+		bra	3F
+
+2		cmpa	#'a'
+		blt	1F
+		cmpa	#'f'
+		bgt	1F
+		suba	#'a'
+		adda	#10
+3		bra	4F
+
+1		lda	#$ff
+4		rts
+
+getHexByte	lbsr	getHexDigit
+		lsla
+		lsla
+		lsla
+		lsla
+		sta	upper_nibble
+		lbsr	getHexDigit
+		adda	upper_nibble
+		rts
+
+getHexWord	bsr	getHexByte
+		tfr	a,b
+		bsr	getHexByte
+		exg	a,b
+		rts

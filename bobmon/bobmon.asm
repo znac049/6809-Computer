@@ -34,7 +34,7 @@ loop		leax	prompt_msg,pcr
 readLine	leax	line_buff,pcr
 		clr	,x
 
-1		lbsr	getChar
+1		lbsr	getLChar
 		cmpa	#SPACE
 		blt	6F
 		cmpa	#DEL
