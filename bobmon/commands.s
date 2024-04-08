@@ -6,198 +6,47 @@
 ;
 
 ; Main command table
-cmd_table	fdb	doDump
-		fcb	0,2
-		fcn	"dump"
+cmd_table	fdb	doBasic
+		fcb	basicMinArgs,basicMaxArgs
+		fdb	basicCommand
+		fdb	basicHelp
 
-		fdb	doDuty
-		fcb	1,3
-		fcn	"duty"
+		fdb	doDump
+		fcb	dumpMinArgs,dumpMaxArgs
+		fdb	dumpCommand
+		fdb	dumpHelp
+
+		fdb	doForth
+		fcb	forthMinArgs,forthMaxArgs
+		fdb	forthCommand
+		fdb	forthHelp
 
 		fdb	doGo
-		fcb	0,1
-		fcn	"go"
+		fcb	goMinArgs,goMaxArgs
+		fdb	goCommand
+		fdb	goHelp
 
 		fdb	doLoad
-		fcb	0,0
-		fcn	"load"
+		fcb	loadMinArgs,loadMaxArgs
+		fdb	loadCommand
+		fdb	loadHelp
 
 		fdb	doRegisters
-		fcb	0,0
-		fcn	"registers"
+		fcb	registersMinArgs,registersMaxArgs
+		fdb	registersCommand
+		fdb	registersHelp
+
+		fdb	doWindow
+		fcb	windowMinArgs,windowMaxArgs
+		fdb	windowCommand
+		fdb	windowHelp
 
 		fdb	doHelp
-		fcb	0,0
-		fcn	"?"
+		fcb	helpMinArgs,helpMaxArgs
+		fdb	helpCommand
+		fdb	helpHelp
 
 		fdb	0
-
-doDump		leax	dump_msg,pcr
-		lbsr	putStr
-		rts
-
-doDuty		rts
-
-doGo		rts
-
-;
-; doLoad - load Intel hex records
-;
-doLoad		leax	loading_msg,pcr
-		lbsr	putStr
-
-loadRecord	lbsr	getChar
-		cmpa	#CTRLC
-		lbeq	loadAbort
-
-; read a record
-		cmpa	#':'
-		bne	loadRecord
-
-		lbsr	getHexByte
-		sta	ihex_length
-		sta	ihex_xsum
-
-		lbsr	getHexWord
-		std	ihex_address
-		adda	ihex_xsum
-		sta	ihex_xsum
-		addb	ihex_xsum
-		stb	ihex_xsum
-
-		lbsr	getHexByte
-		sta	ihex_type
-		adda	ihex_xsum
-		sta	ihex_xsum
-
-; we only need type 00 and 01 records - ignore anything else
-		lda	ihex_type
-		cmpa	#0	; data record
-		beq	loadData
-		cmpa	#1
-		beq	loadEOF
-		
-; Record type not supported. Whine and then abort.
-		leax	load_not_supported_msg,pcr
-		lbsr	putStr
-		bsr	loadGobbleLine
-		bra	loadAbort
-
-loadData	ldx	ihex_address
-
-		tfr	x,d
-		lbsr	putHexWord
-		lda	#CR
-		lbsr	putChar
-
-		ldb	ihex_length
-		beq	2F		; This would be unusual - a data record of 0 items
-
-1		lbsr	getHexByte
-		
-		sta	,x+
-
-		adda	ihex_xsum
-		sta	ihex_xsum
-
-		decb
-		bne	1B
-
-2		bsr	getLoadChecksum
-		bne	loadBadXsum
-		bsr	loadGobbleLine
-
-		bra	loadRecord	; look for the next record
-
-loadEOF		bsr	getLoadChecksum
-		bne	loadBadXsum
-		leax	load_ok_msg,pcr
-		lbsr	putStr
-		bra	loadDone
-
-loadBadEOF	leax	load_eof_err_msg,pcr
-		lbsr	putStr
-		bsr	loadGobbleLine
-		bra	loadDone
-
-loadBadXsum	leax	load_xsum_err_msg,pcr
-		lbsr	putStr
-		
-loadGobbleLine	lbsr	getChar
-		cmpa	#CR
-		bne	loadGobbleLine
-		rts
-		
-loadAbort	leax	load_aborted_msg,pcr
-		lbsr	putStr
-
-loadDone	rts
-
-getLoadChecksum	pshs	b
-		lbsr	getHexByte
-		tfr	a,b
-		lda	ihex_xsum
-		coma
-		adda	#1
-		sta	ihex_xsum
-		cmpb	ihex_xsum
-		puls	b,pc
-
-loading_msg	fcn	"Loading INTEL hex - press Ctrl-C to abort.",CR,LF
-load_aborted_msg
-		fcn	CR,LF,"Aborted.",CR,LF
-load_ok_msg	fcn	CR,LF,"Loaded ok.",CR,LF
-load_eof_err_msg
-		fcn	CR,LF,"Badly formatted End of File record.",CR,LF
-load_xsum_err_msg
-		fcn	CR,LF,"Calculated checksum does not match expected checksum.",CR,LF
-load_not_supported_msg
-		fcn	CR,LF,"Unsupported record type found. We only support types 0 and 1.",CR,LF
-
-doRegisters	pshs	a,b,x,y,u
-		leax	reg_msg_1,pcr
-		lbsr	putStr
-		lbsr	putHexByte
-		
-		leax	reg_msg_2,pcr
-		lbsr	putStr
-		tfr	b,a
-		lbsr	putHexByte
-		
-		leax	reg_msg_3,pcr
-		lbsr	putStr
-		tfr	x,d
-		lbsr	putHexWord
-		
-		leax	reg_msg_4,pcr
-		lbsr	putStr
-		tfr	y,d
-		lbsr	putHexWord
-		
-		leax	reg_msg_5,pcr
-		lbsr	putStr
-		tfr	u,d
-		lbsr	putHexWord
-		
-		leax	reg_msg_6,pcr
-		lbsr	putStr
-		tfr	s,d
-		lbsr	putHexWord
-
-		lbsr	putNL
-		
-		puls	a,b,x,y,u,pc
-
-reg_msg_1	fcn	"A:"
-reg_msg_2	fcn	" B:"
-reg_msg_3	fcn	" X:"
-reg_msg_4	fcn	" Y:"
-reg_msg_5	fcn	" U:"
-reg_msg_6	fcn	" S:"
-
-doHelp		rts
-
-dump_msg	fcn	"Dumping...",CR,LF
 
 ;
 ; matchCommand -
@@ -227,7 +76,7 @@ mcTryNext	ldd	,y		; Handler addres
 		sta	match_count	;
 		sty	matched_ccb	; Stash address of command block
 
-mcNoMatch	lbsr	nextCCB
+mcNoMatch	leay	8,y		; next CCB
 		bra	mcTryNext
 
 mcDone		lda	match_count
@@ -244,7 +93,7 @@ mcDone		lda	match_count
 ;	A - 0=no match, 1=match
 ;
 singleMatch	pshs	x,y
-		leay	4,y		; point at the start of the command string
+		ldy	4,y		; point at the start of the command string
 
 smNext		lda	,x+
 		beq	smEndCmd	; hit end of command line
@@ -325,17 +174,14 @@ rclEOL		lbsr	putNL
 		puls	a,x,pc
 
 ;
-; nextCCB -
+; Command handlers
 ;
-; Called with:
-;	Y - address of current CCB
-;
-;
-; Returns:
-;	Y - address of next CCB
-;
-nextCCB		pshs	a
-		leay	4,y	; Start of current command string
-ncNext		lda	,y+	; skip over the string
-		bne	ncNext
-		puls	a,pc
+		include "basic_cmd.s"
+		include "dump_cmd.s"
+		include "forth_cmd.s"
+		include "go_cmd.s"
+		include "help_cmd.s"
+		include "load_cmd.s"
+		include "register_cmd.s"
+		include "window_cmd.s"
+

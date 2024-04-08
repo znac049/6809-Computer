@@ -5,7 +5,17 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
-putChar		jmp	[putChar_fn]
+putChar		pshs	b
+		cmpa	#CR
+		bne	pcNoCR
+		clrb				; Reset column number
+		stb	current_column
+pcNoCR		ldb	#1
+		addb	current_column
+		stb	current_column
+
+		puls	b
+		jmp	[putChar_fn]
 
 getChar		jmp	[getChar_fn]
 
@@ -96,3 +106,17 @@ getHexWord	bsr	getHexByte
 		bsr	getHexByte
 		exg	a,b
 		rts
+
+padToCol	pshs	a,b
+		tfr	a,b
+		cmpb	current_column
+		blt	ptcJustPad
+		lbsr	putNL			; Gone past the column, so start a new line
+
+		lda	#SPACE
+		subb	current_column	
+ptcJustPad	lbsr	putChar
+		decb
+		bne	ptcJustPad
+
+		puls	a,b,pc

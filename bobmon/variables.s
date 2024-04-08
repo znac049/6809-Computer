@@ -11,15 +11,24 @@
 			org	(ram_end-variables_size)+1
 variables_start		equ	*
 
+cpu6809			equ	0
+cpu6309			equ	1
+
+cpu_type		rmb	1
+
 putChar_fn		rmb	2
 getChar_fn		rmb	2
 
-MAXLINE			equ	80
-line_buff		rmb	MAXLINE
-line_ptr		rmb	1
+current_column		rmb	1
+
+MAX_LINE		equ	80
+MAX_ARGS		equ	5
+line_buff		rmb	MAX_LINE
 argc			rmb	1
-min_args		rmb	1
-max_args		rmb	1
+argv			rmb	MAX_ARGS*2
+
+dump_address		rmb	2
+dump_window		rmb	1	; the number of terminal lines to display at a time
 
 ihex_length		rmb	1
 ihex_address		rmb	2
