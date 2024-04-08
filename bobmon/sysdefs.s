@@ -8,7 +8,10 @@
 ;
 ; I/O devices
 ;
-uart			equ	$c000
+uart			equ	$a000
+fdc			equ	$a008
+
+
 
 ;
 ; Ram specific
@@ -20,7 +23,7 @@ ram_end			equ	(ram_start+ram_size)-1
 ;
 ; Rom specific
 ;
-rom_start		equ	$e000
+rom_start		equ	$c000
 
 vectorTable_start	equ	$fff0
 

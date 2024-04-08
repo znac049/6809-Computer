@@ -5,8 +5,6 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
-fdc		equ	$c008
-
 fdc_SR		equ	fdc
 fdc_CR		equ	fdc_SR
 fdc_DR		equ	fdc+1

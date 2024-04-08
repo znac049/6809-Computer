@@ -6,28 +6,39 @@
 ;
 
 ; Main command table
-cmd_table	fdb	doDebug
-		fcn	"debug"
-
-		fdb	doDump
+cmd_table	fdb	doDump
+		fcb	0,2
 		fcn	"dump"
 
+		fdb	doDuty
+		fcb	1,3
+		fcn	"duty"
+
+		fdb	doGo
+		fcb	0,1
+		fcn	"go"
+
 		fdb	doLoad
+		fcb	0,0
 		fcn	"load"
 
 		fdb	doRegisters
+		fcb	0,0
 		fcn	"registers"
 
 		fdb	doHelp
+		fcb	0,0
 		fcn	"?"
 
 		fdb	0
 
-doDebug		rts
-
 doDump		leax	dump_msg,pcr
 		lbsr	putStr
 		rts
+
+doDuty		rts
+
+doGo		rts
 
 ;
 ; doLoad - load Intel hex records
@@ -188,42 +199,143 @@ doHelp		rts
 
 dump_msg	fcn	"Dumping...",CR,LF
 
+;
 ; matchCommand -
 ;
-;  
-matchCommand	pshs	x,y,b
-		tfr	x,y
-		leax	cmd_table,pcr
+; Call with:
+;	X - address of string (command) to look up
+;
+; Returns:
+;	A - count of matches
+;
+matchCommand	pshs	y,b
 
+		leay	cmd_table,pcr
 		ldd	#0
-		std	-5,s
-		clr	-3,s
-		sty	-2,s
+		sta	match_count
+		std	matched_ccb
 
-1		ldd	,x		; address of handler
-		beq	5F		; end of command table
-		stx	-5,s
-		leax	2,x		; Point at start of command string
+mcTryNext	ldd	,y		; Handler addres
+		beq	mcDone
 
-2		lda	,y+		; compare strings
-		beq	4F		; end of string
+		bsr	singleMatch
+		tsta
+		beq	mcNoMatch
 
-		cmpa	#SPACE		; end of command?
-		beq	4F
+; We found a match
+		adda	match_count	; Bump the match count
+		sta	match_count	;
+		sty	matched_ccb	; Stash address of command block
 
-		cmpa	,x+		; compare string with command
-		beq	2B
+mcNoMatch	lbsr	nextCCB
+		bra	mcTryNext
 
-3		lda	,x+		; No match - skip over rest of string
-		bne	3B
-		ldy	-2,s		; next command
-		bra	1B
+mcDone		lda	match_count
+		puls	y,b,pc
 
-4		ldy	-2,s		; It's a match - try the next command
-		inc 	-3,s		; Increment the match count
-		ldd	[-5,s]
-		std	matched_command_ptr
-		bra	1B
+;
+; singleMatch -
+;
+; Call with:
+;	X - address of command line
+;	Y - address of command block (CCB)
+;
+; Returns:
+;	A - 0=no match, 1=match
+;
+singleMatch	pshs	x,y
+		leay	4,y		; point at the start of the command string
 
-5		lda	-3,s
-		puls	x,y,b,pc
+smNext		lda	,x+
+		beq	smEndCmd	; hit end of command line
+		cmpa	#SPACE
+		beq	smEndCmd
+		cmpa	#TAB
+		beq	smEndCmd
+		cmpa	#CR
+		beq	smEndCmd
+		cmpa	,y+
+		beq	smNext		; matching so far
+; Strings don't match.
+		clra			; signal no match and return
+		bra	smDone
+
+; We've hit the end of the command line or first arg, so it's a match
+smEndCmd	lda	#1
+
+smDone		puls	x,y,pc
+
+;
+; readCommandLine -
+;
+; Call with:
+;	X - Address of buffer to read into
+;	A - buffer size
+;
+; Returns:
+;
+readCommandLine	pshs	a,x
+		clr	,x	; Clear the string
+
+rclNextChar	lbsr	getLChar
+		cmpa	#SPACE
+		blt	rclNonPrintable
+		cmpa	#DEL
+		beq	rclDelete
+		bra	rclPrintable
+
+; Non printable char
+rclNonPrintable	cmpa	#CR
+		beq	rclEOL
+
+		* lbsr	putNL
+		* lbsr	putHexByte
+		* lbsr	putNL
+		
+		cmpa	#DEL
+		beq	rclDelete
+
+; Complain and then ignore it
+		lda	#BELL
+		lbsr	putChar
+		bra	rclNextChar
+
+; Handle delete
+rclDelete	cmpx	#line_buff	; Ignore if nothing to delete
+		beq	rclNextChar
+		
+		leax	-1,x		; Back up one space
+		clr	,x
+		lda	#BS
+		lbsr	putChar
+		lda	#SPACE
+		lbsr	putChar
+		lda	#BS
+		lbsr	putChar
+		bra	rclNextChar
+
+; It's a printable character
+rclPrintable	lbsr	putChar
+
+		sta	,x+
+		clr	,x
+		bra	rclNextChar	
+
+rclEOL		lbsr	putNL
+		puls	a,x,pc
+
+;
+; nextCCB -
+;
+; Called with:
+;	Y - address of current CCB
+;
+;
+; Returns:
+;	Y - address of next CCB
+;
+nextCCB		pshs	a
+		leay	4,y	; Start of current command string
+ncNext		lda	,y+	; skip over the string
+		bne	ncNext
+		puls	a,pc

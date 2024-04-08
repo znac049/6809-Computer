@@ -8,6 +8,7 @@
 CTRLC		equ	3
 BELL		equ	7
 BS		equ	8
+TAB		equ	9
 CR		equ	13
 LF		equ	10
 SPACE		equ	32
