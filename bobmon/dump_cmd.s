@@ -4,20 +4,48 @@ dumpCommand	fcn	"dump"
 dumpHelp	fcn	"[<address> [<number of bytes to dump>]]",TAB,"display contents of memory"
 
 
-doDump		ldb	#dump_window
-ddLoop		tsta	; Any args?
-		beq	ddNoArgs
-		cmpa	#2
-		bne	ddNoCount
+doDump		ldy	dump_address	; load defaul values for addr and count
+		ldb	dump_window
 
-ddNoCount	
+		lda	argc
+		cmpa	#3		; All args
+		beq	ddAllArgs
+		cmpa	#2		; Just address
+		beq	ddJustAddress
+		bra	ddProceed	; no args (just command)
+
+ddBadArgs	leax	dd_msg_1,pcr
+		lbsr	putStr
+		bra	ddDone
+ddAllArgs	; convert argv[2] to window size
+		leax	argv,pcr
+		ldx	4,x
+		lbsr	putNL
+		lbsr	strToHex
+		bcs	ddBadArgs
+		tsta
+		bne	ddBadArgs
+		
+		stb	dump_window
+
+ddJustAddress	; convert argv[1] to address
+		leax	argv,pcr
+		ldx	2,x
+		lbsr	strToHex
+		bcs	ddBadArgs
+		std	dump_address
+		tfr	d,y
 
 		ldb	dump_window
 
-ddNoArgs	bsr	dumpSixteen
+; Y = address to dump
+; B = window size
+ddProceed	bsr	dumpSixteen
 		decb
-		bne	ddLoop
-		rts
+		bne	ddProceed
+ddDone		rts
+
+dd_msg_1	fcn	"Badly formatted coomand line.",CR,LF
 
 dumpSixteen	pshs	d,y,x
 		ldd	dump_address

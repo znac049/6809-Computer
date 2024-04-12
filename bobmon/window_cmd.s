@@ -16,8 +16,16 @@ doWindow	lda	argc
 
 dwSetWindow	leay	argv,pcr
 		ldx	2,y		; argv[1]
-		lbsr	strToHexByte
-		sta	dump_window
+		lbsr	strToHex
+		bcs	dwOverflow
+		tsta
+		bne	dwOverflow
+		stb	dump_window
+		bra	dwDone
+
+dwOverflow	leax	dw_msg_2,pcr
+		lbsr	putStr
 dwDone		rts
 
 dw_msg_1	fcn	"Current window is: "
+dw_msg_2	fcn	"Window size is too big or not a hex value.",CR,LF

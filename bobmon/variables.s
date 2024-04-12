@@ -39,6 +39,9 @@ ihex_xsum		rmb	1
 matched_ccb		rmb	2
 match_count		rmb	1
 
+; Used by getHexWord
+word_value		rmb	2
+
 ; Used by getHexByte
 upper_nibble		rmb	1
 

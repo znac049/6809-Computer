@@ -2,6 +2,8 @@
 		include "constants.s"
 		include "variables.s"
 
+		include "macros.s"
+
 		org	rom_start
 
 		include "serial_io.s"
@@ -46,7 +48,7 @@ is6809		leax    system_ready_msg,pcr
 
 		leax	cpu_6809_msg,pcr
 		lbsr	putStr
-		bra	queryDisks
+		lbra	loop ;queryDisks
 
 cpu_6809_msg	fcn	"CPU: 6809",CR,LF
 cpu_6309_msg	fcn	"CPU: 6309",CR,LF
@@ -55,6 +57,7 @@ is6309		leax	cpu_6309_msg,pcr
 		lbsr	putStr
 
 queryDisks	lbsr	dkinfo
+
 loop		leax	prompt_msg,pcr
 		lbsr	putStr
 

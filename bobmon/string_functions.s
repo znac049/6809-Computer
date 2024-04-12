@@ -1,4 +1,4 @@
-;--------------------------------------------------------
+*****************************************************
 ;
 ; string_functions.s - string functions
 ;
@@ -61,66 +61,98 @@ swEOS		puls	a,pc
 ; charToHex
 ;
 ; Call with:
-; 	A - character to convert
+; 	B - character to convert
 ;
 ; Returns:
-;	A - converted character
+;	B - converted character
+;	CC - Carry set on error
 ;
-charToHex	cmpa	#'0'
+charToHex	cmpb	#'0'
 		blt	cthErr
-		cmpa	#'9'
+		cmpb	#'9'
 		bgt	cthNotNum
-		suba	#'0'
-		bra	cthDone
+		subb	#'0'
+		bra	cthOk
 
-cthNotNum 	cmpa	#'A'
+cthNotNum 	cmpb	#'A'
 		blt	cthErr
-		cmpa	#'F'
+		cmpb	#'F'
 		bgt	cthNotUpper
-		suba	#'A'
-		adda	#10
+		subb	#'A'
+		addb	#10
+		bra	cthOk
+
+cthNotUpper	cmpb	#'a'
+		blt	cthErr
+		cmpb	#'f'
+		bgt	cthErr
+		subb	#'a'
+		addb	#10
+cthOk		andcc	#~1		; Clear Carry
 		bra	cthDone
 
-cthNotUpper	cmpa	#'a'
-		blt	cthErr
-		cmpa	#'f'
-		bgt	cthErr
-		suba	#'a'
-		adda	#10
-
-cthErr		lda	#$ff
+cthErr		orcc	#1		; Set Carry
 cthDone		rts
 
+
 ;
-; strToHexByte
+; strToHex
 ;
 ; Call with:
 ; 	X - pointer to string
 ;
 ; Returns:
-;	A - converted string
+;	D - converted string
 ;	X - pointer to string after conversion
+;	CC - Carry set on any error
 ;
-strToHexByte	pshs	b
+strToHex	ldd	#0
+		std	word_value
 
-		lda	,x+
+sthNext		ldb	,x
+		beq	sthEnd
+		cmpb	#SPACE
+		beq	sthEnd
+		cmpb	#CR
+		beq	sthEnd
+		cmpb	#LF
+		beq	sthEnd
+
 		lbsr	charToHex
-		tfr	a,b
+		bcs	sthOverflow
 
-		lda	,x+
-		beq	sthbSingleDigit
-		lbsr	charToHex
-		pshs	a
+		pshs	b
 
-		tfr	b,a
-		lsla
-		lsla
-		lsla
-		lsla
-		ora	1,s
+; We've got a valid hex digit
+		ldd	word_value
+		lslb
+		rola
+		bcs	sthOverflow
+		lslb
+		rola
+		bcs	sthOverflow
+		lslb
+		rola
+		bcs	sthOverflow
+		lslb
+		rola
+		bcs	sthOverflow
+		std	word_value
+
 		puls	b
-		bra	sthbDone
+		sex
 
-sthbSingleDigit	leax	-1,x
+		addd	word_value
+		std	word_value
 
-sthbDone	puls	b,pc
+		leax	1,x
+		bra	sthNext
+
+sthEnd		ldd	word_value
+		andcc	#~1
+		bra	sthDone
+
+sthOverflow	ldd	word_value
+		orcc	#1
+
+sthDone		rts

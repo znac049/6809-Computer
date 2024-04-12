@@ -11,6 +11,7 @@ SOURCES=bobmon.asm \
 				go_cmd.s \
 				help_cmd.s \
 				io_functions.s \
+				macros.s \
 				register_cmd.s \
 				serial_io.s \
 				string_functions.s \
