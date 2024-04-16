@@ -6,13 +6,6 @@
 
 		org	rom_start
 
-		include "serial_io.s"
-		include "io_functions.s"
-		include "string_functions.s"
-		include "commands.s"
-		include "disk_io.s"
-		include "args.s"
-
 ;		setdp	$00
 
 handle_reset	lds	#system_stack
@@ -58,7 +51,9 @@ is6309		leax	cpu_6309_msg,pcr
 
 queryDisks	lbsr	dkinfo
 
-loop		leax	prompt_msg,pcr
+loop		lds	#system_stack
+
+		leax	prompt_msg,pcr
 		lbsr	putStr
 
 		leax	line_buff,pcr
@@ -127,9 +122,16 @@ cl_too_many_msg	fcn	"Too many arguments provided.",CR,LF
 handle_irq	rti
 handle_firq	rti
 handle_undef	rti
-handle_swi	rti
 handle_swi2	rti
 handle_swi3	rti
 handle_nmi	rti
+
+		include "serial_io.s"
+		include "io_functions.s"
+		include "string_functions.s"
+		include "commands.s"
+		include "disk_io.s"
+		include "args.s"
+		include "syscalls.s"
 
 		include	"system_vectors.s"

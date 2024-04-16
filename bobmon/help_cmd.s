@@ -23,9 +23,10 @@ dhPrNext	lda	,x+
 		beq	dhCmdDone
 		cmpa	#TAB
 		bne	dhPrChar
-		lda	#20
+		lda	#24
 		lbsr	padToCol
 		bra	dhPrNext
+		
 dhPrChar	lbsr	putChar
 		bra	dhPrNext
 dhCmdDone	lbsr	putNL

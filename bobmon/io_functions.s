@@ -8,14 +8,20 @@
 putChar		pshs	b
 		cmpa	#CR
 		bne	pcNoCR
-		clrb				; Reset column number
+		ldb	#1		; Reset column number
 		stb	current_column
-pcNoCR		ldb	#1
+
+pcNoCR		cmpa	#SPACE
+		blt	pcNoInc
+		cmpa	#DEL
+		bge	pcNoInc
+		ldb	#1
 		addb	current_column
 		stb	current_column
 
-		puls	b
+pcNoInc		puls	b
 		jmp	[putChar_fn]
+
 
 getChar		jmp	[getChar_fn]
 
@@ -107,16 +113,17 @@ getHexWord	bsr	getHexByte
 		exg	a,b
 		rts
 
+
+
 padToCol	pshs	a,b
 		tfr	a,b
 		cmpb	current_column
-		blt	ptcJustPad
+		bpl	ptcJustPad
 		lbsr	putNL			; Gone past the column, so start a new line
 
-		lda	#SPACE
-		subb	current_column	
-ptcJustPad	lbsr	putChar
-		decb
+ptcJustPad	lda	#SPACE
+		lbsr	putChar
+		cmpb	current_column
 		bne	ptcJustPad
 
 		puls	a,b,pc

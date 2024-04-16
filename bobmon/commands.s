@@ -11,6 +11,11 @@ cmd_table	fdb	doBasic
 		fdb	basicCommand
 		fdb	basicHelp
 
+		fdb	doBoot
+		fcb	bootMinArgs,bootMaxArgs
+		fdb	bootCommand
+		fdb	bootHelp
+
 		fdb	doDump
 		fcb	dumpMinArgs,dumpMaxArgs
 		fdb	dumpCommand
@@ -177,6 +182,7 @@ rclEOL		lbsr	putNL
 ; Command handlers
 ;
 		include "basic_cmd.s"
+		include "boot_cmd.s"
 		include "dump_cmd.s"
 		include "forth_cmd.s"
 		include "go_cmd.s"

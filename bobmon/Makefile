@@ -3,6 +3,7 @@
 SOURCES=bobmon.asm \
 				args.s \
 				basic_cmd.s \
+				boot_cmd.s \
 				commands.s \
 				constants.s \
 				disk_io.s \
@@ -16,6 +17,7 @@ SOURCES=bobmon.asm \
 				serial_io.s \
 				string_functions.s \
 				sysdefs.s \
+				syscalls.s \
 				system_vectors.s \
 				variables.s \
 				window_cmd.s
