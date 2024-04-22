@@ -4,6 +4,8 @@
 
 		include "macros.s"
 
+		section "CODE"
+
 		org	rom_start
 
 ;		setdp	$00
@@ -49,7 +51,6 @@ cpu_6309_msg	fcn	"CPU: 6309",CR,LF
 is6309		leax	cpu_6309_msg,pcr
 		lbsr	putStr
 
-queryDisks	lbsr	dkinfo
 
 loop		lds	#system_stack
 
@@ -108,6 +109,40 @@ clUnknownCommand
 		lbsr	putStr
 		lbra	loop
 
+
+* Non-destructive memory check. Doesn't do the full works, just
+* tests for simple write-read. If this monitor is running in RAM,
+* make sure we don't overwrite!
+quickMemCheck	pshs	a,b
+
+		ldx	#0	; Address to start testing from
+
+		orcc	#$ff	; no interrupts while we test, in case
+				; any of the interrupt handlers use RAM
+				; that we are temporarily changing.
+
+
+		lda	#$55
+doQuickByte	
+		ldb	,x	; Take copy of ram at X
+	
+		lda	#$55
+		sta	,x	; Write our test pattern
+		eora	,x	; result should be 0
+		bne	doQuickEnd
+
+		stb	,x+
+	
+		cmpx	#ram_end
+		bne	doQuickByte
+
+doQuickEnd
+		stx	ramEnd
+	
+		puls	a,b,pc
+
+
+
 prompt_msg	fcn	"> "
 system_ready_msg
 		fcc	CR,LF,"BobMon 6x09 Monitor, version 1.0",CR,LF
@@ -126,12 +161,18 @@ handle_swi2	rti
 handle_swi3	rti
 handle_nmi	rti
 
-		include "serial_io.s"
-		include "io_functions.s"
-		include "string_functions.s"
+		include "args.s"
+		include "cf_io.s"
 		include "commands.s"
 		include "disk_io.s"
-		include "args.s"
+		include "io_functions.s"
+		include "quad.s"
+		include "sd_io.s"
+		include "serial_io.s"
+		include "srec.s"
+		include "string_functions.s"
 		include "syscalls.s"
+
+		include "disasm.s"
 
 		include	"system_vectors.s"

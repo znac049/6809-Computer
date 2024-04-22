@@ -1,63 +1,106 @@
-;--------------------------------------------------------
+
 ;
-; disk_io.s - simulated disk interface
+; Simple 6809 Monitor
 ;
-; 	(C) Bob Green <bob@chippers.org.uk> 2024
+; Copyright(c) 2016, Bob Green
 ;
+	
 
-fdc_SR		equ	fdc
-fdc_CR		equ	fdc_SR
-fdc_DR		equ	fdc+1
-fdc_SEC2	equ	fdc+2
-fdc_SEC1	equ	fdc+3
-fdc_SEC0	equ	fdc+4
+*******************************************************************
+* dkInit - initialise the disk subsystem
+*
+* on entry: none
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
 
-fdcSR_RDY 	equ	$80
-fdcSR_ERR	equ	$01
+dkInit
+		rts
 
-dkinfo		leax	1F,pcr
-		lbsr	putStr
 
-		lda	fdc_SR
-		lbsr	putHexByte
+	
+*******************************************************************
+* dkReadLSN - read block of data from the CF device
+*
+* on entry: X - byte *rdBuff - Read buffer address
+*	    Y - byte *LSN
+*
+*  returns: X - byte *buff
+*
 
+dkReadLSN	pshs	a,y
+
+* Local vars
+		pshs	y
+		pshs	x
+
+		tfr	y,x	; X -> LSN
+
+		ldy	#lba.p
+		lbsr	LSN2LBA
+
+		ldx	2,s
+		lbsr	putQuad
+		lda	#'>'
+		lbsr	putChar
+		ldx	#lba.p
+		lbsr	putQuad
 		lbsr	putNL
 		
-; Query each disk status
-dki_wait_1	lda 	fdc_SR
-		anda	#fdcSR_RDY	; Is it ready?
-		beq	dki_wait_1
+		ldx	,s	
+		ldy	#lba.p
+		lbsr	sdRdBlock
 
-		lda	#$03		; Query disk 0
-		sta	fdc_CR
-		
-dki_wait_2	lda	fdc_SR
-		anda	#fdcSR_RDY
-		beq	dki_wait_2
+* We only want half of it - os9 LSNs are 256 bytes and SD
+* blocks are 512.
 
-		lda	fdc_SR
-		anda	#fdcSR_ERR	; Error bit set means no disk present
-		lbne	dki_no_disk
+		ldx	,s	; X -> *buff
+		ldy	2,s	; y -> LSN
+		lda	3,y	; check lowest byte of LSN for odd/even
+		anda	#$01
+		beq	evenLSN
+		leax	256,x
+		andcc	#$fe	; Clear carry
+evenLSN
+		leas	4,s	; Ditch local vars
+		puls	y,a,pc
 
-		leax	3F,pcr
-		lbsr	putStr
+	
+	
+*******************************************************************
+* dkWriteLSN - write a block of data to disk
+*
+* on entry: X - byte *wrBuff -  Write buffer address
+*    	    Y - byte *LSN
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
 
-		lda	fdc_SEC2
-		lbsr	putHexByte
-		lda	fdc_SEC1
-		lbsr	putHexByte
-		lda	fdc_SEC0
-		lbsr	putHexByte
-		lbsr	putNL
+dkWriteLSN
+		rts
 
+	
+	
+*******************************************************************
+* dkIncLSN - Increment the LSN by 1
+*
+* on entry: Y - byte *LSN
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
 
-		bra	dki_done
-dki_no_disk	leax	2F,pcr
-		lbsr	putStr
-
-dki_done	rts
-
-1		fcn	"Disk subsystem info:",CR,LF
-2		fcn	"disk not present",CR,LF
-3		fcc	"disk present",CR,LF
-		fcn	"number of sectors: "
+dkIncLSN	pshs	d
+		ldd	2,x
+		addd	#1
+		std	2,x
+		bne	noLSNWrap
+		ldd	,x
+		addd	#1
+		std	,x
+noLSNWrap	puls	d,pc

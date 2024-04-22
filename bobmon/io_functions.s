@@ -25,6 +25,19 @@ pcNoInc		puls	b
 
 getChar		jmp	[getChar_fn]
 
+
+
+putPrintableChar
+		pshs	a
+		cmpa	#SPACE
+		blt	ppcNope
+		cmpa	#127
+		blt	ppcOk
+ppcNope		lda	#SPACE
+ppcOk		lbsr	putChar
+		puls	a,pc
+
+
 putStr		pshs	a,x,cc
 1		lda	,x+
 		beq	2F
@@ -32,11 +45,14 @@ putStr		pshs	a,x,cc
 		bra	1B
 2		puls	a,x,cc,pc
 
+
+		
 putHexWord	pshs	a,b
 		bsr	putHexByte
 		exg	a,b
 		bsr	putHexByte
 		puls	a,b,pc
+
 
 putHexByte	pshs	cc
 		rora
@@ -69,6 +85,36 @@ putNL		pshs	x
 		puls	x,pc
 
 1		fcn	CR,LF
+
+
+putnStr		pshs	a
+
+		cmpb    #0
+		beq     pnStrEnd
+            
+pnStrNext	lda	,x+
+
+		lbsr	putChar
+		decb
+		beq     pnStrEnd
+		bra	pnStrNext
+
+pnStrEnd 	puls	a,pc
+
+
+putnpStr	pshs	a,b,x
+
+		tstb
+		beq     pnpStrEnd
+            
+1		lda	,x+
+		bsr	putPrintableChar
+		decb
+		beq     pnpStrEnd
+		bra	1B
+
+pnpStrEnd 	puls	x,b,a,pc
+
 
 getLChar	lbsr	getChar
 		cmpa	#'A'

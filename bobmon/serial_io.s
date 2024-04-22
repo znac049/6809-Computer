@@ -5,16 +5,38 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
-serialPutChar	pshs	a
-1		lda	uart
-		bita	#$02
-		beq	1B
-		puls	a
-		sta	uart+1
+serialInit	pshs	a,x
+
+		ldx	#Uart0Base
+
+		lda	#$03		; Master reset
+		sta	StatusReg,x
+
+		puls	x,a,pc
+
 		rts
 
-serialGetChar	lda	uart
-		bita	#$01
-		beq	serialGetChar
-		lda	uart+1
-		rts
+serialPutChar	pshs	b,x
+
+		ldx	#Uart0Base
+
+1		ldb	StatusReg,x
+		bitb	#2		; tx register empty?
+		beq	1B
+		
+		sta	DataReg,x	; send the char
+
+		puls	x,b,pc
+
+serialGetChar	pshs	x
+
+		ldx	#Uart0Base
+
+1		lda	StatusReg,x
+		bita	#1		; rx register full?
+		beq	1B
+
+		lda	DataReg,x	; grab the character
+
+		puls	x,pc
+

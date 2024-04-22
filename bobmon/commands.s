@@ -16,6 +16,11 @@ cmd_table	fdb	doBasic
 		fdb	bootCommand
 		fdb	bootHelp
 
+		fdb	doDisassemble
+		fcb	disassMinArgs,disassMaxArgs
+		fdb	disassembleCommand
+		fdb	disassembleHelp
+
 		fdb	doDump
 		fcb	dumpMinArgs,dumpMaxArgs
 		fdb	dumpCommand
@@ -183,6 +188,7 @@ rclEOL		lbsr	putNL
 ;
 		include "basic_cmd.s"
 		include "boot_cmd.s"
+		include "disassemble.s"
 		include "dump_cmd.s"
 		include "forth_cmd.s"
 		include "go_cmd.s"

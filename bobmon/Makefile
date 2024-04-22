@@ -4,8 +4,11 @@ SOURCES=bobmon.asm \
 				args.s \
 				basic_cmd.s \
 				boot_cmd.s \
+				cf_io.s \
 				commands.s \
 				constants.s \
+				disasm.s \
+				disassemble.s \
 				disk_io.s \
 				dump_cmd.s \
 				forth_cmd.s \
@@ -13,8 +16,11 @@ SOURCES=bobmon.asm \
 				help_cmd.s \
 				io_functions.s \
 				macros.s \
+				quad.s \
 				register_cmd.s \
+				sd_io.s \
 				serial_io.s \
+				srec.s \
 				string_functions.s \
 				sysdefs.s \
 				syscalls.s \
@@ -31,4 +37,4 @@ all: bobmon.hex
 bobmon.hex: $(SOURCES)
 
 clean:
-	rm *.hex *.lst
+	rm *.hex *.lst *~
