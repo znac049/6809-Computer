@@ -4,10 +4,10 @@ dumpCommand	fcn	"dump"
 dumpHelp	fcn	"[<address> [<number of bytes to dump>]]",TAB,"display contents of memory"
 
 
-doDump		ldy	dump_address	; load defaul values for addr and count
-		ldb	dump_window
+doDump		ldy	g.memoryAddress	; load defaul values for addr and count
+		ldb	g.linesPerPage
 
-		lda	argc
+		lda	g.argc
 		cmpa	#3		; All args
 		beq	ddAllArgs
 		cmpa	#2		; Just address
@@ -18,7 +18,7 @@ ddBadArgs	leax	dd_msg_1,pcr
 		lbsr	putStr
 		bra	ddDone
 ddAllArgs	; convert argv[2] to window size
-		leax	argv,pcr
+		leax	g.argv,pcr
 		ldx	4,x
 		lbsr	putNL
 		lbsr	strToHex
@@ -26,17 +26,17 @@ ddAllArgs	; convert argv[2] to window size
 		tsta
 		bne	ddBadArgs
 		
-		stb	dump_window
+		stb	g.linesPerPage
 
 ddJustAddress	; convert argv[1] to address
-		leax	argv,pcr
+		leax	g.argv,pcr
 		ldx	2,x
 		lbsr	strToHex
 		bcs	ddBadArgs
-		std	dump_address
+		std	g.memoryAddress
 		tfr	d,y
 
-		ldb	dump_window
+		ldb	g.linesPerPage
 
 ; Y = address to dump
 ; B = window size
@@ -48,7 +48,7 @@ ddDone		rts
 dd_msg_1	fcn	"Badly formatted coomand line.",CR,LF
 
 dumpSixteen	pshs	d,y,x
-		ldd	dump_address
+		ldd	g.memoryAddress
 		tfr	d,y
 		lbsr	putHexWord
 
@@ -61,7 +61,7 @@ dumpSixteen	pshs	d,y,x
 		lbsr	putNL		
 
 		leay	16,y
-		sty	dump_address
+		sty	g.memoryAddress
 
 		puls	d,x,y,pc
 

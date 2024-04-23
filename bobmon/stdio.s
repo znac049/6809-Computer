@@ -12,6 +12,7 @@
 
 g.unprintable	rmb	1
 g.upperNibble	rmb	1
+g.currentColumn	rmb	1
 
 		code
 
@@ -29,15 +30,15 @@ putChar		pshs	b,x
 		cmpa	#CR
 		bne	pcNoCR
 		ldb	#1		; Reset column number
-		stb	current_column
+		stb	g.currentColumn
 
 pcNoCR		cmpa	#SPACE
 		blt	pcNoInc
 		cmpa	#DEL
 		bge	pcNoInc
 		ldb	#1
-		addb	current_column
-		stb	current_column
+		addb	g.currentColumn
+		stb	g.currentColumn
 
 pcNoInc		ldx	g.currentCDev,pcr
 		jsr	[CDev.Write,x]
@@ -231,13 +232,13 @@ pnpStrEnd 	puls	x,b,a,pc
 *
 padToCol	pshs	a,b
 		tfr	a,b
-		cmpb	current_column
+		cmpb	g.currentColumn
 		bpl	ptcJustPad
 		lbsr	putNL			; Gone past the column, so start a new line
 
 ptcJustPad	lda	g.unprintable
 		lbsr	putChar
-		cmpb	current_column
+		cmpb	g.currentColumn
 		bne	ptcJustPad
 
 		puls	a,b,pc

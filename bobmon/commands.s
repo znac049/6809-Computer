@@ -5,6 +5,14 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
+		globals
+
+g.matchedCCB	rmb	2
+g.matchCount	rmb	1
+
+
+		code
+
 ; Main command table
 cmd_table	fdb	doBoot
 		fcb	bootMinArgs,bootMaxArgs
@@ -61,8 +69,8 @@ matchCommand	pshs	y,b
 
 		leay	cmd_table,pcr
 		ldd	#0
-		sta	match_count
-		std	matched_ccb
+		sta	g.matchCount
+		std	g.matchedCCB
 
 mcTryNext	ldd	,y		; Handler addres
 		beq	mcDone
@@ -72,14 +80,14 @@ mcTryNext	ldd	,y		; Handler addres
 		beq	mcNoMatch
 
 ; We found a match
-		adda	match_count	; Bump the match count
-		sta	match_count	;
-		sty	matched_ccb	; Stash address of command block
+		adda	g.matchCount	; Bump the match count
+		sta	g.matchCount	;
+		sty	g.matchedCCB	; Stash address of command block
 
 mcNoMatch	leay	8,y		; next CCB
 		bra	mcTryNext
 
-mcDone		lda	match_count
+mcDone		lda	g.matchCount
 		puls	y,b,pc
 
 ;
@@ -150,7 +158,7 @@ rclNonPrintable	cmpa	#CR
 		bra	rclNextChar
 
 ; Handle delete
-rclDelete	cmpx	#line_buff	; Ignore if nothing to delete
+rclDelete	cmpx	#g.commandLine	; Ignore if nothing to delete
 		beq	rclNextChar
 		
 		leax	-1,x		; Back up one space

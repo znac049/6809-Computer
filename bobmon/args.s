@@ -13,8 +13,8 @@
 ;
 makeArgs	pshs	x,y,b
 		clra
-		sta	argc
-		leay	argv,pcr
+		sta	g.argc
+		leay	g.argv,pcr
 
 
 ; Skip any whitespace before the arg
@@ -24,9 +24,9 @@ maSkipWhite	lbsr	skipWhite
 
 ; Now we're pointing at a non-white
 maNonWhite	stx	,y++		; Save ptr to arvc[n]	
-		lda	argc		; Bump argc
+		lda	g.argc		; Bump argc
 		inca
-		sta	argc
+		sta	g.argc
 
 ; skip over the arg
 maSkipArg	ldb	,x+
@@ -43,7 +43,7 @@ maEndArg	clra
 		sta	-1,x
 		bra	maSkipWhite	; Look for the next arg
 
-maDone		lda	argc
+maDone		lda	g.argc
 		puls	x,y,b,pc
 
 ;
@@ -53,11 +53,11 @@ dumpArgs	pshs	a,x,y
 		lbsr	putNL
 		leax	da_msg_1,pcr
 		lbsr	putStr
-		lda	argc
+		lda	g.argc
 		lbsr	putHexByte
 		lbsr	putNL
 		
-		leay	argv,pcr
+		leay	g.argv,pcr
 		
 daPrNextArg	ldx	,y++
 		lbsr	putStr

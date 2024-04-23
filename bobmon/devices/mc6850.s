@@ -15,7 +15,14 @@ MC6850.DataReg	equ	1
 MC6850.InitialCR equ	$95			
 
 		code
-SerialDCB	fdb	Uart0Base
+SerialDCB0	fdb	Uart0Base
+		fdb	serialInit
+		fdb	serialCanRead
+		fdb	serialCanWrite
+		fdb	serialGetChar
+		fdb	serialPutChar
+
+SerialDCB1	fdb	Uart1Base
 		fdb	serialInit
 		fdb	serialCanRead
 		fdb	serialCanWrite

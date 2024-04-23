@@ -19,11 +19,12 @@ rom_start		equ	$c000
 
 vectorTable_start	equ	$fff0
 
-Uart0Base	equ	$A000
-CFBase		equ	$A010
-RegBase		equ	$A030
-MMUBase		equ	$A040
-SDBase		equ	$A050
+Uart0Base	equ	$a000
+Uart1Base	equ	$a008
+CFBase		equ	$a010
+RegBase		equ	$a030
+MMUBase		equ	$a040
+SDBase		equ	$a050
 FDCBase		equ	$a060
 
 ; Virtual disk controller registers

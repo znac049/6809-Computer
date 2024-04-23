@@ -330,7 +330,7 @@ PrintAddress
 ; next instruction so it can be called again.
 			
 Disassemble	clr	PAGE23	; Clear page2/3 flag
-		ldx	dump_address,pcr	; Get address of instruction
+		ldx	g.memoryAddress,pcr	; Get address of instruction
 		ldb	,X	; Get instruction op code
 		cmpb	#$10	; Is it a page 2 16-bit opcode prefix with 10?
 		beq	handle10	; If so, do special handling
@@ -438,7 +438,7 @@ not1011
 dism		lda	AM	; Get addressing mode
 		cmpa	#AM_INDEXED	; Is it indexed mode?
 		bne	NotIndexed	; Branch if not
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 					; If it is a page2/3 instruction, op code is the next byte after ADDR
 		tst	PAGE23	; Page2/3 instruction?
 		beq	norm	; Branch if not
@@ -465,7 +465,7 @@ getpb		sta	POSTBYT	; Save it
 NotIndexed		
 			
 ; Print address followed by a space
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		lbsr	PrintAddress
 			
 ; Print one more space
@@ -475,7 +475,7 @@ NotIndexed
 ; Print the op code bytes based on the instruction length
 			
 		ldb	LEN	; Number of bytes in instruction
-		ldx	dump_address,PCR	; Pointer to start of instruction
+		ldx	g.memoryAddress,PCR	; Pointer to start of instruction
 opby		lda	,X+	; Get instruction byte and increment pointer
 		lbsr	PrintByte	; Print it, followed by a space
 		decb			; Decrement byte count
@@ -494,9 +494,9 @@ opby		lda	,X+	; Get instruction byte and increment pointer
 			
 		tst	PAGE23	; Flag set
 		beq	noinc	; Branch if not
-		ldd	dump_address	; Increment 16-bit address
+		ldd	g.memoryAddress	; Increment 16-bit address
 		addd	#1
-		std	dump_address
+		std	g.memoryAddress
 			
 ; Get and print mnemonic (4 chars)
 			
@@ -577,7 +577,7 @@ DO_IMMEDIATE8
 		lda	#'#	; Number sign
 		lbsr	putChar
 		lbsr	PrintDollar	; Dollar sign
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get next byte (immediate data)
 		lbsr	PrintByte	; Print as hex value
 		lbra	done
@@ -585,7 +585,7 @@ DO_IMMEDIATE8
 XFREXG					; Handle special case of TFR and EXG
 					; Display "  r1,r2"
 		lbsr	Print2Spaces	; Two spaces
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get next byte (postbyte)
 		anda	#%11110000	; Mask out source register bits
 		lsra			; Shift into low order bits
@@ -668,7 +668,7 @@ PULPSH
 		lbsr	Print2Spaces	; Two spaces
 		lda	#1
 		sta	FIRST	; Flag set before any items printed
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get next byte (postbyte)
 			
 ; Postbyte bits indicate registers to push/pull when 1.
@@ -770,7 +770,7 @@ DO_IMMEDIATE16				; Display "  #$nnnn"
 		lda	#'#	; Number sign
 		lbsr	putChar
 		lbsr	PrintDollar	; Dollar sign
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get first byte (immediate data MSB)
 		ldb	2,X	; Get second byte (immediate data LSB)
 		tfr	D,X	; Put in X to print
@@ -780,7 +780,7 @@ DO_IMMEDIATE16				; Display "  #$nnnn"
 DO_DIRECT				; Display "  $nn"
 		lbsr	Print2Spaces	; Two spaces
 		lbsr	PrintDollar	; Dollar sign
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get next byte (byte data)
 		lbsr	PrintByte	; Print as hex value
 		lbra	done
@@ -788,7 +788,7 @@ DO_DIRECT				; Display "  $nn"
 DO_EXTENDED				; Display "  $nnnn"
 		lbsr	Print2Spaces	; Two spaces
 		lbsr	PrintDollar	; Dollar sign
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		lda	1,X	; Get first byte (address MSB)
 		ldb	2,X	; Get second byte (address LSB)
 		tfr	D,X	; Put in X to print
@@ -804,10 +804,10 @@ DO_RELATIVE8				; Display "  $nnnn"
 ;   $1015 + $(FF)FC + 2 = $1013
 ;   $101B + $(00)27 + 2 = $1044
 			
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		ldb	1,X	; Get first byte (8-bit branch offset)
 		sex			; Sign extend to 16 bits
-		addd	dump_address	; Add address of op code
+		addd	g.memoryAddress	; Add address of op code
 		addd	#2	; Add 2
 		tfr	D,X	; Put in X to print
 		lbsr	PrintAddress	; Print as hex value
@@ -820,9 +820,9 @@ DO_RELATIVE16				; Display "  $nnnn"
 ; Destination address calculation is similar to above, except offset
 ; is 16 bits and need to add 3.
 			
-		ldx	dump_address,PCR	; Get address of op code
+		ldx	g.memoryAddress,PCR	; Get address of op code
 		ldd	1,X	; Get next 2 bytes (16-bit branch offset)
-		addd	dump_address	; Add address of op code
+		addd	g.memoryAddress	; Add address of op code
 		addd	#3	; Add 3
 		tfr	D,X	; Put in X to print
 		lbsr	PrintAddress	; Print as hex value
@@ -886,7 +886,7 @@ ind3
 		cmpa	#%10001000	; Check against pattern
 		bne	ind4
 					; Format is 1RR01000  n,R
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		lda	2,X	; Get 8-bit offset
 		lbsr	PrintDollar	; Dollar sign
 		lbsr	PrintByte	; Display it
@@ -898,7 +898,7 @@ ind4
 		cmpa	#%10001001	; Check against pattern
 		bne	ind5
 					; Format is 1RR01001  n,R
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		ldd	2,X	; Get 16-bit offset
 		tfr	D,X
 		lbsr	PrintDollar	; Dollar sign
@@ -977,7 +977,7 @@ ind12
 		cmpa	#%10001100	; Check against pattern
 		bne	ind13
 					; Format is 1xx01100  n,PCR
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		lda	2,X	; Get 8-bit offset
 		lbsr	PrintDollar	; Dollar sign
 		lbsr	PrintByte	; Display it
@@ -988,7 +988,7 @@ ind13
 		cmpa	#%10001101	; Check against pattern
 		bne	ind14
 					; Format is 1xx01101  n,PCR
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		ldd	2,X	; Get 16-bit offset
 		tfr	D,X
 		lbsr	PrintDollar	; Dollar sign
@@ -1011,7 +1011,7 @@ ind15
 		bne	ind16
 					; Format is 1RR11000  [n,R]
 		lbsr	PrintLBracket	; Print left bracket
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		lda	2,X	; Get 8-bit offset
 		lbsr	PrintDollar	; Dollar sign
 		lbsr	PrintByte	; Display it
@@ -1025,7 +1025,7 @@ ind16
 		bne	ind17
 					; Format is 1RR11001  [n,R]
 		lbsr	PrintLBracket	; Print left bracket
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		ldd	2,X	; Get 16-bit offset
 		tfr	D,X
 		lbsr	PrintDollar	; Dollar sign
@@ -1094,7 +1094,7 @@ ind22
 		bne	ind23
 					; Format is 1xx11100  [n,PCR]
 		lbsr	PrintLBracket	; Print left bracket
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		lda	2,X	; Get 8-bit offset
 		lbsr	PrintDollar	; Dollar sign
 		lbsr	PrintByte	; Display it
@@ -1107,7 +1107,7 @@ ind23
 		bne	ind24
 					; Format is 1xx11101  [n,PCR]
 		lbsr	PrintLBracket	; Print left bracket
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		ldd	2,X	; Get 16-bit offset
 		tfr	D,X
 		lbsr	PrintDollar	; Dollar sign
@@ -1121,7 +1121,7 @@ ind24
 		bne	ind25
 					; Format is 1xx11111  [n]
 		lbsr	PrintLBracket	; Print left bracket
-		ldx	dump_address,PCR
+		ldx	g.memoryAddress,PCR
 		ldd	2,X	; Get 16-bit offset
 		tfr	D,X
 		lbsr	PrintDollar	; Dollar sign
@@ -1171,8 +1171,8 @@ done		lbsr	putNL
 		dec	LEN	; Decrement length
 not23		clra			; Clear MSB of D
 		ldb	LEN	; Get length byte in LSB of D
-		addd	dump_address	; Add to address
-		std	dump_address	; Write new address
+		addd	g.memoryAddress	; Add to address
+		std	g.memoryAddress	; Write new address
 			
 ; Return
 		rts	

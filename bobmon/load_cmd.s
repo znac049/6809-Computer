@@ -2,6 +2,16 @@
 ; doLoad - load Intel hex records
 ;
 
+		globals
+
+g.ihexLength	rmb	1
+g.ihexAddress	rmb	2
+g.ihexType	rmb	1
+g.ihexXsum	rmb	1
+
+
+		code
+
 loadMinArgs	equ	0
 loadMaxArgs	equ	0
 loadCommand	fcn	"load"
@@ -19,23 +29,23 @@ loadRecord	lbsr	getChar
 		bne	loadRecord
 
 		lbsr	getHexByte
-		sta	ihex_length
-		sta	ihex_xsum
+		sta	g.ihexLength
+		sta	g.ihexXsum
 
 		lbsr	getHexWord
-		std	ihex_address
-		adda	ihex_xsum
-		sta	ihex_xsum
-		addb	ihex_xsum
-		stb	ihex_xsum
+		std	g.ihexAddress
+		adda	g.ihexXsum
+		sta	g.ihexXsum
+		addb	g.ihexXsum
+		stb	g.ihexXsum
 
 		lbsr	getHexByte
-		sta	ihex_type
-		adda	ihex_xsum
-		sta	ihex_xsum
+		sta	g.ihexType
+		adda	g.ihexXsum
+		sta	g.ihexXsum
 
 ; we only need type 00 and 01 records - ignore anything else
-		lda	ihex_type
+		lda	g.ihexType
 		cmpa	#0	; data record
 		beq	loadData
 		cmpa	#1
@@ -47,22 +57,22 @@ loadRecord	lbsr	getChar
 		bsr	loadGobbleLine
 		bra	loadAbort
 
-loadData	ldx	ihex_address
+loadData	ldx	g.ihexAddress
 
 		tfr	x,d
 		lbsr	putHexWord
 		lda	#CR
 		lbsr	putChar
 
-		ldb	ihex_length
+		ldb	g.ihexLength
 		beq	2F		; This would be unusual - a data record of 0 items
 
 1		lbsr	getHexByte
 		
 		sta	,x+
 
-		adda	ihex_xsum
-		sta	ihex_xsum
+		adda	g.ihexXsum
+		sta	g.ihexXsum
 
 		decb
 		bne	1B
@@ -100,11 +110,11 @@ loadDone	rts
 getLoadChecksum	pshs	b
 		lbsr	getHexByte
 		tfr	a,b
-		lda	ihex_xsum
+		lda	g.ihexXsum
 		coma
 		adda	#1
-		sta	ihex_xsum
-		cmpb	ihex_xsum
+		sta	g.ihexXsum
+		cmpb	g.ihexXsum
 		puls	b,pc
 
 loading_msg	fcn	"Loading INTEL hex - press Ctrl-C to abort.",CR,LF

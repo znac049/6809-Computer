@@ -1,9 +1,19 @@
 		include "sysdefs.s"
 		include "macros.s"
 
+cpu.6809	equ	0
+cpu.6309	equ	1
+
 		globals
 		org	(ram_end-variables_size)+1
 variables_start	equ	*
+
+g.cpuType	rmb	1
+g.ramEnd	rmb    	2
+
+g.argc		rmb	1
+g.argv		rmb	MAX_ARGS*2
+g.commandLine	rmb	MAX_LINE
 
 		include "constants.s"
 		include "variables.s"
@@ -24,8 +34,8 @@ handle_reset	lds	#system_stack
 
 is6809		leax    system_ready_msg,pcr
 		lbsr    putStr
-		lda	cpu_type
-		cmpa	#cpu6309
+		lda	g.cpuType
+		cmpa	#cpu.6309
 		beq	is6309
 
 		leax	cpu_6809_msg,pcr
@@ -43,19 +53,19 @@ loop		lds	#system_stack
 		leax	prompt_msg,pcr
 		lbsr	putStr
 
-		leax	line_buff,pcr
+		leax	g.commandLine,pcr
 		lbsr	readCommandLine	; Grab a line from the console
 		lbsr	isBlankLine
 		tsta
 		bne	loop		; It was an empty line
 
-		leax	line_buff,pcr
+		leax	g.commandLine,pcr
 		lbsr	makeArgs
 		* lbsr	dumpArgs
-		lda	argc
+		lda	g.argc
 		beq	loop		; No command
 
-		ldx	argv		; X points at argv[0]
+		ldx	g.argv		; X points at argv[0]
 
 		lbsr	matchCommand
 		cmpa	#1		; did we find any matches?
@@ -63,10 +73,10 @@ loop		lds	#system_stack
 		bgt	clAmbiguousCommand; Multiple matches - ambiguous command
 
 ; It's a single match - does it have the right number of args
-		ldy	matched_ccb
+		ldy	g.matchedCCB
 		* lbsr	countArgs
 		* deca			; Don't include the command itself
-		lda	argc
+		lda	g.argc
 		deca		
 
 		cmpa	2,y		; min args
@@ -74,7 +84,7 @@ loop		lds	#system_stack
 		cmpa	3,y		; max args
 		bgt	clTooManyArgs
 
-		ldx	matched_ccb
+		ldx	g.matchedCCB
 		jsr	[,x]
 		bra	loop
 
@@ -123,7 +133,7 @@ doQuickByte
 		bne	doQuickByte
 
 doQuickEnd
-		stx	ramEnd
+		stx	g.ramEnd
 	
 		puls	a,b,pc
 
@@ -155,10 +165,10 @@ initBSS		pshs	x,y,a
 ; Initialise global variables
 initVars	pshs	x,a
 		lda	#16
-		sta	dump_window
+		sta	g.linesPerPage
 		
-		lda	#cpu6809
-		sta	cpu_type
+		lda	#cpu.6809
+		sta	g.cpuType
 		
 		lda	#SPACE
 		sta	g.unprintable
@@ -190,5 +200,8 @@ handle_nmi	rti
 
 		include	"system_vectors.s"
 
-		section	"BSS"
+		globals
+
+; This must be the last item in the Globals segment
+;
 variables_size	equ	*-variables_start		
