@@ -191,7 +191,6 @@ handle_nmi	rti
 		include "disk_io.s"
 		include "quad.s"
 		include "sd_io.s"
-		include "srec.s"
 		include "stdio.s"
 		include "string_functions.s"
 		include "syscalls.s"

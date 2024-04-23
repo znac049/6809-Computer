@@ -14,11 +14,11 @@ SOURCES=bobmon.asm \
 				dump_cmd.s \
 				go_cmd.s \
 				help_cmd.s \
+				load_cmd.s \
 				macros.s \
 				quad.s \
 				register_cmd.s \
 				sd_io.s \
-				srec.s \
 				stdio.s \
 				string_functions.s \
 				sysdefs.s \

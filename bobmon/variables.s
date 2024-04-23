@@ -30,11 +30,6 @@ secBuff			rmb	512
 ; Used by getHexWord
 word_value		rmb	2
 
-* S Records
-srType		rmb	1	; The type of the most recent record read
-srCount		rmb	1	; The count of the most recent record read
-srAddr		rmb	2	; The address to load the next data byte into
-srXSum		rmb	1	; The calculated checksum
 
 
 ; Used by disassembler
