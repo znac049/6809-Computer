@@ -26,10 +26,6 @@ MMUBase		equ	$A040
 SDBase		equ	$A050
 FDCBase		equ	$a060
 
-; mc6850 Uart registers
-StatusReg	equ	0
-DataReg		equ	1
-
 ; Virtual disk controller registers
 FDC.SR		equ	0
 FDC.CMD		equ	0

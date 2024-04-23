@@ -6,12 +6,7 @@
 ;
 
 ; Main command table
-cmd_table	fdb	doBasic
-		fcb	basicMinArgs,basicMaxArgs
-		fdb	basicCommand
-		fdb	basicHelp
-
-		fdb	doBoot
+cmd_table	fdb	doBoot
 		fcb	bootMinArgs,bootMaxArgs
 		fdb	bootCommand
 		fdb	bootHelp
@@ -25,11 +20,6 @@ cmd_table	fdb	doBasic
 		fcb	dumpMinArgs,dumpMaxArgs
 		fdb	dumpCommand
 		fdb	dumpHelp
-
-		fdb	doForth
-		fcb	forthMinArgs,forthMaxArgs
-		fdb	forthCommand
-		fdb	forthHelp
 
 		fdb	doGo
 		fcb	goMinArgs,goMaxArgs
@@ -186,11 +176,9 @@ rclEOL		lbsr	putNL
 ;
 ; Command handlers
 ;
-		include "basic_cmd.s"
 		include "boot_cmd.s"
 		include "disassemble.s"
 		include "dump_cmd.s"
-		include "forth_cmd.s"
 		include "go_cmd.s"
 		include "help_cmd.s"
 		include "load_cmd.s"

@@ -9,9 +9,6 @@
 
 			section	"BSS"
 			
-			org	(ram_end-variables_size)+1
-variables_start		equ	*
-
 cpu6809			equ	0
 cpu6309			equ	1
 
@@ -42,8 +39,8 @@ ihex_xsum		rmb	1
 matched_ccb		rmb	2
 match_count		rmb	1
 
-lsn.p		rmb	4	; The os9 sector number
-lba.p		rmb	4	; SD card block number
+lsn.p			rmb	4	; The os9 sector number
+lba.p			rmb	4	; SD card block number
 
 rootLSN.p		rmb	4	; The start of the root directory
 bootLSN.p		rmb	4	; The fisrt LSN of the boot file
@@ -55,9 +52,6 @@ secBuff			rmb	512
 
 ; Used by getHexWord
 word_value		rmb	2
-
-; Used by getHexByte
-upper_nibble		rmb	1
 
 * S Records
 srType		rmb	1	; The type of the most recent record read
@@ -81,4 +75,3 @@ PAGE23  RMB     1               ; Flag indicating page2/3 instruction when non-z
 
 
 
-variables_size		equ	*-variables_start

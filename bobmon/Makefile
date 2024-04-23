@@ -2,25 +2,24 @@
 
 SOURCES=bobmon.asm \
 				args.s \
-				basic_cmd.s \
 				boot_cmd.s \
 				cf_io.s \
 				commands.s \
 				constants.s \
+				devices/devices.s \
+				devices/mc6850.s \
 				disasm.s \
 				disassemble.s \
 				disk_io.s \
 				dump_cmd.s \
-				forth_cmd.s \
 				go_cmd.s \
 				help_cmd.s \
-				io_functions.s \
 				macros.s \
 				quad.s \
 				register_cmd.s \
 				sd_io.s \
-				serial_io.s \
 				srec.s \
+				stdio.s \
 				string_functions.s \
 				sysdefs.s \
 				syscalls.s \

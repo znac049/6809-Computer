@@ -13,3 +13,7 @@ CR		equ	13
 LF		equ	10
 SPACE		equ	32
 DEL		equ	127
+
+
+YES		equ	1
+NO		equ	0

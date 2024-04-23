@@ -1,11 +1,15 @@
 		include "sysdefs.s"
+		include "macros.s"
+
+		globals
+		org	(ram_end-variables_size)+1
+variables_start	equ	*
+
 		include "constants.s"
 		include "variables.s"
 
-		include "macros.s"
 
-		section "CODE"
-
+		code
 		org	rom_start
 
 ;		setdp	$00
@@ -14,26 +18,9 @@ handle_reset	lds	#system_stack
 		ldu	#user_stack
 		orcc	#$50		; disable interrupts
 
-; Initialise variable space to zero
-		ldx	variables_start
-		ldy	variables_size
-		clra
-
-initVars	sta	,x+
-		leay	-1,y
-		bne	initVars
-
-		leax	serialPutChar,pcr
-		stx	putChar_fn
-
-		leax	serialGetChar,pcr
-		stx	getChar_fn
-
-		lda	#16
-		sta	dump_window
-		
-		lda	#cpu6809
-		sta	cpu_type
+		lbsr	initBSS
+		lbsr	initVars
+		lbsr	initDevices
 
 is6809		leax    system_ready_msg,pcr
 		lbsr    putStr
@@ -50,7 +37,6 @@ cpu_6309_msg	fcn	"CPU: 6309",CR,LF
 
 is6309		leax	cpu_6309_msg,pcr
 		lbsr	putStr
-
 
 loop		lds	#system_stack
 
@@ -154,6 +140,33 @@ cl_unknown_msg
 cl_too_few_msg	fcn	"Not enough arguments supplied.", CR,LF
 cl_too_many_msg	fcn	"Too many arguments provided.",CR,LF
 
+
+; Initialise variable space to zero
+initBSS		pshs	x,y,a
+		ldx	#variables_start
+		ldy	#variables_size
+		clra
+
+1		sta	,x+
+		leay	-1,y
+		bne	1B
+		puls	x,y,a,pc
+
+; Initialise global variables
+initVars	pshs	x,a
+		lda	#16
+		sta	dump_window
+		
+		lda	#cpu6809
+		sta	cpu_type
+		
+		lda	#SPACE
+		sta	g.unprintable
+		
+		puls	x,a,pc
+
+
+
 handle_irq	rti
 handle_firq	rti
 handle_undef	rti
@@ -164,15 +177,18 @@ handle_nmi	rti
 		include "args.s"
 		include "cf_io.s"
 		include "commands.s"
+		include "devices/devices.s"
 		include "disk_io.s"
-		include "io_functions.s"
 		include "quad.s"
 		include "sd_io.s"
-		include "serial_io.s"
 		include "srec.s"
+		include "stdio.s"
 		include "string_functions.s"
 		include "syscalls.s"
 
 		include "disasm.s"
 
 		include	"system_vectors.s"
+
+		section	"BSS"
+variables_size	equ	*-variables_start		
