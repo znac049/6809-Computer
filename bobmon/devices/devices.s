@@ -18,7 +18,7 @@ Sizeof.BDev	equ	2
 		include "devices/mc6850.s"
 
 CharDevices	fdb	SerialDCB0
-		fdb	SerialDCB1
+		* fdb	SerialDCB1
 		fdb	0
 
 BlockDevices	fdb	0

@@ -41,9 +41,11 @@ SerialDCB1	fdb	Uart1Base
 *  returns: nothing
 *
 serialInit	pshs	a
-		ldx	CDev.BaseAddr,x		
+		ldx	CDev.BaseAddr,x	
+		lda	#$03			; Master reset
+		sta	MC6850.StatusReg,x	
 		lda	#MC6850.InitialCR
-		* sta	MC6850.StatusReg,x
+		sta	MC6850.StatusReg,x
 		puls	a,pc
 
 *******************************************************************
