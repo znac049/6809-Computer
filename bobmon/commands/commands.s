@@ -192,7 +192,7 @@ rclEOL		lbsr	putNL
 		include "dump_cmd.s"
 		include "commands/go_cmd.s"
 		include "help_cmd.s"
-		include "load_cmd.s"
+		include "commands/load_cmd.s"
 		include "register_cmd.s"
 		include "window_cmd.s"
 

@@ -6,6 +6,7 @@ SOURCES=bobmon.asm \
 				cf_io.s \
 				commands/commands.s \
 				commands/go_cmd.s \
+				commands/load_cmd.s \
 				constants.s \
 				devices/devices.s \
 				devices/mc6850.s \
@@ -14,7 +15,6 @@ SOURCES=bobmon.asm \
 				disk_io.s \
 				dump_cmd.s \
 				help_cmd.s \
-				load_cmd.s \
 				macros.s \
 				quad.s \
 				register_cmd.s \

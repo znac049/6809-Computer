@@ -1,5 +1,12 @@
 ;
-; doLoad - load Intel hex records
+; Simple 6809 Monitor
+;
+; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
+;
+; load_cmd.s - Implements the "load" command, which will auto
+;	detect intel hex or motorola S-records and load data
+;	into memory, until and end record is found. The user changing
+;	abort the load by pressing ctrl-C
 ;
 
 		globals
@@ -275,6 +282,7 @@ lmrS9OK		leax	lmr_loaded_ok_msg,pcr
 		lbsr	putStr
 
 		ldd	g.loadAddress
+		std	g.memoryAddress	; the default for the dump/go commands
 		lbsr	putHexWord
 		lbsr	putNL
 		lda	#2		; End record success

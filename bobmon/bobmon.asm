@@ -172,6 +172,9 @@ initVars	pshs	x,a
 		
 		lda	#SPACE
 		sta	g.unprintable
+
+		ldd	#handle_reset
+		std	g.memoryAddress
 		
 		puls	x,a,pc
 
