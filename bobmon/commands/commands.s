@@ -1,8 +1,9 @@
-;--------------------------------------------------------
+;
+; Simple 6809 Monitor
+;
+; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
 ;
 ; commands.s - command processing
-;
-; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
 		globals
@@ -56,15 +57,17 @@ cmd_table	fdb	doBoot
 
 		fdb	0
 
-;
-; matchCommand -
-;
-; Call with:
-;	X - address of string (command) to look up
-;
-; Returns:
-;	A - count of matches
-;
+*******************************************************************
+* matchCommand -
+*
+* on entry: 
+*	X: address of string (command) to look up
+*
+*  trashes: nothing
+*
+*  returns:
+*	A: count of possible matches
+*
 matchCommand	pshs	y,b
 
 		leay	cmd_table,pcr
@@ -90,16 +93,18 @@ mcNoMatch	leay	8,y		; next CCB
 mcDone		lda	g.matchCount
 		puls	y,b,pc
 
-;
-; singleMatch -
-;
-; Call with:
-;	X - address of command line
-;	Y - address of command block (CCB)
-;
-; Returns:
-;	A - 0=no match, 1=match
-;
+*******************************************************************
+* singleMatch -
+*
+* on entry: 
+*	X: address of command line
+*	Y: address of command block (CCB)
+*
+*  trashes: nothing
+*
+*  returns:
+*	A: 0=no match, 1=match
+*
 singleMatch	pshs	x,y
 		ldy	4,y		; point at the start of the command string
 
@@ -122,15 +127,17 @@ smEndCmd	lda	#1
 
 smDone		puls	x,y,pc
 
-;
-; readCommandLine -
-;
-; Call with:
-;	X - Address of buffer to read into
-;	A - buffer size
-;
-; Returns:
-;
+*******************************************************************
+* readCommandLine -
+*
+* on entry: 
+*	X: address of buffer to read into
+*	A: buffer size
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
 readCommandLine	pshs	a,x
 		clr	,x	; Clear the string
 
@@ -145,10 +152,6 @@ rclNextChar	lbsr	getLChar
 rclNonPrintable	cmpa	#CR
 		beq	rclEOL
 
-		* lbsr	putNL
-		* lbsr	putHexByte
-		* lbsr	putNL
-		
 		cmpa	#DEL
 		beq	rclDelete
 
@@ -187,7 +190,7 @@ rclEOL		lbsr	putNL
 		include "boot_cmd.s"
 		include "disassemble.s"
 		include "dump_cmd.s"
-		include "go_cmd.s"
+		include "commands/go_cmd.s"
 		include "help_cmd.s"
 		include "load_cmd.s"
 		include "register_cmd.s"

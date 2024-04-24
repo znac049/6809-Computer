@@ -186,7 +186,7 @@ handle_nmi	rti
 
 		include "args.s"
 		include "cf_io.s"
-		include "commands.s"
+		include "commands/commands.s"
 		include "devices/devices.s"
 		include "disk_io.s"
 		include "quad.s"

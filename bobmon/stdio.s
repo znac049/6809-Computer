@@ -354,3 +354,17 @@ getHexWord	bsr	getHexByte
 
 
 
+*******************************************************************
+* skipLine - gobble all characters up to and including CR
+*
+* on entry: none
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
+skipLine	pshs	a
+1		lbsr	getChar
+		cmpa	#CR
+		bne	1B
+		puls	a,pc

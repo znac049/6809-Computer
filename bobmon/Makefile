@@ -4,7 +4,8 @@ SOURCES=bobmon.asm \
 				args.s \
 				boot_cmd.s \
 				cf_io.s \
-				commands.s \
+				commands/commands.s \
+				commands/go_cmd.s \
 				constants.s \
 				devices/devices.s \
 				devices/mc6850.s \
@@ -12,7 +13,6 @@ SOURCES=bobmon.asm \
 				disassemble.s \
 				disk_io.s \
 				dump_cmd.s \
-				go_cmd.s \
 				help_cmd.s \
 				load_cmd.s \
 				macros.s \

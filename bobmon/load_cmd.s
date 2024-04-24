@@ -197,36 +197,31 @@ load_not_supported_msg
 
 
 
-
-
-
-loadMotoRecord	leax	loadMsg,pcr
-		lbsr	putStr
-
-srNext		lbsr	getChar
-		cmpa	#CR
-		beq	srNext
-		cmpa	#LF
-		beq	srNext
-		cmpa	#3		; Ctrl-C
-		lbeq	srQuit
-		cmpa	#'S'
-		lbne	srBadChar
+*******************************************************************
+* loadMotoRecord - read a single record (the first character of the
+*	record has already been read and checked)
+*
+* on entry: none
+*
+*  trashes: nothing
+*
+*  returns:
+*	A: 0=Error, 1=OK, 2=End record read
+*
+loadMotoRecord	pshs	b,x,y
 
 * Nrxt byte is record type
        	        lbsr     getChar
 
-		DbgS	'C'
-		
 		cmpa    #'0'
-		lblt     srBadChar
+		lblt     lmrBadChar
 		cmpa    #'9'
-		lbgt     srBadChar
+		lbgt     lmrBadChar
 		sta	g.loadType
 
 * Next two bytes are count
        	        lbsr    getHexByte
-		lbcs	srBadChar
+		lbcs	lmrBadChar
 		sta	g.loadLength
 		sta	g.loadXsum		; Initialise checksum
 
@@ -235,27 +230,24 @@ srNext		lbsr	getChar
 * ...Some records, we silently ignore
        		lda	g.loadType
 		cmpa	#'0'
-		lbeq	srIgnore
+		lbeq	lmrIgnore
 		cmpa	#'5'
-		lbeq	srIgnore
+		lbeq	lmrIgnore
 		cmpa	#'9'
-		beq	srNine
+		beq	lmrNine
 		cmpa	#'1'
-		lbeq	srOne
-		lbra	srNotSupported
+		lbeq	lmrOne
+		lbra	lmrNotSupported
 
 
 * S9 record - sets start address and terminates
 * next 4 bytes are the start address
-srNine
-		lbsr	putNL
+lmrNine		lbsr	putNL
 		lbsr	putNL
 
 		lbsr	getHexWord
-		lbcs	srBadChar
+		lbcs	lmrBadChar
 		std	g.loadAddress
-
-		DbgL	'A'
 
 		adda	g.loadXsum
 		sta	g.loadXsum
@@ -264,38 +256,34 @@ srNine
 
 * Next byte will be the checksum
        	    	lbsr    getHexByte
-		lbcs	srBadChar
+		lbcs	lmrBadChar
 		tfr	a,b
-
-		DbgS	'X'
 
 		lda	g.loadXsum
 		coma
 		sta	g.loadXsum
 
 		cmpb	g.loadXsum
-		beq	sr9OK
+		beq	lmrS9OK
 
-		leax	srBadXSumMsg,pcr
+		leax	lmr_bad_xsum_msg,pcr
 		lbsr	putStr
-		lbsr	srSkip
-		lbra	srDone
+		lbsr	skipLine
+		lbra	lmrDone
 
-sr9OK		leax	srLoadedMsg,pcr
+lmrS9OK		leax	lmr_loaded_ok_msg,pcr
 		lbsr	putStr
 
 		ldd	g.loadAddress
 		lbsr	putHexWord
-
 		lbsr	putNL
-
-		lbsr	srSkip
-		lbra	srDone		; S9 record is always the last one, so quit loading
+		lda	#2		; End record success
+		lbra	lmrDone		; S9 record is always the last one, so quit loading
 
 * S1 record - next 4 bytes are the load address
-srOne		
+lmrOne		
 		lbsr	getHexWord
-		bcs	srBadChar
+		lbcs	lmrBadChar
 		std	g.loadAddress
 
 		adda	g.loadXsum
@@ -316,9 +304,8 @@ srOne
 		tfr	d,x
 
 * Read loop starts here
-sr1Next
-		lbsr	getHexByte
-		bcs	srBadChar
+lmrS1Next	lbsr	getHexByte
+		bcs	lmrBadChar
 
 		tfr	a,b
 		addb	g.loadXsum
@@ -327,15 +314,14 @@ sr1Next
 		sta	,y+		; Deposit byte at correct address
 
 		leax	-1,x		; Count--
-		beq	sr1DataDone
+		beq	lmrS1DataDone
 
-		bra	sr1Next		
+		bra	lmrS1Next		
 
 
-sr1DataDone
 * Next byte will be the checksum
-       	    	lbsr    getHexByte
-		bcs	srBadChar
+lmrS1DataDone  	lbsr    getHexByte
+		bcs	lmrBadChar
 		tfr	a,b
 
 		lda	g.loadXsum
@@ -343,56 +329,52 @@ sr1DataDone
 		sta	g.loadXsum
 
 		cmpb	g.loadXsum
-		beq	sr1OK
+		beq	lmrS1OK
 
-		leax	srBadXSumMsg,pcr
+		leax	lmr_bad_xsum_msg,pcr
 		lbsr	putStr
-		bsr	srSkip
-		bra	srDone
+		lbsr	skipLine
+		bra	lmrDone
 
-sr1OK		bsr	srSkip
-		lbra	srNext		; wait for the next record
+lmrS1OK		lbsr	skipLine
+		lda	#1		; Success
+		bra	lmrDone
 
 
 * User wants to quit
-srQuit		bsr	srSkip
-		bra	srDone
+srQuit		lbsr	skipLine
+		clra			; Error
+		bra	lmrDone
 
 
 * Ignore this record - it's harmless
-srIgnore        bsr    	srSkip
-		lbra	srNext		; wait for the next record
+lmrIgnore       lbsr    skipLine
+		lda	#1		; Success
+		bra	lmrDone
+
 
 * We don't support all S records, in particular the ones that deal with
 * a memory space bigger than 64K
-srNotSupported	leax	srRecNotSupported,pcr
+lmrNotSupported	leax	lmr_record_not_supported,pcr
 		lbsr	putStr
 		lda	g.loadType
 		lbsr	putChar
 		lbsr	putNL
-		bra	srDone2
+		lbsr	skipLine
+		lda	#0		; Error
+		bra	lmrDone
 
-srBadChar	leax	srBadFormatMsg,pcr
+lmrBadChar	leax	lmr_bad_format_msg,pcr
 		lbsr	putStr
-srDone2		bsr	srSkip
 
-srDone
-		rts
-
-* Skip the rest of the record
-srSkip		lbsr	getChar
-		cmpa	#CR
-		beq	srsDone
-		cmpa	#LF
-		bne	srSkip
-srsDone		rts
+lmrDone		puls	b,x,y,pc
 
 	
 	
-loadMsg		fcn	"Ok, waiting for S records on console..."
-loadUsage	fcn	" - load program in S record format via the console"
-srBadFormatMsg	fcn	"\r\nUnexpected character while reading S record.\r\n"
-srRecNotSupported
-		fcn	"\r\nUnsupported S record type: "
-srBadXSumMsg	fcn	"\r\nCalculated checksum does not match transmitted checksum!\r\n"
-srLoadedMsg	fcn	"\r\nLoaded OK. Start address: "
+lmr_bad_format_msg fcn	CR,LF,"Unexpected character while reading S record.",CR,LF
+lmr_record_not_supported
+		fcn	CR,LF,"Unsupported S record type: "
+lmr_bad_xsum_msg 
+		fcn	CR,LF,"Calculated checksum does not match transmitted checksum!",CR,LF
+lmr_loaded_ok_msg 
+		fcn	CR,LF,"Loaded OK. Start address: "
