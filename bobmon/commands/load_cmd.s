@@ -45,10 +45,13 @@ dlSkipLine	lbsr	getChar
 loadiHex	leax	ihex_msg,pcr
 		lbsr	putStr
 lihNext		lbsr	loadiHexRecord
+		* lbsr	putHexByte
+		* lbsr	putNL
 		tsta
 		beq	dlError
 		cmpa	#2
 		beq	dlDone
+; Read the start of the next record (should be ':')
 		lbsr	getChar
 		cmpa	#CTRLC
 		beq	dlAbort
@@ -89,7 +92,7 @@ moto_msg	fcn	"Detected Motorola S-Records - loading...",CR,LF
 bad_fmt_msg	fcn	"Badly formatted record - aborted",CR,LF
 load_aborted_msg
 		fcn	CR,LF,"Aborted.",CR,LF
-load_ok_msg	fcn	CR,LF,"Loaded ok.",CR,LF
+load_ok_msg	fcn	"Loaded ok.",CR,LF
 
 
 *******************************************************************
@@ -103,35 +106,35 @@ load_ok_msg	fcn	CR,LF,"Loaded ok.",CR,LF
 *  returns:
 *	A: 0=Error, 1=OK, 2=End record read
 *
-loadiHexRecord	pshs	a,b
-		lbsr	getHexByte
+loadiHexRecord	pshs	b,x,y
+		lbsr	getHexByte		; Length
 		sta	g.loadLength
 		sta	g.loadXsum
 
-		lbsr	getHexWord
+		lbsr	getHexWord		; Address
 		std	g.loadAddress
 		adda	g.loadXsum
 		sta	g.loadXsum
 		addb	g.loadXsum
 		stb	g.loadXsum
 
-		lbsr	getHexByte
+		lbsr	getHexByte		; Type
 		sta	g.loadType
 		adda	g.loadXsum
 		sta	g.loadXsum
 
 ; we only need type 00 and 01 records - ignore anything else
 		lda	g.loadType
-		cmpa	#0	; data record
+		cmpa	#0		; data record
 		beq	lihData
 		cmpa	#1
-		beq	lihEOF
+		beq	lihEndRecord
 		
 ; Record type not supported. Whine and then abort.
 		leax	load_not_supported_msg,pcr
 		lbsr	putStr
-		bsr	gobbleRestOfLine
-		lda	#1
+		lbsr	skipLine
+		lda	#0		; Error
 		bra	lihEnd
 
 lihData		ldx	g.loadAddress
@@ -142,9 +145,9 @@ lihData		ldx	g.loadAddress
 		lbsr	putChar
 
 		ldb	g.loadLength
-		beq	2F		; This would be unusual - a data record of 0 items
+		beq	lihNoMoreData	; This would be unusual - a data record of 0 items
 
-1		lbsr	getHexByte
+lihFetchDataByte lbsr	getHexByte
 		
 		sta	,x+
 
@@ -152,40 +155,61 @@ lihData		ldx	g.loadAddress
 		sta	g.loadXsum
 
 		decb
-		bne	1B
+		bne	lihFetchDataByte
 
-2		bsr	getLoadChecksum
-		bne	lihBadXsum
-		bsr	gobbleRestOfLine
+lihNoMoreData	bsr	getiHexChecksum
+		bne	lihBadXsum	; The checksum didn't match the calculated checksum
+; The checksums match, so we expect a CR to follow
+		lbsr	getChar
+		cmpa	#CR
+		bne	lihBadFormat
 
 		lda	#1		; All good
 		bra	lihEnd
 
-lihEOF		bsr	getLoadChecksum
-		bne	lihBadXsum
-		leax	load_ok_msg,pcr
-		lbsr	putStr
+
+lihEndRecord	lbsr	putNL
+* 		lbsr	skipLine
+* 		bsr	getiHexChecksum	
+* 		bne	lihBadXsum	; The checksum didn't match the calculated checksum
+* ; The checksums match, so we expect a CR to follow
+* 		lbsr	getChar
+* 		cmpa	#CR
+* 		bne	lihBadFormat
 		lda	#2		; End record found
 		bra	lihEnd
 
 lihBadEOF	leax	load_eof_err_msg,pcr
 		lbsr	putStr
-		bsr	gobbleRestOfLine
+		lbsr	skipLine
 		clra			; Error
 		bra	lihEnd
 
 lihBadXsum	leax	load_xsum_err_msg,pcr
 		lbsr	putStr
+		clra			; Error
+		bra	lihEnd
+
+lihBadFormat	leax	bad_fmt_msg,pcr
+		lbsr	putStr
+		lda	#0		; Error
 		
-lihEnd		rts
+lihEnd		puls	b,x,y,pc
 
 
-gobbleRestOfLine lbsr	getChar
-		cmpa	#CR
-		bne	gobbleRestOfLine
-		rts
 
-getLoadChecksum	pshs	b
+*******************************************************************
+* getLoadCheckSum - read the checksum and compare it to the
+*	calculated checksum
+*
+* on entry: none
+*
+*  trashes: nothing
+*
+*  returns:
+*	CC: Z set if checksum maches calculated checksum (from g.loadXsum)
+*
+getiHexChecksum	pshs	a,b
 		lbsr	getHexByte
 		tfr	a,b
 		lda	g.loadXsum
@@ -193,7 +217,7 @@ getLoadChecksum	pshs	b
 		adda	#1
 		sta	g.loadXsum
 		cmpb	g.loadXsum
-		puls	b,pc
+		puls	a,b,pc
 
 load_eof_err_msg
 		fcn	CR,LF,"Badly formatted End of File record.",CR,LF
@@ -250,7 +274,6 @@ loadMotoRecord	pshs	b,x,y
 * S9 record - sets start address and terminates
 * next 4 bytes are the start address
 lmrNine		lbsr	putNL
-		lbsr	putNL
 
 		lbsr	getHexWord
 		lbcs	lmrBadChar
@@ -278,13 +301,7 @@ lmrNine		lbsr	putNL
 		lbsr	skipLine
 		lbra	lmrDone
 
-lmrS9OK		leax	lmr_loaded_ok_msg,pcr
-		lbsr	putStr
-
-		ldd	g.loadAddress
-		std	g.memoryAddress	; the default for the dump/go commands
-		lbsr	putHexWord
-		lbsr	putNL
+lmrS9OK		ldd	g.loadAddress
 		lda	#2		; End record success
 		lbra	lmrDone		; S9 record is always the last one, so quit loading
 
@@ -349,10 +366,10 @@ lmrS1OK		lbsr	skipLine
 		bra	lmrDone
 
 
-* User wants to quit
-srQuit		lbsr	skipLine
-		clra			; Error
-		bra	lmrDone
+* * User wants to quit
+* srQuit		lbsr	skipLine
+* 		clra			; Error
+* 		bra	lmrDone
 
 
 * Ignore this record - it's harmless
@@ -378,11 +395,8 @@ lmrBadChar	leax	lmr_bad_format_msg,pcr
 lmrDone		puls	b,x,y,pc
 
 	
-	
 lmr_bad_format_msg fcn	CR,LF,"Unexpected character while reading S record.",CR,LF
 lmr_record_not_supported
 		fcn	CR,LF,"Unsupported S record type: "
 lmr_bad_xsum_msg 
 		fcn	CR,LF,"Calculated checksum does not match transmitted checksum!",CR,LF
-lmr_loaded_ok_msg 
-		fcn	CR,LF,"Loaded OK. Start address: "
