@@ -36,17 +36,35 @@ is6809		leax    system_ready_msg,pcr
 		lbsr    putStr
 		lda	g.cpuType
 		cmpa	#cpu.6309
-		beq	is6309
+		* beq	is6309
 
 		leax	cpu_6809_msg,pcr
 		lbsr	putStr
-		lbra	loop ;queryDisks
+		lbra	loop
 
 cpu_6809_msg	fcn	"CPU: 6809",CR,LF
-cpu_6309_msg	fcn	"CPU: 6309",CR,LF
 
-is6309		leax	cpu_6309_msg,pcr
+appTerminated	lds	#system_stack
+		pshs	a,b,x,y,cc
+		tsta
+		beq	terminatedOK
+		leax	app_terminated_with_error_msg,pcr
 		lbsr	putStr
+		lbsr	putHexByte
+		lbsr	putNL
+		puls	a,b,x,y,cc
+		lbsr	doRegisters
+		bra	loop
+
+terminatedOK	leax	app_terminated_ok_msg,pcr
+		lbsr	putStr
+		bra	loop
+
+app_terminated_with_error_msg
+		fcn	CR,LF,"***",CR,LF,"App terminated with code "
+
+app_terminated_ok_msg
+		fcn	CR,LF,"***",CR,LF,"App exited successfully",CR,LF
 
 loop		lds	#system_stack
 

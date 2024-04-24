@@ -5,6 +5,10 @@
 		swi
 		fcb	3
 
-		jmp	$c000
+		lda	#0
+		swi
+		fcb	8
+
+		*jmp	$c000
 
 hello_msg	fcn	"Hello, world. How are you today? Bob is very clever isn't he :-)"

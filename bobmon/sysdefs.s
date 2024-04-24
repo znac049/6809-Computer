@@ -89,15 +89,3 @@ SECSIZE		equ	512
 system_stack		equ	$0200
 user_stack		equ	$0400
 
-;
-; System calls
-;
-scGetChar		equ	0	; Input character with no parity
-scPutChar		equ	1	; Output chaarcter
-scPutStr		equ	2	; Print a string (EOS terminated)
-scPutNLStr		equ	3	; Put CR/LF and string
-scPut2Hex		equ	4	; Output two digit hex and a space
-scPut4Hex		equ	5	; Output four digit hex and a space
-scPutNL			equ	6
-scPutSpace		equ	7
-scEnterMonitor		equ	8	; Reenter the monitor
