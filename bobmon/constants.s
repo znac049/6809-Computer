@@ -16,4 +16,7 @@ DEL		equ	127
 
 
 YES		equ	1
+OK		equ	1
+
 NO		equ	0
+ERR		equ	0

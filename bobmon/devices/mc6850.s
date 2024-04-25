@@ -21,6 +21,7 @@ SerialDCB0	fdb	Uart0Base
 		fdb	serialCanWrite
 		fdb	serialGetChar
 		fdb	serialPutChar
+		fdb	SerialInfo
 
 SerialDCB1	fdb	Uart1Base
 		fdb	serialInit
@@ -28,6 +29,12 @@ SerialDCB1	fdb	Uart1Base
 		fdb	serialCanWrite
 		fdb	serialGetChar
 		fdb	serialPutChar
+		fdb	SerialInfo
+
+SerialInfo	fdb	serial_device_name
+		
+serial_device_name
+		fcn	"mc6850 uart"
 
 
 *******************************************************************
@@ -38,15 +45,27 @@ SerialDCB1	fdb	Uart1Base
 *
 *  trashes: nothing
 *
-*  returns: nothing
+*  returns:
+*	A: 0=No device, 1=OK, 2=Init error
 *
-serialInit	pshs	a
-		ldx	CDev.BaseAddr,x	
+serialInit	ldx	CDev.BaseAddr,x	
+; probe to see if there's an actuall device
 		lda	#$03			; Master reset
-		sta	MC6850.StatusReg,x	
+		sta	MC6850.StatusReg,x
+
+; After a Master reset, the tdre bit should be set
+		lda	MC6850.StatusReg,x
+		beq	siNoDevice
+
+; Complete the initialisation
 		lda	#MC6850.InitialCR
 		sta	MC6850.StatusReg,x
-		puls	a,pc
+		lda	#OK
+		bra	siDone
+
+siNoDevice	lda	#ERR
+
+siDone		rts
 
 *******************************************************************
 * serialCanRead - test to see i a character is ready to read
