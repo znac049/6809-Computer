@@ -55,6 +55,7 @@ serialInit	ldx	CDev.BaseAddr,x
 
 ; After a Master reset, the tdre bit should be set
 		lda	MC6850.StatusReg,x
+		cmpa	#$ff
 		beq	siNoDevice
 
 ; Complete the initialisation
