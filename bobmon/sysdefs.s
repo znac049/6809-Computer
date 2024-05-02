@@ -5,6 +5,11 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
+; What CPU are we targetting?
+target_6809		equ	1
+target_6309		equ	0
+
+
 ;
 ; Ram specific
 ;
@@ -21,16 +26,9 @@ vectorTable_start	equ	$fff0
 
 Uart0Base	equ	$a000
 Uart1Base	equ	$a020
+VDiskBase	equ	$a008
 CFBase		equ	$a010
 SDBase		equ	$a050
-
-; Virtual disk controller registers
-FDC.SR		equ	0
-FDC.CMD		equ	0
-FDC.DR		equ	1
-FDC.Sec2	equ	2
-FDC.Sec1	equ	3
-FDC.Sec0	equ	4
 
 ; ATA CF device registers
 ; When CS0 is asserted (low)

@@ -17,19 +17,19 @@ MC6850.InitialCR equ	$95
 		code
 SerialDCB0	fdb	Uart0Base
 		fdb	serialInit
+		fdb	SerialInfo
 		fdb	serialCanRead
 		fdb	serialCanWrite
 		fdb	serialGetChar
 		fdb	serialPutChar
-		fdb	SerialInfo
 
 SerialDCB1	fdb	Uart1Base
 		fdb	serialInit
+		fdb	SerialInfo
 		fdb	serialCanRead
 		fdb	serialCanWrite
 		fdb	serialGetChar
 		fdb	serialPutChar
-		fdb	SerialInfo
 
 SerialInfo	fdb	serial_device_name
 		
@@ -48,7 +48,8 @@ serial_device_name
 *  returns:
 *	A: 0=No device, 1=OK, 2=Init error
 *
-serialInit	ldx	CDev.BaseAddr,x	
+serialInit	pshs	x
+		ldx	CDev.BaseAddr,x	
 ; probe to see if there's an actuall device
 		lda	#$03			; Master reset
 		sta	MC6850.StatusReg,x
@@ -66,7 +67,7 @@ serialInit	ldx	CDev.BaseAddr,x
 
 siNoDevice	lda	#ERR
 
-siDone		rts
+siDone		puls	x,pc
 
 *******************************************************************
 * serialCanRead - test to see i a character is ready to read
