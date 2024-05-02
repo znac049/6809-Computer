@@ -1,3 +1,11 @@
+;
+; Simple 6809 Monitor
+;
+; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
+;
+; The main monitor code. Everything else is pulled in from
+; here.
+;
 		include "sysdefs.s"
 		include "macros.s"
 
@@ -29,8 +37,12 @@ handle_reset	lds	#system_stack
 		orcc	#$50		; disable interrupts
 
 		lbsr	initBSS
+
+; Bit of a bodge. We need to initialise the console device so we can start printing
+; stuff. 	
+		lbsr	preInitConsole
+
 		lbsr	initVars
-		lbsr	initDevices
 
 is6809		leax    system_ready_msg,pcr
 		lbsr    putStr
@@ -40,6 +52,9 @@ is6809		leax    system_ready_msg,pcr
 
 		leax	cpu_6809_msg,pcr
 		lbsr	putStr
+
+		lbsr	initDevices
+
 		lbra	loop
 
 cpu_6809_msg	fcn	"CPU: 6809",CR,LF
@@ -193,6 +208,9 @@ initVars	pshs	x,a
 
 		ldd	#handle_reset
 		std	g.memoryAddress
+
+		lda	#16
+		sta	g.radix
 		
 		puls	x,a,pc
 
@@ -210,7 +228,9 @@ handle_nmi	rti
 		include "commands/commands.s"
 		include "devices/devices.s"
 		include "disk_io.s"
+		include "fs/fs.s"
 		include "quad.s"
+		include "radix.s"
 		include "sd_io.s"
 		include "stdio.s"
 		include "string_functions.s"
