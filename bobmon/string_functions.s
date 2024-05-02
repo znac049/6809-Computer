@@ -5,6 +5,7 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
+		include	"3rdParty/lance.s"
 
 ;
 ; isBlankLine
