@@ -1,15 +1,25 @@
-*
-* Simple 6809 Monitor
-*
-* Copyright(c) 2016, Bob Green
-*
-
+;
+; Simple 6809 Monitor
+;
+; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
+;
+; block_numbers.s - helper functions to manipulate disk block
+; 	numbers. Block numbers are 24-bit so there's no simple way 
+;	to do maths on them in the 6809. The 6309 supports a single
+;	32-bit register which may prove useful. Whichever processor
+;	is used, we will store them as 32-bit numbers
+;
 
 
 *******************************************************************
 * clearQuad - initialise a quad to 0
 *
-* on entry: X - char *quad - address of quad
+* on entry: 
+*	X: pointer to quad
+*
+*  trashes: nothing
+*
+*  returns: nothing
 *
 clearQuad	pshs	d
 		ldd	#0
@@ -21,7 +31,12 @@ clearQuad	pshs	d
 *******************************************************************
 * shiftQuadL - shift quad left one bit
 *
-* on entry: X - char *quad - address of quad
+* on entry:
+*	X: pointer to quad
+*
+*  trashes: nothing
+*
+*  returns: nothing
 *
 shiftQuadL	pshs	a
 		
@@ -49,10 +64,16 @@ shiftQuadL	pshs	a
 *******************************************************************
 * atoq - convert string to quad
 *
-* on entry: X - char *quad - address of quad
-*    	    Y - char *str  - string to convert
-*	    A - max number of chars to convert. If zero, keep going
-*	        until non convertable character found
+* on entry: 
+*	X: pointer to quad
+*	Y: pointer to string
+*	A: max number of chars to convert. If zero, keep going
+*		until non convertable character found
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
 *
 *  returns: A - number of characters converted
 *
@@ -94,7 +115,12 @@ atoq_notHex
 *******************************************************************
 * pQuad - print a long (32-bit) number
 *
-* on entry: X - char *quad - address of quad
+* on entry:
+*	X: pointer to quad
+*
+*  trashes: nothing
+*
+*  returns: nothing
 *
 
 putQuad		pshs	d
@@ -111,7 +137,12 @@ putQuad		pshs	d
 *******************************************************************
 * gQuad - read a long (32-bit) number
 *
-* on entry: X - char *quad - address of quad
+* on entry:
+*	X: pointer to quad
+*
+*  trashes: nothing
+*
+*  returns: nothing
 *
 
 getQuad		

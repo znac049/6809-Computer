@@ -15,10 +15,20 @@ g.matchCount	rmb	1
 		code
 
 ; Main command table
-cmd_table	fdb	doBoot
+cmd_table	fdb	doBinary
+		fcb	radixMinArgs,radixMaxArgs
+		fdb	binaryCommand
+		fdb	binaryHelp
+
+		fdb	doBoot
 		fcb	bootMinArgs,bootMaxArgs
 		fdb	bootCommand
 		fdb	bootHelp
+
+		fdb	doDecimal
+		fcb	radixMinArgs,radixMaxArgs
+		fdb	decimalCommand
+		fdb	decimalHelp
 
 		fdb	doDisassemble
 		fcb	disassMinArgs,disassMaxArgs
@@ -35,10 +45,20 @@ cmd_table	fdb	doBoot
 		fdb	goCommand
 		fdb	goHelp
 
+		fdb	doHexadecimal
+		fcb	radixMinArgs,radixMaxArgs
+		fdb	hexadecimalCommand
+		fdb	hexadecimalHelp
+
 		fdb	doLoad
 		fcb	loadMinArgs,loadMaxArgs
 		fdb	loadCommand
 		fdb	loadHelp
+
+		fdb	doRadix
+		fcb	radixMinArgs,radixMaxArgs
+		fdb	radixCommand
+		fdb	radixHelp
 
 		fdb	doRegisters
 		fcb	registersMinArgs,registersMaxArgs
@@ -187,12 +207,13 @@ rclEOL		lbsr	putNL
 ;
 ; Command handlers
 ;
-		include "boot_cmd.s"
-		include "disassemble.s"
-		include "dump_cmd.s"
+		include "commands/boot_cmd.s"
+		include "commands/disassemble.s"
+		include "commands/dump_cmd.s"
 		include "commands/go_cmd.s"
-		include "help_cmd.s"
+		include "commands/help_cmd.s"
 		include "commands/load_cmd.s"
-		include "register_cmd.s"
-		include "window_cmd.s"
+		include "commands/radix_cmds.s"
+		include "commands/register_cmd.s"
+		include "commands/window_cmd.s"
 
