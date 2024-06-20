@@ -12,16 +12,16 @@
 
 
 *******************************************************************
-* clearQuad - initialise a quad to 0
+* clearLSN - initialise a LSN to 0
 *
 * on entry: 
-*	X: pointer to quad
+*	X: pointer to LSN
 *
 *  trashes: nothing
 *
 *  returns: nothing
 *
-clearQuad	pshs	d
+clearLSN	pshs	d
 		ldd	#0
 		std	,x
 		std	2,x
@@ -29,16 +29,16 @@ clearQuad	pshs	d
 
 
 *******************************************************************
-* shiftQuadL - shift quad left one bit
+* shiftLSNL - shift LSN left one bit
 *
 * on entry:
-*	X: pointer to quad
+*	X: pointer to LSN
 *
 *  trashes: nothing
 *
 *  returns: nothing
 *
-shiftQuadL	pshs	a
+shiftLSNL	pshs	a
 		
 		andcc	#$fe	; clear carry
 
@@ -62,10 +62,10 @@ shiftQuadL	pshs	a
 
 
 *******************************************************************
-* atoq - convert string to quad
+* atoq - convert string to LSN
 *
 * on entry: 
-*	X: pointer to quad
+*	X: pointer to LSN
 *	Y: pointer to string
 *	A: max number of chars to convert. If zero, keep going
 *		until non convertable character found
@@ -81,7 +81,7 @@ shiftQuadL	pshs	a
 atoq		pshs	x,y,b
 		pshs	a		; The two pushes are deliberate
 
-		bsr	clearQuad	; reset the quad to 0
+		bsr	clearLSN	; reset the LSN to 0
 		ldb	#0		; char count
 
 atoq_Next
@@ -90,11 +90,11 @@ atoq_Next
 		lbsr	charToHex
 		exg	a,b
 		bcs	atoq_notHex
-* valid conversion - shift it into the quad
-  		bsr     shiftQuadL
-		bsr	shiftQuadL
-		bsr	shiftQuadL
-		bsr	shiftQuadL
+* valid conversion - shift it into the LSN
+  		bsr     shiftLSNL
+		bsr	shiftLSNL
+		bsr	shiftLSNL
+		bsr	shiftLSNL
 		ora	3,x
 		sta	3,x
 
@@ -113,17 +113,17 @@ atoq_notHex
 
 
 *******************************************************************
-* pQuad - print a long (32-bit) number
+* pLSN - print a long (32-bit) number
 *
 * on entry:
-*	X: pointer to quad
+*	X: pointer to LSN
 *
 *  trashes: nothing
 *
 *  returns: nothing
 *
 
-putQuad		pshs	d
+putLSN		pshs	d
 
 		ldd	,x
 		lbsr	putHexWord
@@ -134,16 +134,3 @@ putQuad		pshs	d
 
 
 
-*******************************************************************
-* gQuad - read a long (32-bit) number
-*
-* on entry:
-*	X: pointer to quad
-*
-*  trashes: nothing
-*
-*  returns: nothing
-*
-
-getQuad		
-		rts

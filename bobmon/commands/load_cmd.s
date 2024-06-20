@@ -28,6 +28,9 @@ loadHelp	fcn	TAB,"load intel hex records (types 0 and 1 only) or Motorola",CR,LF
 doLoad		leax	loading_msg,pcr
 		lbsr	putStr
 
+		lda	#1
+		sta	g.echo,pcr
+
 dlNextLine	lbsr	getChar
 		cmpa	#CTRLC
 		lbeq	dlAbort
@@ -36,9 +39,13 @@ dlNextLine	lbsr	getChar
 		beq	loadiHex
 		cmpa	#'S'
 		lbeq	loadMoto
+		cmpa	#'s'
+		lbeq	loadMoto
+
+; Gobble the rest of the line
 dlSkipLine	lbsr	getChar
 		cmpa	#CR
-		bne	dlNextLine
+		beq	dlNextLine
 		bra	dlSkipLine
 
 
@@ -72,6 +79,8 @@ lmNext		lbsr	loadMotoRecord
 		beq	dlAbort
 		cmpa	#'S'
 		beq	lmNext
+		cmpa	#'s'
+		beq	lmNext
 
 dlError		leax	bad_fmt_msg,pcr
 		lbsr	putStr
@@ -84,7 +93,8 @@ dlAbort		leax	load_aborted_msg,pcr
 dlDone		leax	load_ok_msg,pcr
 		lbsr	putStr
 
-dlEnd		rts
+dlEnd		clr	g.echo,pcr
+		rts
 
 loading_msg	fcn	"Waiting for data - press Ctrl-C to abort.",CR,LF
 ihex_msg	fcn	"Detected intel hex - loading...",CR,LF

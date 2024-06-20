@@ -42,11 +42,11 @@ dkReadLSN	pshs	a,y
 		lbsr	LSN2LBA
 
 		ldx	2,s
-		lbsr	putQuad
+		lbsr	putLSN
 		lda	#'>'
 		lbsr	putChar
 		ldx	#lba.p
-		lbsr	putQuad
+		lbsr	putLSN
 		lbsr	putNL
 		
 		ldx	,s	

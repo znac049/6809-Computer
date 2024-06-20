@@ -6,7 +6,9 @@ SOURCES=bobmon.asm \
 				cf_io.s \
 				commands/boot_cmd.s \
 				commands/commands.s \
+				commands/cpu_cmd.s \
 				commands/disassemble.s \
+				commands/disk_cmds.s \
 				commands/go_cmd.s \
 				commands/load_cmd.s \
 				commands/dump_cmd.s \
@@ -17,13 +19,13 @@ SOURCES=bobmon.asm \
 				constants.s \
 				devices/devices.s \
 				devices/character/mc6850.s \
+				devices/block/LSN.s \
 				devices/block/virt_disk.s \
 				disasm.s \
 				disk_io.s \
 				fs/fat16.s \
 				fs/fs.s \
 				macros.s \
-				quad.s \
 				radix.s \
 				sd_io.s \
 				stdio.s \
@@ -35,7 +37,7 @@ SOURCES=bobmon.asm \
 
 
 %.hex: %.asm
-	asm6809 --hex --6809 --listing=$*.lst --output=$@ $<
+	asm6809 --hex --6309 --listing=$*.lst --output=$@ $<
 
 all: bobmon.hex
 

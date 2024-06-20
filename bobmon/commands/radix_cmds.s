@@ -3,7 +3,8 @@
 ;
 ; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
 ;
-; go_cmd.s - implements the "Go" command.
+; radix_cmds.s - implements the "radix, "hexadecimal", "decimal" 
+; and "binary" commands.
 ;
 
 radixMinArgs	equ	0

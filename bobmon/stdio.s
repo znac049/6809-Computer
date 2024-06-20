@@ -13,6 +13,8 @@
 g.unprintable	rmb	1
 g.upperNibble	rmb	1
 g.currentColumn	rmb	1
+g.prevChar	rmb	1
+g.echo		rmb	1
 
 		code
 
@@ -246,7 +248,8 @@ ptcJustPad	lda	g.unprintable
 
 *******************************************************************
 * getChar - read (wait if necessary) a character. If a linefeed
-*	is read, ignore it.
+*	is read, either ignore it (if it follows a CR) or
+*	convert it to CR.
 *
 * on entry: none
 *
@@ -255,12 +258,26 @@ ptcJustPad	lda	g.unprintable
 *  returns: 
 *	A: the character we read
 *
-getChar		pshs	x
+getChar		pshs	x,b
 		ldx	g.currentCDev,pcr
 1		jsr	[CDev.Read,x]
+; Ignore LF, but only if it follows directly after a CR
+		ldb	g.prevChar,pcr
+		cmpb	#CR
+		bne	2F
 		cmpa	#LF
 		beq	1B
-		puls	x,pc
+2		cmpa	#LF		; Convert LF on it's own to CR
+		bne	3F
+		
+		lda	#CR
+3		sta	g.prevChar,pcr
+
+		tst	g.echo,pcr
+		beq	4F
+
+		lbsr	putChar
+4		puls	b,x,pc
 
 
 *******************************************************************

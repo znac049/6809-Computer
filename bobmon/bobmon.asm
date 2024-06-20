@@ -23,6 +23,7 @@ g.argc		rmb	1
 g.argv		rmb	MAX_ARGS*2
 g.commandLine	rmb	MAX_LINE
 
+
 		include "constants.s"
 		include "variables.s"
 
@@ -211,6 +212,10 @@ initVars	pshs	x,a
 
 		lda	#16
 		sta	g.radix
+
+		lda	#0
+		sta	g.prevChar
+		sta	g.echo
 		
 		puls	x,a,pc
 
@@ -229,7 +234,7 @@ handle_nmi	rti
 		include "devices/devices.s"
 		include "disk_io.s"
 		include "fs/fs.s"
-		include "quad.s"
+		include "devices/block/LSN.s"
 		include "radix.s"
 		include "sd_io.s"
 		include "stdio.s"

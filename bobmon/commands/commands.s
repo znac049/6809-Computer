@@ -25,6 +25,11 @@ cmd_table	fdb	doBinary
 		fdb	bootCommand
 		fdb	bootHelp
 
+		fdb	doCpu
+		fcb	cpuMinArgs,cpuMaxArgs
+		fdb	cpuCommand
+		fdb	cpuHelp
+
 		fdb	doDecimal
 		fcb	radixMinArgs,radixMaxArgs
 		fdb	decimalCommand
@@ -34,6 +39,11 @@ cmd_table	fdb	doBinary
 		fcb	disassMinArgs,disassMaxArgs
 		fdb	disassembleCommand
 		fdb	disassembleHelp
+
+		fdb	doDisk
+		fcb	diskMinArgs,diskMaxArgs
+		fdb	diskCommand
+		fdb	diskHelp
 
 		fdb	doDump
 		fcb	dumpMinArgs,dumpMaxArgs
@@ -208,7 +218,9 @@ rclEOL		lbsr	putNL
 ; Command handlers
 ;
 		include "commands/boot_cmd.s"
+		include "commands/cpu_cmd.s"
 		include "commands/disassemble.s"
+		include "commands/disk_cmds.s"
 		include "commands/dump_cmd.s"
 		include "commands/go_cmd.s"
 		include "commands/help_cmd.s"

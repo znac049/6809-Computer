@@ -17,6 +17,8 @@
 *
 printNum	pshs	a,b,x,y
 
+		* mLocals	20		; Reserve 20 bytes of temp stack space
+		* tfr	u,y
 		leas	-18,s		; Temp buffer
 		tfr	s,y
 		
@@ -50,6 +52,7 @@ dloop		lda	,y+
 		decb
 		bne	dloop
 
+		* mFreeLocals
 		leas	18,s		; free up the temporary buffer
 		puls	a,b,x,y,pc
 

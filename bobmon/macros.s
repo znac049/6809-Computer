@@ -1,9 +1,16 @@
 mLocals		macro
+		tfr	s,u		; remember the old stack value
 		leas	-\1,s
-		pshs	s
+		pshs	u
+		leau	2,u
+		endm
+
+mFreeLocals	macro
+		lds	-2,u
 		endm
 
 mReturns	macro
+		lds	-2,u
 		rts
 		endm
 

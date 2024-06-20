@@ -25,7 +25,7 @@ doBoot		leax	bootMsg,pcr
 		lbsr	putStr
 
 		ldx	#lsn.p
-		lbsr	clearQuad
+		lbsr	clearLSN
 		tfr	x,y
 
 		ldx	#secBuff
@@ -50,7 +50,7 @@ doBoot		leax	bootMsg,pcr
 		leax	rootLSNMsg,pcr
 		lbsr	putStr
 		ldx	#rootLSN.p
-		lbsr	putQuad
+		lbsr	putLSN
 		lbsr	putNL
 
 * Copy the boot LSN
@@ -65,7 +65,7 @@ doBoot		leax	bootMsg,pcr
 		leax	bootLSNMsg,pcr
 		lbsr	putStr
 		ldx	#bootLSN.p
-		lbsr	putQuad
+		lbsr	putLSN
 		lbsr	putNL
 
 * Grab the boot size

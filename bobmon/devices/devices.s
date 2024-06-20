@@ -95,7 +95,10 @@ idCharDevs	ldx	,y
 		leay	2,y
 		bra	idCharDevs
 
-idCharDevsDone	leay	BlockDevices,pcr
+; Don't init block devices on real hardware
+idCharDevsDone	bra	idBlockDevsDone
+
+		leay	BlockDevices,pcr
 
 idBlockDevs	ldx	,y
 		beq	idBlockDevsDone
