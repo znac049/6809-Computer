@@ -1,112 +1,56 @@
 
-Name            MECB_ChipSelect_6809_CPU;
-Partno          CA0001;
+Name            Bob_6809_CPU_Board;
+Partno          GL01;
 Revision        01;
-Date            01/2023;
-Designer        Greg;
-Company         Digicool Things;
+Date            06/20/2024;
+Designer        Bob;
+Company         None;
 Location        None;
 Assembly        None;
-Device          g16v8as;
+Device          g22v10as;
 
-/****************************************************************/
-/*                                                              */
-/* Note: For an ATV16V8 in Simple Mode pins 15 and 16           */
-/*  (center macrocells) are permanently configured as           */
-/*  combinatorial outputs.                                      */   
-/*                                                              */
-/****************************************************************/
 
 /*
- * Inputs: Address Inputs were assigned based on the ECB bus pin sequence (for ease of PCB routing).
- * Active low pins are inverted at the pin so all signals can be consistently treated as positive logic.
- *
+ * Inputs
  */
 
-Pin 1 = !ioaddr;
-Pin 2 = cpu_e;
-Pin 3 = cpu_q;
-Pin 4 = cpu_rw;
+Pin 2 = a14;
+Pin 3 = a13;
+Pin 4 = a12;
 Pin 5 = a11;
-Pin 6 = a14; 
-Pin 7 = a10;
-Pin 8 = a12;
-Pin 9 = a15;
-Pin 11 = a13;
+Pin 6 = a10; 
+Pin 7 = a9;
+Pin 8 = a8;
+Pin 9 = a7;
+Pin 10 = a6;
+Pin 11 = a5;
+Pin 13 = a15;
+Pin 14 = a4;
+Pin 15 = cpu_rw;
+Pin 16 = cpu_e;
 
 /*
- * Outputs:  define outputs
- * Active low pins are inverted at the pin so all signals can be consistently treated as positive logic.
- *
+ * Outputs
  */
 
-Pin 12 = !mreq;
-Pin 13 = clk;
-Pin 14 = !cs_rom;
-Pin 15 = !cs_ram;
-Pin 16 = !cs_spare;
-Pin 17 = !iorq;
-Pin 18 = !rd;
-Pin 19 = !wr;
+Pin 17 = !cs_rom;
+Pin 18 = !cs_uart;
+Pin 19 = !cs_ctc;
+Pin 20 = !cs_cf;
+Pin 21 = !cs_ram;
+Pin 22 = !rd
+Pin 23 = !wr;
 
 /*
- *
- * Logic: MC6809 CPU Card - Bus Control  
- *
- * mreq : ioaddr not asserted, while E or Q clock high.
- * iorq : ioaddr asserted, while E or Q clock high.
- * clk : E clock
- * rd : CPU R/W is high, while E clock high.
- * wr : CPU R/W is low, while E clock high.
- *
+ * Logic
  */
 
-mreq = !ioaddr & (cpu_e # cpu_q);
-iorq =  ioaddr & (cpu_e # cpu_q);
-clk = cpu_e;
 rd = cpu_rw & cpu_e;
 wr = !cpu_rw & cpu_e;
 
-/*
- *
- * Logic: MC6809 CPU Card - Chip Selects for 56K RAM 8K ROM 
- *
- * cs_rom : ROM address space (0xE000 - 0xFFFF), while mreq asserted.
- * cs_ram : RAM address space (0x0000 - 0xDFFF), while mreq asserted.
- * cs_spare : Unused, but assigned to replicate iorq.
- *
- */
+io_area = (a6 & a7 &a8 & a9 & a10 & a11 & a12 & a13 & a14 & a15) & ((a4 & !a5) # (!a5 & a5));     /* FFC0-FFEF */
 
-cs_rom = mreq & a15 & a14 & a13;
-cs_ram = mreq & !(a15 & a14 & a13);
-cs_spare = ioaddr & (cpu_e # cpu_q);
+cs_rom = a15 & a14 & !io_area;
+cs_ram = !(a15 & a14);
 
-/*
- *
- * Logic: MC6809 CPU Card - Alternative Chip Selects for 48K RAM 16K ROM 
- *
- * cs_rom : ROM address space (0xC000 - 0xFFFF), while mreq asserted.
- * cs_ram : RAM address space (0x0000 - 0xBFFF), while mreq asserted.
- * cs_spare : Unused, but assigned to replicate iorq.
- *
- */
-/*
-cs_rom = mreq & a15 & a14;
-cs_ram = mreq & !(a15 & a14);
-cs_spare = ioaddr & (cpu_e # cpu_q);
-*/
-
-/*
- *
- * Logic: MC6809 CPU Card - Alternative Chip Selects for 32K RAM 32K ROM 
- *
- * cs_rom : ROM address space (0x8000 - 0xFFFF), while mreq asserted.
- * cs_ram : RAM address space (0x0000 - 0x7FFF), while mreq asserted.
- * cs_spare : Unused, but assigned to replicate iorq.
- *
- */
-/*
-cs_rom = mreq & a15;
-cs_ram = mreq & !a15;
-cs_spare = ioaddr & (cpu_e # cpu_q);
-*/
+cs_uart = io_area & 

@@ -224,7 +224,7 @@ libcmoc-std-void.a: $(STD_VOID_OBJ)
 	$(CMOC) -c $(CMOC_LIB_FLAGS) --void-target -o $@ $<
 
 clean:
-	rm -f *~ *.usim_o *.void_o *.a
+	rm -f *~ *.usim_o *.void_o *.lst *.a
 
 install: all
 	install libcmoc-crt-void.a $(LIBDIR)

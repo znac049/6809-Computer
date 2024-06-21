@@ -1,6 +1,7 @@
 .PHONY: all clean disks
 
 SOURCES=bobmon.asm \
+				3rdParty/disasm.s \
 				3rdParty/lance.s \
 				args.s \
 				cf_io.s \
@@ -21,7 +22,6 @@ SOURCES=bobmon.asm \
 				devices/character/mc6850.s \
 				devices/block/LSN.s \
 				devices/block/virt_disk.s \
-				disasm.s \
 				disk_io.s \
 				fs/fat16.s \
 				fs/fs.s \

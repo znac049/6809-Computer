@@ -40,6 +40,8 @@ doCpu		leax	dc_testing_msg,pcr
 dc6309		leax	dc_6309_msg,pcr
 		lbsr	putStr
 
+		lbra	dcDone
+
 ; Detect if running in Native or Emulation mode
 ;
 ; Fake an ISR stack

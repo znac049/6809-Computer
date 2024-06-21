@@ -15,4 +15,4 @@
 all: cftest.srec hello.srec
 
 clean:
-	rm *.hex *.srec *.lst *~
+	rm -f *.hex *.srec *.lst *~
