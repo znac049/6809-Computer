@@ -2,6 +2,7 @@
 
 SOURCES=bobmon.asm \
 				3rdParty/disasm.s \
+				3rdParty/disasm_tables.s \
 				3rdParty/lance.s \
 				args.s \
 				cf_io.s \

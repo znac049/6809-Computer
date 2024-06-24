@@ -188,7 +188,7 @@ ops		fcb	direct		,tneg		,sp	; $00
 		fcb	immediate	,tcwai		,sp
 		fcb	inherent	,tmul		,sp
 		fcb	illegal		,tillegal	,sp
-		fcb	inherent	,tswi		,sp
+		fcb	immediate	,tswi		,sp
 
 		fcb	inherent	,tneg		,regA	; $40
 		fcb	illegal		,tillegal	,sp
