@@ -49,4 +49,4 @@ disks:
 	mkfs.msdos -C -n Utils ./disk2.img 256000
 	
 clean:
-	rm *.hex *.lst *~
+	rm -f *.hex *.lst *~

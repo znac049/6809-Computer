@@ -35,11 +35,6 @@ cmd_table	fdb	doBinary
 		fdb	decimalCommand
 		fdb	decimalHelp
 
-		fdb	doDisassemble
-		fcb	disassMinArgs,disassMaxArgs
-		fdb	disassembleCommand
-		fdb	disassembleHelp
-
 		fdb	doDisk
 		fcb	diskMinArgs,diskMaxArgs
 		fdb	diskCommand
@@ -74,6 +69,11 @@ cmd_table	fdb	doBinary
 		fcb	registersMinArgs,registersMaxArgs
 		fdb	registersCommand
 		fdb	registersHelp
+
+		fdb	doDisassemble
+		fcb	disassMinArgs,disassMaxArgs
+		fdb	disassembleCommand
+		fdb	disassembleHelp
 
 		fdb	doWindow
 		fcb	windowMinArgs,windowMaxArgs

@@ -31,15 +31,11 @@ g.commandLine	rmb	MAX_LINE
 		code
 		org	rom_start
 
-		setdp	$c0
-
 		include	"3rdParty/disasm.s"
 
 handle_reset	lds	#system_stack
 		ldu	#user_stack
 		orcc	#$50		; disable interrupts
-		lda	#$c0
-		tfr	a,dp
 
 		lbsr	initBSS
 
