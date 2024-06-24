@@ -4,13 +4,13 @@ g.unassembleAddress rmb	2
 
 		code
 
-disassMinArgs	equ	0
-disassMaxArgs	equ	1
-disassembleCommand
+unassMinArgs	equ	0
+unassMaxArgs	equ	1
+unassembleCommand
 		fcn	"unassemble"
-disassembleHelp	fcn	"[<address>]",TAB,"Unassemble code"
+unassembleHelp	fcn	"[<address>]",TAB,"Unassemble code"
 
-doDisassemble	lda	g.argc
+doUnassemble	lda	g.argc
 		cmpa	#2		; Address was supplied
 		bne	duNoArgs
 

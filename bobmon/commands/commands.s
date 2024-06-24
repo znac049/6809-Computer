@@ -70,10 +70,10 @@ cmd_table	fdb	doBinary
 		fdb	registersCommand
 		fdb	registersHelp
 
-		fdb	doDisassemble
-		fcb	disassMinArgs,disassMaxArgs
-		fdb	disassembleCommand
-		fdb	disassembleHelp
+		fdb	doUnassemble
+		fcb	unassMinArgs,unassMaxArgs
+		fdb	unassembleCommand
+		fdb	unassembleHelp
 
 		fdb	doWindow
 		fcb	windowMinArgs,windowMaxArgs
@@ -219,7 +219,6 @@ rclEOL		lbsr	putNL
 ;
 		include "commands/boot_cmd.s"
 		include "commands/cpu_cmd.s"
-		include "commands/disassemble.s"
 		include "commands/disk_cmds.s"
 		include "commands/dump_cmd.s"
 		include "commands/go_cmd.s"
@@ -227,5 +226,6 @@ rclEOL		lbsr	putNL
 		include "commands/load_cmd.s"
 		include "commands/radix_cmds.s"
 		include "commands/register_cmd.s"
+		include "commands/unassemble.s"
 		include "commands/window_cmd.s"
 

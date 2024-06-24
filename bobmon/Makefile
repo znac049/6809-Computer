@@ -8,7 +8,6 @@ SOURCES=bobmon.asm \
 				commands/boot_cmd.s \
 				commands/commands.s \
 				commands/cpu_cmd.s \
-				commands/disassemble.s \
 				commands/disk_cmds.s \
 				commands/go_cmd.s \
 				commands/load_cmd.s \
@@ -16,6 +15,7 @@ SOURCES=bobmon.asm \
 				commands/help_cmd.s \
 				commands/radix_cmds.s \
 				commands/register_cmd.s \
+				commands/unassemble.s \
 				commands/window_cmd.s \
 				constants.s \
 				devices/devices.s \
