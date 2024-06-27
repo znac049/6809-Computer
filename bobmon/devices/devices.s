@@ -37,10 +37,10 @@ Sizeof.BInfo	equ	2
 ; The first character device will be assumed to be the console. Unusual
 ; things(tm) may happen if it isn't
 CharDevices	fdb	SerialDCB0
-		fdb	SerialDCB1
+		* fdb	SerialDCB1
 		fdb	0
 
-BlockDevices	fdb	VDiskDCB
+BlockDevices	* fdb	VDiskDCB
 		fdb	0
 
 		globals
@@ -95,10 +95,7 @@ idCharDevs	ldx	,y
 		leay	2,y
 		bra	idCharDevs
 
-; Don't init block devices on real hardware
-idCharDevsDone	bra	idBlockDevsDone
-
-		leay	BlockDevices,pcr
+idCharDevsDone	leay	BlockDevices,pcr
 
 idBlockDevs	ldx	,y
 		beq	idBlockDevsDone

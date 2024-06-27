@@ -84,10 +84,11 @@ sysGetChar	lbsr	getChar
 1		sta	swiAreg,S
 		rti
 
-sysPutChar	lbsr    putChar
+sysPutChar	lda	swiAreg,s
+		lbsr    putChar
 		rti
 
-sysPutStr	lbsr	sysPutStr
+sysPutStr	lbsr	putStr
 		rti
 
 sysPutNLStr	lbsr	putNL
@@ -95,12 +96,15 @@ sysPutNLStr	lbsr	putNL
 		lbsr	putStr
 		rti
 
-sysPut2Hex	lbsr	putHexByte
+sysPut2Hex	lda	swiAreg,s
+		lbsr	putHexByte
 		lda	#SPACE
 		lbsr	putChar
 		rti
 
-sysPut4Hex	lbsr	putHexWord
+sysPut4Hex	lda	swiAreg,s
+		ldb	swiBreg,s
+		lbsr	putHexWord
 		lda	#SPACE
 		lbsr	putChar
 		rti
@@ -113,5 +117,7 @@ sysPutSpace	lda	#SPACE
 		rti
 
 sysTerminate	ldx	#appTerminated
+		lda	swiAreg,s
+		ldb	swiBreg,s
 		stx	swiPC,s		; tweak the return address
 		rti
