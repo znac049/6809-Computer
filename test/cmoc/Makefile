@@ -22,6 +22,7 @@ blib.a: $(BLIBOBJ)
 
 hello: hello.o
 	cmoc -i -L . --$(CMOCTARGET) -o hello.srec --srec --org=4000 --data=0100 hello.o blib.a
+	flip -u hello.srec
 
 clean:
 	rm -f *.hex *.srec *.lst *.a *.o *~
