@@ -181,7 +181,7 @@ doQuickEnd
 
 prompt_msg	fcn	"> "
 system_ready_msg
-		fcc	CR,LF,"BobMon 6x09 Monitor, version 1.02",CR,LF
+		fcc	CR,LF,"BobMon 6x09 Monitor, version 1.03",CR,LF
 		fcn	"Copyright (C) Bob Green, 2016-2024",CR,LF
 cl_ambiguous_msg	
 		fcn 	"Command is ambiguous",CR,LF
