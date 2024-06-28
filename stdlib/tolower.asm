@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_tolower	EXPORT
+_tolower	export
 
 
 _tolower
@@ -16,4 +16,4 @@ _tolower_done
 
 
 
-	ENDSECTION
+	endsection

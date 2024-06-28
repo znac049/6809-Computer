@@ -1,13 +1,13 @@
-	SECTION code
+	section code
 
 
 ; OS-9: Nothing generated. See os9-sbrk.c.
-	IFNDEF OS9
+	ifndef OS9
 
 
-_sbrk           EXPORT
-program_break   IMPORT
-_sbrkmax        IMPORT
+_sbrk           export
+program_break   import
+_sbrkmax        import
 
 
 * void *sbrk(size_t increment);
@@ -41,7 +41,7 @@ _sbrk
 	rts
 
 
-	ENDC
+	endc
 
 
-	ENDSECTION
+	endsection

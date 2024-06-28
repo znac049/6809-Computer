@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-shiftLeft	EXPORT
+shiftLeft	export
 
 
 * Shifts the 16-bit value on the stack left by
@@ -41,4 +41,4 @@ shiftLeft_end
 
 
 
-	ENDSECTION
+	endsection

@@ -1,11 +1,11 @@
-	INCLUDE std.inc
+	include std.inc
 
-	SECTION code
+	section code
 
-	IFNDEF _COCO_OR_DRAGON_BASIC_
-LINBUF	EXPORT
-LINBUF	RMB	LBUFMX+1	buffer where READLN stores line read from user
-	ENDC
+	ifndef _COCO_OR_DRAGON_BASIC_
+LINBUF	export
+LINBUF	rmb	LBUFMX+1	buffer where READLN stores line read from user
+	endc
 
 
-	ENDSECTION
+	endsection

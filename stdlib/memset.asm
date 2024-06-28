@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_memset	EXPORT
+_memset	export
 
 
 * void *memset(void *s, int c, size_t n)
@@ -29,4 +29,4 @@ _memset_cond
 
 
 
-	ENDSECTION
+	endsection

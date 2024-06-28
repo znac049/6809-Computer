@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-shiftByteRightSigned	EXPORT
+shiftByteRightSigned	export
 
 
 * Shifts the 8-bit signed value on the stack right
@@ -40,4 +40,4 @@ shiftByteRightSigned_end
 
 
 
-	ENDSECTION
+	endsection

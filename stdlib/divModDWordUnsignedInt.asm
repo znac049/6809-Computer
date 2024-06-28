@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-divModDWordUnsignedInt	EXPORT
+divModDWordUnsignedInt	export
 
-DIV32                   IMPORT
+DIV32                   import
 
 
 ; Input: Pushed arguments: address of dword, value of unsigned int.
@@ -57,4 +57,4 @@ divModDWordUnsignedInt
 
 
 
-	ENDSECTION
+	endsection

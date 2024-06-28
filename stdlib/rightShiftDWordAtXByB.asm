@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-rightShiftDWordAtXByB	EXPORT
+rightShiftDWordAtXByB	export
 
 
 ; Input: A: 0 = zero-extend, $FF = sign-extend;
@@ -56,4 +56,4 @@ rightShiftDWordAtXByB
 
 
 
-	ENDSECTION
+	endsection

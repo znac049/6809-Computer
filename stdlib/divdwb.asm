@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_divdwb	EXPORT
+_divdwb	export
 
 
 * void divdwb(unsigned dividend[2], unsigned char divisor)
@@ -68,4 +68,4 @@ div328_900
 
 
 
-	ENDSECTION
+	endsection

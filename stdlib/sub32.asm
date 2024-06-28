@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-sub32	EXPORT
+sub32	export
 
-sub32xu IMPORT
+sub32xu import
 
 
 * byte sub32(word *hi, word h, word l)
@@ -29,4 +29,4 @@ sub32:
 	PULS	U,PC	
 
 
-	ENDSECTION
+	endsection

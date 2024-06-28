@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-divDWordDWord	EXPORT
+divDWordDWord	export
 
-divModDWordDWord        IMPORT
+divModDWordDWord        import
 
 
 divDWordDWord
@@ -12,4 +12,4 @@ divDWordDWord
 
 
 
-	ENDSECTION
+	endsection

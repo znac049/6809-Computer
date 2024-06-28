@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-initDWordFromSignedWord	EXPORT
+initDWordFromSignedWord	export
 
 
 ; Input: X => dword to initialize. D => signed word to initialize the dword with.
@@ -17,4 +17,4 @@ initDWordFromSignedWord
 
 
 
-	ENDSECTION
+	endsection

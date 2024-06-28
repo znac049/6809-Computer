@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-pushStruct	EXPORT
+pushStruct	export
 
 
 ; Copies a region of memory into the stack.
@@ -33,4 +33,4 @@ pushStruct
 
 
 
-	ENDSECTION
+	endsection

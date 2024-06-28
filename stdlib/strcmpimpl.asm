@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-strcmpimpl     EXPORT
+strcmpimpl     export
 
 
 ; Routine that compares two strings and returns -1, 0 or +1
@@ -60,4 +60,4 @@ _strcmp_900
         puls    x,u,pc
 
 
-        ENDSECTION
+        endsection

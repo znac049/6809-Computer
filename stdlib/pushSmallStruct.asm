@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-pushSmallStruct EXPORT
+pushSmallStruct export
 
 
 ; Copies a region of memory into the stack.
@@ -25,4 +25,4 @@ pushSmallStruct
         puls    u,pc
 
 
-        ENDSECTION
+        endsection

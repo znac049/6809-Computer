@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-chrtomem        EXPORT
+chrtomem        export
 
 * Writes register A at the address given by chrtomem_writer,
 * which gets incremented by 1.
@@ -12,12 +12,12 @@ chrtomem:
         stx     chrtomem_writer,pcr
         puls    x,pc
 
-        ENDSECTION
+        endsection
 
-        SECTION bss
+        section bss
 
-chrtomem_writer EXPORT
+chrtomem_writer export
 
-chrtomem_writer RMB     2       used by chrtomem
+chrtomem_writer rmb     2       used by chrtomem
 
-        ENDSECTION
+        endsection

@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-shiftRightSigned	EXPORT
+shiftRightSigned	export
 
 
 * Shifts the 16-bit signed value on the stack right
@@ -43,4 +43,4 @@ shiftRightSigned_end
 
 
 
-	ENDSECTION
+	endsection

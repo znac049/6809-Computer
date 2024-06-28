@@ -1,7 +1,7 @@
-	SECTION code
+	section code
 
-divDBy16    EXPORT
-divDBy8     EXPORT
+divDBy16    export
+divDBy8     export
 
 divDBy16
     lsra
@@ -15,4 +15,4 @@ divDBy8
     rorb
     rts
 
-    ENDSECTION
+    endsection

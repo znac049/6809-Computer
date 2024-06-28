@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-isDWordZero	EXPORT
+isDWordZero	export
 
 
 ; Input: X => long.
@@ -18,4 +18,4 @@ isDWordZero
 @done	rts
 
 
-	ENDSECTION
+	endsection

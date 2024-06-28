@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-MUL32	EXPORT
+MUL32	export
 
 
 ; Multiplies the two unsigned longs whose addresses are in X (left)
@@ -112,4 +112,4 @@ MUL32
 
 
 
-	ENDSECTION
+	endsection

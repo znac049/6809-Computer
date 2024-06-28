@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_strupr	EXPORT
+_strupr	export
 
 
 * char *strupr(char *str)
@@ -21,4 +21,4 @@ _strupr
 	rts
 
 
-	ENDSECTION
+	endsection

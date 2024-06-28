@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-_abs    EXPORT
+_abs    export
 
 
 ; int abs(int j);
@@ -15,4 +15,4 @@ _abs
         rts
 
 
-        ENDSECTION
+        endsection

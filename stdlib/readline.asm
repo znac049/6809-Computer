@@ -1,15 +1,15 @@
-        INCLUDE std.inc
+        include std.inc
 
-	SECTION code
+	section code
 
-_readline	EXPORT
+_readline	export
 
-LINBUF          IMPORT
+LINBUF          import
 
 
 _readline
 
-	IFDEF THOMMO
+	ifdef THOMMO
 	LEAX	LINBUF+1,pcr
 	LDA #LBUFMX-1           ; room left in buffer
 LOOP
@@ -49,9 +49,9 @@ DELETE
 	FCB $02
 	CLR ,-X
 	BRA LOOP
-	ENDC
+	endc
 
-	IFDEF THOMTO
+	ifdef THOMTO
 	LEAX	LINBUF+1,pcr
 	LDA #LBUFMX-1           ; room left in buffer
 LOOP
@@ -86,10 +86,10 @@ DELETE
 	JSR $E803
 	CLR ,-X
 	BRA LOOP
-	ENDC
+	endc
 
 
-        IFDEF FLEX
+        ifdef FLEX
 
 LINBUF  EQU     $C080
 INBUFF  EQU     $CD1B
@@ -110,23 +110,23 @@ INBUFF  EQU     $CD1B
         LDD     #LINBUF
         RTS
 
-        ENDC	; FLEX
+        endc	; FLEX
 
 
-	IFDEF _COCO_OR_DRAGON_BASIC_
+	ifdef _COCO_OR_DRAGON_BASIC_
 
-	IFDEF _COCO_BASIC_
+	ifdef _COCO_BASIC_
 	JSR	$A390		CoCo Basic routine to read a line w/ cursor
 	ELSE
 	JSR	$B5C6		Dragon Basic routine to read a line w/ cursor
-	ENDC
+	endc
 	LDD	#LINBUF+1	return address of 1st char
 	RTS
 
-	ENDC
+	endc
 
 
-        IFDEF USIM
+        ifdef USIM
 
 	LEAX	LINBUF+1,pcr	+1 as in Color Basic
 	LDB	#LBUFMX-1	number of bytes still available in buffer
@@ -149,10 +149,10 @@ RDLN90	CLR	,X		terminate the string with a NUL character
 
 CRASH	SYNC
 
-        ENDC
+        endc
 
 
-        IFDEF OS9
+        ifdef OS9
 
 	pshs	y		preserve process data pointer
 	leax	LINBUF+1,y	+1 as in Color Basic
@@ -186,25 +186,25 @@ readline_empty
 	tfr	x,d		return start of string
 	rts
 
-        ENDC
+        endc
 
-        IFDEF VECTREX
+        ifdef VECTREX
 
 * Return NULL (meaning failure) on the Vectrex, which has no keyboard.
 	CLRA
 	CLRB
 	RTS
 
-        ENDC
+        endc
 
-        IFDEF _CMOC_VOID_TARGET_
+        ifdef _CMOC_VOID_TARGET_
 
 * Return NULL (meaning failure), because no known I/O system.
 	CLRA
 	CLRB
 	RTS
 
-        ENDC
+        endc
 
 
-	ENDSECTION
+	endsection

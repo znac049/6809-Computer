@@ -1,7 +1,7 @@
-        SECTION code
+        section code
 
-signedJumpTableSwitch   EXPORT
-unsignedJumpTableSwitch EXPORT
+signedJumpTableSwitch   export
+unsignedJumpTableSwitch export
 
 
 ; Input: X => Table of 16-bit offsets, one for each non-default case.
@@ -32,4 +32,4 @@ unsignedJumpTableSwitch
         jmp     d,x
 
 
-        ENDSECTION
+        endsection

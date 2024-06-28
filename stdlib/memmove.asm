@@ -1,8 +1,8 @@
-        SECTION code
+        section code
 
-_memmove        EXPORT
+_memmove        export
 
-_memcpy         IMPORT
+_memcpy         import
 
 
 ; void *memmove(void *dest, const void *src, size_t n)
@@ -49,4 +49,4 @@ _memmove
         puls    u,pc
 
 
-        ENDSECTION
+        endsection

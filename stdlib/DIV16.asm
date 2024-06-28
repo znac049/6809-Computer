@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-DIV16	EXPORT
+DIV16	export
 
 
 * Divide X by D, unsigned; return quotient in X, remainder in D.
@@ -36,4 +36,4 @@ D16030	ROL	1,S		shift carry into quotient
 
 
 
-	ENDSECTION
+	endsection

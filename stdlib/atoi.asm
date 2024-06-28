@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-_atoi	EXPORT
+_atoi	export
 
-ATOW    IMPORT
+ATOW    import
 
 
 * int atoi(char *s);
@@ -27,4 +27,4 @@ atoi_020
 
 
 
-	ENDSECTION
+	endsection

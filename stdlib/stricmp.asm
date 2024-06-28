@@ -1,9 +1,9 @@
-        SECTION code
+        section code
 
-_stricmp	EXPORT
+_stricmp	export
 
-convertABToUpperCase    IMPORT
-strcmpimpl				IMPORT
+convertABToUpperCase    import
+strcmpimpl				import
 
 
 * int strcmp(const char *, const char *);
@@ -13,4 +13,4 @@ _stricmp
 	lbra	strcmpimpl
 
 
-        ENDSECTION
+        endsection

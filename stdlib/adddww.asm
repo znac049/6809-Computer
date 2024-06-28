@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_adddww	EXPORT
+_adddww	export
 
 
 * void adddww(word *dw, word w)
@@ -19,4 +19,4 @@ _adddww
 
 
 
-	ENDSECTION
+	endsection

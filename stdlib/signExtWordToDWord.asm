@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-signExtWordToDWord	EXPORT
+signExtWordToDWord	export
 
 
 ; Input: pushed word => input signed word;
@@ -20,4 +20,4 @@ signExtWordToDWord
 
 
 
-	ENDSECTION
+	endsection

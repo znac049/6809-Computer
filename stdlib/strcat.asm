@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-_strcat	EXPORT
+_strcat	export
 
-_strcpy IMPORT
+_strcpy import
 
 
 * char *strcat(char *dest, const char *src);
@@ -28,4 +28,4 @@ _strcat
 
 
 
-	ENDSECTION
+	endsection

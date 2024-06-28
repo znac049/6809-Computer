@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-_atoui	EXPORT
+_atoui	export
 
-ATOW    IMPORT
+ATOW    import
 
 
 * unsigned atoui(char *s);
@@ -13,4 +13,4 @@ _atoui
 
 
 
-	ENDSECTION
+	endsection

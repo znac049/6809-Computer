@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-divModDWordDWord	EXPORT
+divModDWordDWord	export
 
-DIV32                   IMPORT
+DIV32                   import
 
 
 ; Input: pushed addresses of dividend and divisor;
@@ -43,4 +43,4 @@ divModDWordDWord
 
 
 
-	ENDSECTION
+	endsection

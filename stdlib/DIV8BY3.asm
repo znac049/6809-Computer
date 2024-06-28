@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-DIV8BY3	EXPORT
+DIV8BY3	export
 
 
 * Input: B = Unsigned byte to be divided by 3.
@@ -50,4 +50,4 @@ DIV8BY3
         puls    a,pc    ; discard temp byte, return
 
 
-	ENDSECTION
+	endsection

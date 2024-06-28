@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-addDWordInt	EXPORT
+addDWordInt	export
 
 
 ; Input: Pushed arguments: address of dword, value of signed int.
@@ -26,4 +26,4 @@ addDWordInt
 
 
 
-	ENDSECTION
+	endsection

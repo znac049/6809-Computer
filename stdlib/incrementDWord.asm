@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-incrementDWord	EXPORT
+incrementDWord	export
 
 
 ; Preserves X. 
@@ -18,4 +18,4 @@ incrementDWord
 
 
 
-	ENDSECTION
+	endsection

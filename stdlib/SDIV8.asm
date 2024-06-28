@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-SDIV8	EXPORT
+SDIV8	export
 
-DIV8    IMPORT
+DIV8    import
 
 
 * Divide A by B, signed; return quotient in B, remainder in A.
@@ -41,4 +41,4 @@ SDIV8_40
 
 
 
-	ENDSECTION
+	endsection

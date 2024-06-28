@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-modDWordDWord	EXPORT
+modDWordDWord	export
 
-divModDWordDWord        IMPORT
+divModDWordDWord        import
 
 modDWordDWord
 	ldb	#1
@@ -11,4 +11,4 @@ modDWordDWord
 
 
 
-	ENDSECTION
+	endsection

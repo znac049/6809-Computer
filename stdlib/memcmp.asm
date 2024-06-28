@@ -1,8 +1,8 @@
-        SECTION code
+        section code
 
-_memcmp         EXPORT
+_memcmp         export
 
-memcmpimpl      IMPORT
+memcmpimpl      import
 
 
 _memcmp
@@ -16,4 +16,4 @@ compareBytes
         rts
 
 
-        ENDSECTION
+        endsection

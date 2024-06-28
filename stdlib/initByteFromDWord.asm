@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-initByteFromDWord	EXPORT
+initByteFromDWord	export
 
 
 ; Input: X => destination byte; D => source dword.
@@ -16,4 +16,4 @@ initByteFromDWord
 
 
 
-	ENDSECTION
+	endsection

@@ -1,8 +1,8 @@
-        SECTION code
+        section code
 
-_labs   EXPORT
+_labs   export
 
-negateDWord     IMPORT
+negateDWord     import
 
 
 ; long int abs(long int j);
@@ -25,4 +25,4 @@ _labs
         rts
 
 
-        ENDSECTION
+        endsection

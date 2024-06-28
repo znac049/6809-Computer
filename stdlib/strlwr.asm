@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_strlwr	EXPORT
+_strlwr	export
 
 
 * char *strlwr(char *str)
@@ -21,4 +21,4 @@ _strlwr
 	rts
 
 
-	ENDSECTION
+	endsection

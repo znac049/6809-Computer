@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-subIntDWord	EXPORT
+subIntDWord	export
 
 
 ; Input: Pushed arguments: value of unsigned int, address of dword.
@@ -26,4 +26,4 @@ subIntDWord
 
 
 
-	ENDSECTION
+	endsection

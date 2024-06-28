@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-DIV8BY7	EXPORT
+DIV8BY7	export
 
 
 * Unsigned division by seven
@@ -32,4 +32,4 @@ DIV8BY7
 PAUL	EQU	12
 
 
-	ENDSECTION
+	endsection

@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-andDWordDWord	EXPORT
+andDWordDWord	export
 
 
 ; Input: Pushed arguments: addresses of left and right dword;
@@ -24,4 +24,4 @@ andDWordDWord
 
 
 
-	ENDSECTION
+	endsection

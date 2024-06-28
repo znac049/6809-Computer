@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-_setConsoleOutHook	EXPORT
+_setConsoleOutHook	export
 
-CHROUT                  IMPORT
+CHROUT                  import
 
 
 * void *setConsoleOutHook(void *routine)
@@ -16,4 +16,4 @@ _setConsoleOutHook
 
 
 
-	ENDSECTION
+	endsection

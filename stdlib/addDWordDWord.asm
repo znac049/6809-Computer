@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-addDWordDWord	EXPORT
+addDWordDWord	export
 
 
 ; Input: pushed addresses: left dword, right dword.
@@ -27,4 +27,4 @@ addDWordDWord
 
 
 
-	ENDSECTION
+	endsection

@@ -1,7 +1,7 @@
-	SECTION code
+	section code
 
-MUL168_TO24	EXPORT
-_mulwb		EXPORT
+MUL168_TO24	export
+_mulwb		export
 
 
 * Multiply B by X, unsigned; return 24-bit result in B (high 8 bits)
@@ -54,4 +54,4 @@ _mulwb
 
 
 
-	ENDSECTION
+	endsection

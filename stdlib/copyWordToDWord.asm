@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-copyWordToDWord	EXPORT
+copyWordToDWord	export
 
 
 ; Input: pushed word => input word;
@@ -18,4 +18,4 @@ copyWordToDWord
 
 
 
-	ENDSECTION
+	endsection

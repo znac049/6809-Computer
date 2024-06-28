@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_zerodw	EXPORT
+_zerodw	export
 
 
 * void zerodw(word *dw)
@@ -16,4 +16,4 @@ _zerodw
 
 
 
-	ENDSECTION
+	endsection

@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-MUL16BY10	EXPORT
+MUL16BY10	export
 
 
 * Multiply D by 10, signed or unsigned; return result in D; preserve X.
@@ -18,4 +18,4 @@ MUL16BY10
         rts
 
 
-        ENDSECTION
+        endsection

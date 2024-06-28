@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-orDWordWord	EXPORT
+orDWordWord	export
 
 
 ; Input: Pushed arguments: addresses of left dword, value of right word;
@@ -21,4 +21,4 @@ orDWordWord
 
 
 
-	ENDSECTION
+	endsection

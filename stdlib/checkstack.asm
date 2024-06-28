@@ -1,21 +1,21 @@
-	SECTION code
+	section code
 
-_set_stack_overflow_handler	EXPORT
-check_stack_overflow		EXPORT
+_set_stack_overflow_handler	export
+check_stack_overflow		export
 
-stack_overflow_handler	IMPORT
-end_of_sbrk_mem		IMPORT
-INISTK			IMPORT
+stack_overflow_handler	import
+end_of_sbrk_mem		import
+INISTK			import
 
 _set_stack_overflow_handler:
-	IFNDEF OS9
+	ifndef OS9
 	LDD	2,S	first argument
 	STD	stack_overflow_handler,pcr
-    ENDC
+    endc
 	RTS
 
 check_stack_overflow:
-	IFNDEF OS9
+	ifndef OS9
 
 	PSHS    B,A
 	LDD	stack_overflow_handler,pcr	is there a handler?
@@ -44,7 +44,7 @@ no_stack_overflow:
 
 	ELSE
 	RTS
-	ENDC
+	endc
 
 
-	ENDSECTION
+	endsection

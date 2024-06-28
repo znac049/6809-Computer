@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-copyDWordFromXToD       EXPORT
+copyDWordFromXToD       export
 
 
 ; Copies a 4-byte region of memory.
@@ -18,4 +18,4 @@ copyDWordFromXToD
 	puls    u,pc
 
 
-	ENDSECTION
+	endsection

@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-push4ByteStruct	EXPORT
+push4ByteStruct	export
 
 
 ; Copies a 4-byte region of memory into the stack.
@@ -22,4 +22,4 @@ push4ByteStruct
 
 
 
-	ENDSECTION
+	endsection

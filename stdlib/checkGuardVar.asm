@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-checkGuardVar EXPORT
+checkGuardVar export
 
 ; Checks a local static's guard variable, to determine if this variable
 ; needs to be initialized.
@@ -24,4 +24,4 @@ checkGuardVar:
         rts
 
 
-        ENDSECTION
+        endsection

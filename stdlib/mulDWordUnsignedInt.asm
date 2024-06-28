@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-mulDWordUnsignedInt	EXPORT
+mulDWordUnsignedInt	export
 
-MUL32                   IMPORT
+MUL32                   import
 
 
 ; Input: Pushed arguments: address of dword, value of unsigned int.
@@ -32,4 +32,4 @@ mulDWordUnsignedInt
 
 
 
-	ENDSECTION
+	endsection

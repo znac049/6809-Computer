@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-tfrZtoB	EXPORT
+tfrZtoB	export
 
 
 * Transfer condition code Z to B.
@@ -14,4 +14,4 @@ tfrZtoB
         rts
 
 
-        ENDSECTION
+        endsection

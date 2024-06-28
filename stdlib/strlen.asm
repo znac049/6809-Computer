@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_strlen	EXPORT
+_strlen	export
 
 
 _strlen:
@@ -16,4 +16,4 @@ _strlen:
 	rts
 
 
-	ENDSECTION
+	endsection

@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-convertABToUpperCase    EXPORT
+convertABToUpperCase    export
 
 
 convertABToUpperCase:
@@ -16,4 +16,4 @@ convertAToUpperCaseAndExg:
 		rts
 
 
-        ENDSECTION
+        endsection

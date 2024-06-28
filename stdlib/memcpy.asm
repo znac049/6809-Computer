@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-_memcpy EXPORT
+_memcpy export
 
 
 ; void *memcpy(void *dest, const void *src, size_t n);
@@ -25,4 +25,4 @@ _memcpy pshs    u
         puls    u,pc
 
 
-        ENDSECTION
+        endsection

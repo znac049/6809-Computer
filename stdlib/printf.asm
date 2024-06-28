@@ -1,18 +1,18 @@
-        INCLUDE std.inc
+        include std.inc
 
-_printf		EXPORT
-_vprintf	EXPORT
+_printf		export
+_vprintf	export
 
-CHROUT          IMPORT
-putchar_a       IMPORT
-negateDWord     IMPORT
-_dwtoa          IMPORT
-ATOW            IMPORT
-_strlen         IMPORT
-unpackSingleAndConvertToASCII_hook IMPORT
-singlePrecisionSize IMPORT
+CHROUT          import
+putchar_a       import
+negateDWord     import
+_dwtoa          import
+ATOW            import
+_strlen         import
+unpackSingleAndConvertToASCII_hook import
+singlePrecisionSize import
 
-	SECTION code
+	section code
 
 * void printf(const char *fmt, ...);
 *
@@ -602,4 +602,4 @@ printReal
 	PULS	X,Y,U,PC
 
 
-	ENDSECTION
+	endsection

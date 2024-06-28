@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-copyDWord	EXPORT
+copyDWord	export
 
 
 ; Input: X = destination address; D = source address.
@@ -18,4 +18,4 @@ copyDWord
 
 
 
-	ENDSECTION
+	endsection

@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-subDWordDWord	EXPORT
+subDWordDWord	export
 
 
 subDWordDWord
@@ -22,4 +22,4 @@ subDWordDWord
 
 
 
-	ENDSECTION
+	endsection

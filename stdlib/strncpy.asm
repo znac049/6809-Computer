@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-_strncpy        EXPORT
+_strncpy        export
 
 
 * char *strncpy(char *dest, const char *src, size_t n);
@@ -32,4 +32,4 @@ _strncpy
         puls    y,u,pc
 
 
-        ENDSECTION
+        endsection

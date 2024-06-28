@@ -1,5 +1,5 @@
-        SECTION bss
+        section bss
 
-SEED    EXPORT
+SEED    export
 
-SEED    RMB     2
+SEED    rmb     2

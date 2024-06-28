@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-mulDWordDWord	EXPORT
+mulDWordDWord	export
 
-MUL32           IMPORT
+MUL32           import
 
 
 ; Input: pushed arguments: addresses of left and right dwords
@@ -29,4 +29,4 @@ mulDWordDWord
 
 
 
-	ENDSECTION
+	endsection

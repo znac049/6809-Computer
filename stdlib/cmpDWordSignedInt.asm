@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-cmpDWordSignedInt	EXPORT
+cmpDWordSignedInt	export
 
-cmpDWordDWord           IMPORT
+cmpDWordDWord           import
 
 
 ; Input: 2 pushed arguments.
@@ -26,4 +26,4 @@ cmpDWordSignedInt
 
 
 
-	ENDSECTION
+	endsection

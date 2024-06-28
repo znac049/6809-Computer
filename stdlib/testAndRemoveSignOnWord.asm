@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-testAndRemoveSignOnWord	EXPORT
+testAndRemoveSignOnWord	export
 
-negateDWord             IMPORT
+negateDWord             import
 
 
 ; Input: pushed word => signed word to test;
@@ -27,4 +27,4 @@ testAndRemoveSignOnWord
 
 
 
-	ENDSECTION
+	endsection

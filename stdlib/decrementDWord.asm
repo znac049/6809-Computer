@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-decrementDWord	EXPORT
+decrementDWord	export
 
 
 ; Preserves X. 
@@ -18,4 +18,4 @@ decrementDWord
 
 
 
-	ENDSECTION
+	endsection

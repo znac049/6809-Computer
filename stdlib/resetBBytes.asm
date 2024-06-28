@@ -1,7 +1,7 @@
-	SECTION code
+	section code
 
 
-resetBBytes EXPORT
+resetBBytes export
 
 
 ; Input: X => Where to write null bytes.
@@ -15,4 +15,4 @@ resetBBytes
         rts
 
 
-	ENDSECTION
+	endsection

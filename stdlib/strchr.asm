@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_strchr	EXPORT
+_strchr	export
 
 
 * char *strchr(const char *s, int c);
@@ -21,4 +21,4 @@ _strchr:
 	rts
 
 
-	ENDSECTION
+	endsection

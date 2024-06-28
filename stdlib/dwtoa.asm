@@ -1,8 +1,8 @@
-        SECTION code
+        section code
 
-_dwtoa  EXPORT
+_dwtoa  export
 
-sub32   IMPORT
+sub32   import
 
 
 * Utility routine for dwtoa.
@@ -164,5 +164,5 @@ powersOfTen:
 	FDB	$0000,$000A	10**1
 
 
-        ENDSECTION
+        endsection
 

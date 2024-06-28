@@ -1,8 +1,8 @@
-		SECTION code
+		section code
 
-_strcmp		EXPORT
+_strcmp		export
 
-strcmpimpl	IMPORT
+strcmpimpl	import
 
 
 * int strcmp(const char *, const char *);
@@ -15,4 +15,4 @@ noTransform
 		rts
 
 
-		ENDSECTION
+		endsection

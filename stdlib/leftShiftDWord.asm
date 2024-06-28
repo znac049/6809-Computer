@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-leftShiftDWord	EXPORT
+leftShiftDWord	export
 
-leftShiftDWordAtXByB    IMPORT
+leftShiftDWordAtXByB    import
 
 
 ; Input: 1st pushed argument: address of dword;
@@ -35,4 +35,4 @@ leftShiftDWord
 
 
 
-	ENDSECTION
+	endsection

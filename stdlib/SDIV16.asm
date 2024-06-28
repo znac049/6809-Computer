@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-SDIV16	EXPORT
+SDIV16	export
 
-DIV16   IMPORT
+DIV16   import
 
 
 * Divide X by D, signed; return quotient in X, remainder in D.
@@ -54,4 +54,4 @@ SDIV16_40
 
 
 
-	ENDSECTION
+	endsection

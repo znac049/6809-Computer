@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-cmpDWordUnsignedInt	EXPORT
+cmpDWordUnsignedInt	export
 
-cmpDWordDWord           IMPORT
+cmpDWordDWord           import
 
 
 cmpDWordUnsignedInt
@@ -21,4 +21,4 @@ cmpDWordUnsignedInt
 
 
 
-	ENDSECTION
+	endsection

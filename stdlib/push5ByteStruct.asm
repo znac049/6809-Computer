@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-push5ByteStruct	EXPORT
+push5ByteStruct	export
 
 
 ; Copies a 5-byte region of memory into the stack.
@@ -24,4 +24,4 @@ push5ByteStruct
 
 
 
-	ENDSECTION
+	endsection

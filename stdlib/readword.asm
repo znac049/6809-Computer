@@ -1,9 +1,9 @@
-	SECTION code
+	section code
 
-_readword	EXPORT
+_readword	export
 
-ATOW            IMPORT
-_readline       IMPORT
+ATOW            import
+_readline       import
 
 
 * unsigned readword();
@@ -16,4 +16,4 @@ _readword
 
 _
 
-	ENDSECTION
+	endsection

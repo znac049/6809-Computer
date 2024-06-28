@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-shiftByteLeft	EXPORT
+shiftByteLeft	export
 
 
 * Shifts the 8-bit value on the stack left by
@@ -38,4 +38,4 @@ shiftByteLeft_end
 
 
 
-	ENDSECTION
+	endsection

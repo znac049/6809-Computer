@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-ATOW	EXPORT
+ATOW	export
 
-MUL168	IMPORT
+MUL168	import
 
 
 * Convert unsigned decimal integer pointed by X into word returned in D.
@@ -33,4 +33,4 @@ ATW900	LEAX	-1,X
 	PULS	A,B,PC
 
 
-	ENDSECTION
+	endsection

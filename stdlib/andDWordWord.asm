@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-andDWordWord	EXPORT
+andDWordWord	export
 
 ; Input: Pushed arguments: addresses of left dword, value of right word;
 ;        X => destination dword (may be same as address of left dword).
@@ -19,4 +19,4 @@ andDWordWord
 
 #endif
 
-	ENDSECTION
+	endsection

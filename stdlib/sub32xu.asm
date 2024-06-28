@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-sub32xu	EXPORT
+sub32xu	export
 
 
 * Subtract 32-bit unsigned integer from another.
@@ -25,4 +25,4 @@ sub32xu	pshs	b,a
 
 
 
-	ENDSECTION
+	endsection

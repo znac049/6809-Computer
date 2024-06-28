@@ -1,9 +1,9 @@
-        SECTION code
+        section code
 
-_memicmp                EXPORT
+_memicmp                export
 
-convertABToUpperCase    IMPORT
-memcmpimpl              IMPORT
+convertABToUpperCase    import
+memcmpimpl              import
 
 
 _memicmp
@@ -20,4 +20,4 @@ compareBytes
         rts
 
 
-        ENDSECTION
+        endsection

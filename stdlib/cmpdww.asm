@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_cmpdww	EXPORT
+_cmpdww	export
 
 
 * char cmpdww(unsigned left[2], unsigned right)
@@ -25,4 +25,4 @@ _cmpdww
 
 
 
-	ENDSECTION
+	endsection

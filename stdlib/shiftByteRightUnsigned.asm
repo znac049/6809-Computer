@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-shiftByteRightUnsigned	EXPORT
+shiftByteRightUnsigned	export
 
 
 * Shifts the 8-bit unsigned value on the stack right
@@ -38,4 +38,4 @@ shiftByteRightUnsigned_end
 
 
 
-	ENDSECTION
+	endsection

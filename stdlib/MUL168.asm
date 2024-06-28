@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-MUL168  EXPORT
+MUL168  export
 
 
 * Multiply B by X, unsigned; return result in D; preserve X.
@@ -16,4 +16,4 @@ MUL168  PSHS    X,B,A           acc A pushed to create temp byte at ,S
         RTS
 
 
-	ENDSECTION
+	endsection

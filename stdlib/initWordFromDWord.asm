@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-initWordFromDWord	EXPORT
+initWordFromDWord	export
 
 
 ; Input: X => destination word; D => source dword.
@@ -16,4 +16,4 @@ initWordFromDWord
 
 
 
-	ENDSECTION
+	endsection

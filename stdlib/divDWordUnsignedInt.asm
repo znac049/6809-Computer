@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-divDWordUnsignedInt	EXPORT
+divDWordUnsignedInt	export
 
-divModDWordUnsignedInt  IMPORT
+divModDWordUnsignedInt  import
 
 
 divDWordUnsignedInt
@@ -12,4 +12,4 @@ divDWordUnsignedInt
 
 
 
-	ENDSECTION
+	endsection

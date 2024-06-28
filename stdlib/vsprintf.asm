@@ -1,11 +1,11 @@
-        SECTION code
+        section code
 
-_vsprintf       EXPORT
+_vsprintf       export
 
-CHROUT          IMPORT
-_vprintf        IMPORT
-chrtomem        IMPORT
-chrtomem_writer IMPORT
+CHROUT          import
+_vprintf        import
+chrtomem        import
+chrtomem_writer import
 
 
 * int vsprintf(char *str, const char *format, va_list ap);
@@ -34,13 +34,13 @@ _vsprintf
         jmp     [vsprintf_retaddr,pcr]  return to caller of sprintf()
 
 
-        ENDSECTION
+        endsection
 
 
-        SECTION bss
+        section bss
                 
-vsprintf_retaddr        RMB     2       used by _vsprintf
-vsprintf_oldCHROUT      RMB     2       used by _vsprintf
+vsprintf_retaddr        rmb     2       used by _vsprintf
+vsprintf_oldCHROUT      rmb     2       used by _vsprintf
 
-        ENDSECTION
+        endsection
 

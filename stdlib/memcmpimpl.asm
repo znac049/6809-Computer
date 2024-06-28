@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-memcmpimpl      EXPORT
+memcmpimpl      export
 
 
 * Input: Two pointers and a word on stack.
@@ -51,4 +51,4 @@ _memcmp_end
         puls    x,y,u,pc
 
 
-        ENDSECTION
+        endsection

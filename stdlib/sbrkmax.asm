@@ -1,13 +1,13 @@
-	SECTION code
+	section code
 
 
 ; OS-9: Nothing generated. See os9-sbrkmax.c.
-	IFNDEF OS9
+	ifndef OS9
 
 
-_sbrkmax        EXPORT
-end_of_sbrk_mem IMPORT
-program_break   IMPORT
+_sbrkmax        export
+end_of_sbrk_mem import
+program_break   import
 
 
 * size_t sbrkmax(void);
@@ -27,7 +27,7 @@ _sbrkmax
 	rts
 
 
-	ENDC
+	endc
 
 
-	ENDSECTION
+	endsection

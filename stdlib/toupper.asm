@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-_toupper	EXPORT
+_toupper	export
 
 
 _toupper
@@ -16,4 +16,4 @@ _toupper_done
 
 
 
-	ENDSECTION
+	endsection

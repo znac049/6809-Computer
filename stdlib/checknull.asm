@@ -1,9 +1,9 @@
-	SECTION code
+	section code
 
-_set_null_ptr_handler	EXPORT
-check_null_ptr_x	EXPORT
+_set_null_ptr_handler	export
+check_null_ptr_x	export
 
-null_ptr_handler	IMPORT
+null_ptr_handler	import
 
 
 * void set_null_ptr_handler(char *newHandler);
@@ -30,4 +30,4 @@ check_null_ptr_x:
 	PULS	A,B,X,Y,U,PC
 
 
-	ENDSECTION
+	endsection

@@ -1,8 +1,8 @@
-        SECTION code
+        section code
 
-_strrchr        EXPORT
+_strrchr        export
 
-_strlen         IMPORT
+_strlen         import
 
 * char *strrchr(const char *s, int c);
 *
@@ -29,4 +29,4 @@ _strrchr:
         rts
 
 
-        ENDSECTION
+        endsection

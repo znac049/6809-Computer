@@ -1,6 +1,6 @@
-        SECTION code
+        section code
 
-_strstr EXPORT
+_strstr export
 
 
 * char *strstr(const char *haystack, const char *needle)
@@ -40,4 +40,4 @@ _strstr pshs    u
         puls    u,pc
 
 
-        ENDSECTION
+        endsection

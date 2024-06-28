@@ -1,14 +1,14 @@
-	SECTION code
+	section code
 
-signedDivOrModOnDWord	EXPORT
+signedDivOrModOnDWord	export
 
-DIV32                           IMPORT
-negateDWord                     IMPORT
-testAndRemoveSignOnDWord        IMPORT
-testAndRemoveSignOnWord         IMPORT
-copyDWord                       IMPORT
-copyWordToDWord                 IMPORT
-signExtWordToDWord              IMPORT
+DIV32                           import
+negateDWord                     import
+testAndRemoveSignOnDWord        import
+testAndRemoveSignOnWord         import
+copyDWord                       import
+copyWordToDWord                 import
+signExtWordToDWord              import
 
 
 
@@ -203,4 +203,4 @@ signedDivOrModOnDWord
 
 
 
-	ENDSECTION
+	endsection

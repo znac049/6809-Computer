@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-negateDWord	EXPORT
+negateDWord	export
 
 
 ; Input: X => Long to negate.
@@ -23,4 +23,4 @@ negateDWord
 
 
 
-	ENDSECTION
+	endsection

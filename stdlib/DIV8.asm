@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-DIV8	EXPORT
+DIV8	export
 
 
 * Divide A by B, unsigned; return quotient in B, remainder in A.
@@ -34,4 +34,4 @@ DV8030	ROL	,S		shift carry into quotient
 
 
 
-	ENDSECTION
+	endsection

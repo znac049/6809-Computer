@@ -1,8 +1,8 @@
-	SECTION code
+	section code
 
-_putstr	EXPORT
+_putstr	export
 
-putchar_a       IMPORT
+putchar_a       import
 
 
 * void putstr(byte *s, word len)
@@ -26,4 +26,4 @@ putstr_900:
 
 
 
-	ENDSECTION
+	endsection

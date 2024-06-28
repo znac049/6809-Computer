@@ -1,9 +1,9 @@
-	SECTION code
+	section code
 
-_strtoul	EXPORT
+_strtoul	export
 
-mulDWordUnsignedInt     IMPORT
-negateDWord             IMPORT
+mulDWordUnsignedInt     import
+negateDWord             import
 
 
 ; unsigned long strtoul(char *nptr, char **endptr, int base);
@@ -75,4 +75,4 @@ _strtoul
 
 
 
-	ENDSECTION
+	endsection

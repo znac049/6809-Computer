@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-initDWordFromUnsignedWord	EXPORT
+initDWordFromUnsignedWord	export
 
 
 ; Input: X => dword to initialize. D => unsigned word to initialize the dword with.
@@ -15,4 +15,4 @@ initDWordFromUnsignedWord
 
 
 
-	ENDSECTION
+	endsection

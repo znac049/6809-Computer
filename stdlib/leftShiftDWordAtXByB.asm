@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-leftShiftDWordAtXByB	EXPORT
+leftShiftDWordAtXByB	export
 
 
 ; Input: Z must reflect B.
@@ -35,4 +35,4 @@ leftShiftDWordAtXByB
 
 
 
-	ENDSECTION
+	endsection

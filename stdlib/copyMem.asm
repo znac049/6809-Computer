@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-copyMem	EXPORT
+copyMem	export
 
 
 ; Like memcpy, but with only one argument passed on the stack.
@@ -30,4 +30,4 @@ copyMem
 
 
 
-	ENDSECTION
+	endsection

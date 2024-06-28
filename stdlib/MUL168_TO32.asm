@@ -1,7 +1,7 @@
-	SECTION code
+	section code
 
-MUL168_TO32	EXPORT
-_mulww		EXPORT
+MUL168_TO32	export
+_mulww		export
 
 
 * Multiply D by X, unsigned; return 32-bit result in D (high 16 bits)
@@ -75,4 +75,4 @@ _mulww
 
 
 
-	ENDSECTION
+	endsection

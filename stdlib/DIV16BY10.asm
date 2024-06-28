@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-DIV16BY10	EXPORT
+DIV16BY10	export
 
 
 * Divide D by 10.
@@ -63,4 +63,4 @@ DIV16BY10_020
 
 
 
-	ENDSECTION
+	endsection

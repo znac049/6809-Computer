@@ -1,6 +1,6 @@
-	SECTION code
+	section code
 
-cmpDWordDWord	EXPORT
+cmpDWordDWord	export
 
 
 ; Input: Stacked arguments: address of left dword, address of right dword.
@@ -59,4 +59,4 @@ isLongZeroStack
 
 
 
-	ENDSECTION
+	endsection

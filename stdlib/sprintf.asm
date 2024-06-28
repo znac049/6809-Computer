@@ -1,11 +1,11 @@
-	SECTION code
+	section code
 
-_sprintf        EXPORT
+_sprintf        export
 
-CHROUT          IMPORT
-_printf         IMPORT
-chrtomem		IMPORT
-chrtomem_writer	IMPORT
+CHROUT          import
+_printf         import
+chrtomem		import
+chrtomem_writer	import
 
 
 * int sprintf(char *str, const char *format, ...);
@@ -34,13 +34,13 @@ _sprintf
 	jmp	[sprintf_retaddr,pcr]	return to caller of sprintf()
 
 
-	ENDSECTION
+	endsection
 
 
-        SECTION bss
+        section bss
         	
-sprintf_retaddr	        RMB	2	used by _sprintf
-sprintf_oldCHROUT	RMB	2	used by _sprintf
+sprintf_retaddr	        rmb	2	used by _sprintf
+sprintf_oldCHROUT	rmb	2	used by _sprintf
 
-	ENDSECTION
+	endsection
 

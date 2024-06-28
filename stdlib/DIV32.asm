@@ -1,9 +1,9 @@
-	SECTION code
+	section code
 
-DIV32	EXPORT
+DIV32	export
 
-cmpDWordDWord   IMPORT
-sub32xu         IMPORT
+cmpDWordDWord   import
+sub32xu         import
 
 
 ; Divides the unsigned long at X by the one at U.
@@ -73,4 +73,4 @@ DIV32
 
 
 
-	ENDSECTION
+	endsection
