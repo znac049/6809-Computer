@@ -24,6 +24,7 @@ program_start	EQU	*
 	SECTION	code
 
 
+_x	EXPORT
 ___va_arg	IMPORT
 _abs	IMPORT
 _adddww	IMPORT
@@ -105,36 +106,36 @@ _say	EXPORT
 
 *******************************************************************************
 
-* FUNCTION say(): defined at hello.c:3
+* FUNCTION say(): defined at hello.c:5
 _say	EQU	*
 * Calling convention: Default
 	PSHS	U
 	LEAU	,S
 * Formal parameter(s):
-*      4,U:    2 bytes: msg: const char *: line 3
-* Line hello.c:5: while
-	BRA	L00080		jump to while condition
-L00079	EQU	*		while body
-* Line hello.c:6: function call: putchar()
+*      4,U:    2 bytes: msg: const char *: line 5
+* Line hello.c:7: while
+	BRA	L00082		jump to while condition
+L00081	EQU	*		while body
+* Line hello.c:8: function call: putchar()
 	LDB	[4,U]		indirection
 	SEX			promoting byte argument to word
 	PSHS	B,A		argument 1 of putchar(): const char
 	LBSR	_putchar
 	LEAS	2,S
-* Line hello.c:7: post-increment
-	LDX	4,U		variable `msg', declared at hello.c:7
+* Line hello.c:9: post-increment
+	LDX	4,U		variable `msg', declared at hello.c:9
 	LEAX	1,X
 	STX	4,U
-L00080	EQU	*		while condition at hello.c:5
+L00082	EQU	*		while condition at hello.c:7
 	LDB	[4,U]		indirection
 * optim: loadCmpZeroBeqOrBne
-	BNE	L00079
+	BNE	L00081
 * optim: branchToNextLocation
-* Useless label L00081 removed
+* Useless label L00083 removed
 * Useless label L00077 removed
 	LEAS	,U
 	PULS	U,PC
-* END FUNCTION say(): defined at hello.c:3
+* END FUNCTION say(): defined at hello.c:5
 funcend_say	EQU *
 funcsize_say	EQU	funcend_say-_say
 _main	EXPORT
@@ -142,16 +143,38 @@ _main	EXPORT
 
 *******************************************************************************
 
-* FUNCTION main(): defined at hello.c:11
+* FUNCTION main(): defined at hello.c:13
 _main	EQU	*
 * Calling convention: Default
-* Line hello.c:13: return with value
+	PSHS	U
+	LEAU	,S
+	LEAS	-2,S
+* Local non-static variable(s):
+*     -2,U:    2 bytes: x: int: line 15
+* Line hello.c:15: init of variable x
 	CLRA
-	CLRB
+	LDB	#$07		7
+	STD	-2,U		variable x
+* Line hello.c:17: function call: say()
+	LEAX	S00079,PCR	"Hej!\r\n"
+	PSHS	X		argument 1 of say(): const char[]
+	LBSR	_say
+	LEAS	2,S
+* Line hello.c:18: function call: printf()
+	LDD	-2,U		variable `x', declared at hello.c:15
+	PSHS	B,A		argument 2 of printf(): int
+	LEAX	S00080,PCR	"x=%d\r\n"
+	PSHS	X		argument 1 of printf(): const char[]
+	LBSR	_printf
+	LEAS	4,S
+* Line hello.c:19: return with value
+	CLRA
+	LDB	#$2A		decimal 42 signed
 * optim: branchToNextLocation
 * Useless label L00078 removed
-	RTS
-* END FUNCTION main(): defined at hello.c:11
+	LEAS	,U
+	PULS	U,PC
+* END FUNCTION main(): defined at hello.c:13
 funcend_main	EQU *
 funcsize_main	EQU	funcend_main-_main
 
@@ -192,6 +215,21 @@ INITGL	EQU	*
 
 
 string_literals_start	EQU	*
+
+
+*******************************************************************************
+
+* STRING LITERALS
+S00079	EQU	*
+	FCC	"Hej!"
+	FCB	$0D
+	FCB	$0A
+	FCB	0
+S00080	EQU	*
+	FCC	"x=%d"
+	FCB	$0D
+	FCB	$0A
+	FCB	0
 string_literals_end	EQU	*
 
 
@@ -209,6 +247,8 @@ string_literals_end	EQU	*
 
 
 * Statically-initialized global variables
+_x	EQU	*		x: int: hello.c:3
+	FDB	$00		decimal 0
 * Statically-initialized local static variables
 
 
@@ -260,7 +300,8 @@ program_end	EQU	*
 
 *******************************************************************************
 
-* Importing 1 utility routine(s).
+* Importing 2 utility routine(s).
+_printf	IMPORT
 _putchar	IMPORT
 
 

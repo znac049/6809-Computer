@@ -117,7 +117,8 @@ sysPutSpace	lda	#SPACE
 		rti
 
 sysTerminate	ldx	#appTerminated
-		lda	swiAreg,s
-		ldb	swiBreg,s
+		* lda	#42
+		* sta	swiAreg,s
+		* sta	swiBreg,s
 		stx	swiPC,s		; tweak the return address
 		rti

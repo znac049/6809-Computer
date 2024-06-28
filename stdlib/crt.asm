@@ -112,6 +112,7 @@ unpackSingleAndConvertToASCII_dummy
 * so that 2,S can be used to get 'exitStatus'.
 *
 _exit
+	ldd	2,s
         sys     scTerminate
 	LBSR	destructors
 

@@ -62,13 +62,19 @@ cpu_6809_msg	fcn	"CPU: 6809",CR,LF
 
 appTerminated	lds	#system_stack
 		pshs	a,b,x,y,cc
-		tsta
+		tstb
 		beq	terminatedOK
 		leax	app_terminated_with_error_msg,pcr
 		lbsr	putStr
-		lbsr	putHexByte
+		lbsr	printNum
 		lbsr	putNL
 		puls	a,b,x,y,cc
+		sta	g.regA
+		stb	g.regB
+		stx	g.regX
+		sty	g.regY
+		stu	g.regU
+		sts	g.regS
 		lbsr	doRegisters
 		bra	loop
 

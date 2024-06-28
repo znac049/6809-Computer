@@ -19,39 +19,39 @@ doRegisters	pshs	a,b,x,y,u
 		leax	regA_msg,pcr
 		lbsr	putStr
 		ldb	g.regA
-		sex
-		ldd	#$DEAD
+		clra
+		* ldd	#$DEAD
 		lbsr	printNum		; putHexByte
 		
 		leax	regB_msg,pcr
 		lbsr	putStr
 		ldb	g.regB
-		sex	
-		ldd	#$FACE
+		clra	
+		* ldd	#$FACE
 		lbsr	printNum		; putHexByte
 		
 		leax	regX_msg,pcr
 		lbsr	putStr
 		ldd	g.regX
-		ldd	#$00FF
+		* ldd	#$00FF
 		lbsr	printNum		; putHexWord
 		
 		leax	regY_msg,pcr
 		lbsr	putStr
 		ldd	g.regY
-		ldd	#1
+		* ldd	#1
 		lbsr	printNum		; putHexWord
 		
 		leax	regU_msg,pcr
 		lbsr	putStr
 		ldd	g.regU
-		ldd	#0
+		* ldd	#0
 		lbsr	printNum		; putHexWord
 		
 		leax	regS_msg,pcr
 		lbsr	putStr
 		ldd	g.regS
-		ldd	#$0CAB
+		* ldd	#$0CAB
 		lbsr	printNum		; putHexWord
 
 		lbsr	putNL

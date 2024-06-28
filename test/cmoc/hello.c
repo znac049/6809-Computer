@@ -12,6 +12,9 @@ void say(const char *msg)
 
 int main()
 {
-    say("Hej!\n");
-    return 0;
+    int x=7;
+
+    say("Hej!\r\n");
+    printf("x=%d\r\n", x);
+    return 42;;
 }
