@@ -23,12 +23,9 @@ SOURCES=bobmon.asm \
 				devices/character/mc6850.s \
 				devices/block/LSN.s \
 				devices/block/virt_disk.s \
-				disk_io.s \
 				fs/fat16.s \
-				fs/fs.s \
 				macros.s \
 				radix.s \
-				sd_io.s \
 				stdio.s \
 				string_functions.s \
 				sysdefs.s \

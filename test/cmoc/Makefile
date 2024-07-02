@@ -21,7 +21,8 @@ blib.a: $(BLIBOBJ)
 	lwar -a blib.a $(BLIBOBJ)
 
 hello: hello.o
-	cmoc -i -L . --$(CMOCTARGET) -o hello.srec --srec --org=4000 --data=0100 hello.o blib.a
+	cmoc -L . --$(CMOCTARGET) -o hello.srec --srec --org=4000 -i hello.o blib.a
+	cmoc -L . --$(CMOCTARGET) -o hello.bin --raw --org=4000 -i hello.o blib.a
 	flip -u hello.srec
 
 clean:
