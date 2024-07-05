@@ -22,7 +22,6 @@ SOURCES=bobmon.asm \
 				devices/devices.s \
 				devices/character/mc6850.s \
 				devices/block/LSN.s \
-				devices/block/virt_disk.s \
 				fs/fat16.s \
 				macros.s \
 				radix.s \

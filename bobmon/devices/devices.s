@@ -32,7 +32,6 @@ BInfo.Name	equ	CInfo.Name	; pointer to string
 Sizeof.BInfo	equ	2
 
 		include "devices/character/mc6850.s"
-		include "devices/block/virt_disk.s"
 
 ; The first character device will be assumed to be the console. Unusual
 ; things(tm) may happen if it isn't

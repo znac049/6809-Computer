@@ -12,12 +12,6 @@ diskMaxArgs	equ	0
 diskCommand	fcn	"disk"
 diskHelp	fcn	TAB,"Disk stuff!"
 
-		globals
-
-g.blockBuff	rmb	256
-
-
-		code
 
 *******************************************************************
 * doDisk - called by the command processor when the "disk" 
@@ -29,37 +23,35 @@ g.blockBuff	rmb	256
 *
 *  returns: nothing
 *
-doDisk		clra	
-		ldy	#VDiskBase
-		sta	VD.Sec0,y
-		sta	VD.Sec1,y
-		sta	VD.Sec2,y
-		
-		* lbsr	vdWaitBusy	; Wait for controller
-		
-		lda	#$02		; Read from drive 0
-		sta	VD.CMD,y
-		* lbsr	vdWaitBusy
+doDisk		ldx	#CFBase
+		lbsr	cfInit			; Initialise CF subsystem
+		lbsr	fatValidDisk		; do we have a valid FAT16 disk in drive 0?
 
-		
-		leax	g.blockBuff,pcr
+		cmpa	#1
+		beq	ddiNoDisk
+		cmpa	#3
+		beq	ddiNotFat
+		tsta
+		bne	ddiIncompatible
 
-1		lda	VD.SR,y
-		anda	#$02		; Wait for RDA
-		beq	1B
-		ldb	#255
-		
-2		lda	VD.DR,y
-		sta	,x+
-		decb
-		bne	2B
-		
-		leax	read_msg,pcr
-		lbsr	putStr
-		ldd	#g.blockBuff
-		lbsr	putHexWord
+; We have a valid FAT16 disk
+		leax	ddiValid_msg,pcr
+		bra	ddiMsg
+
+ddiNoDisk	leax	ddiNoDisk_msg,pcr
+		bra	ddiMsg
+
+ddiIncompatible	leax	ddiBadRoot_msg,pcr
+		bra	ddiMsg
+
+ddiNotFat	leax	ddiNotFat_msg,pcr
+
+ddiMsg		lbsr	putStr
 		lbsr	putNL
 
-		rts
+ddiDone		rts
 
-read_msg	fcn	"Block read into $"
+ddiValid_msg	fcn	"Valid FAT-16 disk#0 present"
+ddiBadRoot_msg	fcn	"Disk#0 is FAT-16 but not a compatible flavour"
+ddiNoDisk_msg	fcn	"No disk#0 found"
+ddiNotFat_msg	fcn	"Disk#0 does not contain a FAT-16 filesystem"

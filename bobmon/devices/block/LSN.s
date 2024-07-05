@@ -3,7 +3,7 @@
 ;
 ; Copyright(c) 2016-2024, Bob Green <bob@chippers.org.uk>
 ;
-; block_numbers.s - helper functions to manipulate disk block
+; LSN.s - helper functions to manipulate disk block
 ; 	numbers. Block numbers are 24-bit so there's no simple way 
 ;	to do maths on them in the 6809. The 6309 supports a single
 ;	32-bit register which may prove useful. Whichever processor
