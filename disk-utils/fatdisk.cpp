@@ -48,6 +48,8 @@ bool fatdisk::openDisk(const char *diskPath)
     printf("Root dir region: %d\n", rootDirectoryRegion);
     printf("Data region    : %d\n", dataRegion);
 
+    printf("Sectors per Cluster: %d\n", sectorsPerCluster);
+
     listDirectory(currentDirectory);
 
     return true;

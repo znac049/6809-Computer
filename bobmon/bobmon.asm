@@ -9,13 +9,37 @@
 		include "sysdefs.s"
 		include "macros.s"
 
+		import	g.matchedCCB
+		import	g.regA
+		import	g.regB
+		import	g.regX
+		import	g.regY
+		import	g.regU
+		import	g.regS
+		import	g.unprintable
+		import	g.radix
+		import	g.prevChar
+		import	g.echo
+
+		import	putStr
+		import	putChar
+		import	putNL
+		import	readCommandLine
+		import	isBlankLine
+		import	makeArgs
+		import  matchCommand
+		import	preInitConsole
+		import	initDevices
+		import	printNum
+		import	registersFn
+
 cpu.6809	equ	0
 cpu.6309	equ	1
 
-		globals
-		org	(ram_end-variables_size)+1
+		section startglobals
 variables_start	equ	*
 
+		section globals
 g.cpuType	rmb	1
 g.ramEnd	rmb    	2
 
@@ -23,15 +47,13 @@ g.argc		rmb	1
 g.argv		rmb	MAX_ARGS*2
 g.commandLine	rmb	MAX_LINE
 
+g.memoryAddress		rmb	2
+g.linesPerPage		rmb	1	; the number of terminal lines to display at a time
 
 		include "constants.s"
-		include "variables.s"
 
 
 		code
-		org	rom_start
-
-		include	"3rdParty/disasm.s"
 
 handle_reset	lds	#system_stack
 		ldu	#user_stack
@@ -58,7 +80,7 @@ is6809		leax    system_ready_msg,pcr
 
 		lbra	loop
 
-cpu_6809_msg	fcn	"CPU: 6809",CR,LF
+cpu_6809_msg	fcn	"CPU: 6809\r\n"
 
 appTerminated	lds	#system_stack
 		pshs	a,b,x,y,cc
@@ -75,7 +97,7 @@ appTerminated	lds	#system_stack
 		sty	g.regY
 		stu	g.regU
 		sts	g.regS
-		lbsr	doRegisters
+		lbsr	registersFn
 		bra	loop
 
 terminatedOK	leax	app_terminated_ok_msg,pcr
@@ -83,10 +105,10 @@ terminatedOK	leax	app_terminated_ok_msg,pcr
 		bra	loop
 
 app_terminated_with_error_msg
-		fcn	CR,LF,"***",CR,LF,"App terminated with code "
+		fcn	"\r\n***\r\nApp terminated with code "
 
 app_terminated_ok_msg
-		fcn	CR,LF,"***",CR,LF,"App exited successfully",CR,LF
+		fcn	"\r\n***\r\nApp exited successfully\r\n"
 
 loop		lds	#system_stack
 
@@ -109,8 +131,8 @@ loop		lds	#system_stack
 
 		lbsr	matchCommand
 		cmpa	#1		; did we find any matches?
-		blt	clUnknownCommand; No matches - unknown command
-		bgt	clAmbiguousCommand; Multiple matches - ambiguous command
+		blt	clUnknownCommand ; No matches - unknown command
+		bgt	clAmbiguousCommand ; Multiple matches - ambiguous command
 
 ; It's a single match - does it have the right number of args
 		ldy	g.matchedCCB
@@ -181,14 +203,14 @@ doQuickEnd
 
 prompt_msg	fcn	"> "
 system_ready_msg
-		fcc	CR,LF,"BobMon 6x09 Monitor, version 1.03",CR,LF
-		fcn	"Copyright (C) Bob Green, 2016-2024",CR,LF
+		fcc	"\r\nBobMon 6x09 Monitor, version 1.04\r\n"
+		fcn	"Copyright (C) Bob Green, 2016-2024\r\n"
 cl_ambiguous_msg	
-		fcn 	"Command is ambiguous",CR,LF
+		fcn 	"Command is ambiguous\r\n"
 cl_unknown_msg
-		fcn	"Unknown Command",CR,LF
-cl_too_few_msg	fcn	"Not enough arguments supplied.", CR,LF
-cl_too_many_msg	fcn	"Too many arguments provided.",CR,LF
+		fcn	"Unknown Command\r\n"
+cl_too_few_msg	fcn	"Not enough arguments supplied.\r\n"
+cl_too_many_msg	fcn	"Too many arguments provided.\r\n"
 
 
 ; Initialise variable space to zero
@@ -197,9 +219,9 @@ initBSS		pshs	x,y,a
 		ldy	#variables_size
 		clra
 
-1		sta	,x+
+iniLoop		sta	,x+
 		leay	-1,y
-		bne	1B
+		bne	iniLoop
 		puls	x,y,a,pc
 
 ; Initialise global variables
@@ -234,21 +256,10 @@ handle_swi2	rti
 handle_swi3	rti
 handle_nmi	rti
 
-		include "args.s"
-		include "cf_io.s"
-		include "commands/commands.s"
-		include "devices/devices.s"
-		include "fs/fat16.s"
-		include "devices/block/LSN.s"
-		include "radix.s"
-		include "stdio.s"
-		include "string_functions.s"
-		include "syscalls.s"
-
-		include	"system_vectors.s"
-
-		globals
+		section endglobals
 
 ; This must be the last item in the Globals segment
 ;
-variables_size	equ	*-variables_start		
+variables_size	equ	*-variables_start	
+
+		end section
