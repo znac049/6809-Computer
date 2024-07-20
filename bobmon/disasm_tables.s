@@ -24,7 +24,8 @@
 ; is also read only, so it can be placed in ROM.  It uses 47 bytes of
 ; stackspace (including return address), and requires 55 bytes for output.
 
-
+		section	globals
+		
 tillegal	fcs	"ILLEGAL"
 tabx		fcs	"ABX"
 tadc		fcs	"ADC"

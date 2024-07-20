@@ -37,13 +37,19 @@ command		macro
 		command window
 		command	help
 
+		section globals
+
+		export	g.matchedCCB
 g.matchedCCB	rmb	2
+		export	g.matchCount
 g.matchCount	rmb	1
+		export	g.commandLine
 g.commandLine	rmb	MAX_LINE
 
 
 		section code
 
+		export	cmd_table
 ; Main command table
 cmd_table	fdb	binaryFn
 		fcb	binaryMinArgs,binaryMaxArgs

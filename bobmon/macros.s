@@ -14,15 +14,6 @@ mReturns	macro
 		rts
 		endm
 
-globals		macro
-		section "BSS"
-		endm
-
-code		macro
-		section "CODE"
-		endm
-
-
 DbgS		macro
 		pshs	a
 		lda	#SPACE

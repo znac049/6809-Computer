@@ -29,34 +29,6 @@ SOURCES=\
 	unassemble_cmd.asm \
 	window_cmd.asm
 
-OLD= \
-				bobmon.asm \
-				cf_io.s \
-				commands/boot_cmd.s \
-				commands/commands.s \
-				commands/cpu_cmd.s \
-				commands/disk_cmds.s \
-				commands/go_cmd.s \
-				commands/load_cmd.s \
-				commands/dump_cmd.s \
-				commands/help_cmd.s \
-				commands/radix_cmds.s \
-				commands/register_cmd.s \
-				commands/unassemble.s \
-				commands/window_cmd.s \
-				constants.s \
-				devices/devices.s \
-				devices/character/mc6850.s \
-				devices/block/LSN.s \
-				fs/fat16.s \
-				macros.s \
-				stdio.s \
-				string_functions.s \
-				sysdefs.s \
-				syscalls.s \
-				system_vectors.s \
-				variables.s
-
 OBJECTS_809 = $(SOURCES:.asm=.809_o)
 OBJECTS_309 = $(SOURCES:.asm=.309_o)
 
@@ -69,13 +41,13 @@ OBJECTS_309 = $(SOURCES:.asm=.309_o)
 %.hex: %.asm
 	asm6809 --hex --6809 --listing=$*.lst --output=$@ $<
 
-all: bobmon809.hex bobmon309.hex
-	echo $(OBJECTS_309)
-	echo $(OBJECTS_809)
+all: bobmon809.decb bobmon309.decb
 
-bobmon809.hex: $(OBJECTS_809)
+bobmon809.decb: $(OBJECTS_809)
+	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon809.map --library-path=../libX09 --library=809 $(OBJECTS_809)
 
-bobmon309.hex: $(OBJECTS_309)
+bobmon309.decb: $(OBJECTS_309)
+	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon309.map --library-path=../libX09 --library=309 $(OBJECTS_309)
 
 disks:
 	rm -f disk1.img disk2.img

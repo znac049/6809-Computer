@@ -9,6 +9,9 @@
 		include "sysdefs.s"
 		include "macros.s"
 
+		import	s_globals
+		import	l_globals
+
 		import	g.matchedCCB
 		import	g.regA
 		import	g.regB
@@ -20,6 +23,7 @@
 		import	g.radix
 		import	g.prevChar
 		import	g.echo
+		import	g.commandLine
 
 		import	putStr
 		import	putChar
@@ -36,25 +40,27 @@
 cpu.6809	equ	0
 cpu.6309	equ	1
 
-		section startglobals
-variables_start	equ	*
-
 		section globals
+
 g.cpuType	rmb	1
 g.ramEnd	rmb    	2
 
+		export	g.argc
 g.argc		rmb	1
+		export	g.argv
 g.argv		rmb	MAX_ARGS*2
-g.commandLine	rmb	MAX_LINE
 
-g.memoryAddress		rmb	2
-g.linesPerPage		rmb	1	; the number of terminal lines to display at a time
+		export	g.memoryAddress
+g.memoryAddress	rmb	2
+		export	g.linesPerPage
+g.linesPerPage	rmb	1	; the number of terminal lines to display at a time
 
 		include "constants.s"
 
 
-		code
+		section code
 
+		export	handle_reset
 handle_reset	lds	#system_stack
 		ldu	#user_stack
 		orcc	#$50		; disable interrupts
@@ -82,6 +88,7 @@ is6809		leax    system_ready_msg,pcr
 
 cpu_6809_msg	fcn	"CPU: 6809\r\n"
 
+		export	appTerminated
 appTerminated	lds	#system_stack
 		pshs	a,b,x,y,cc
 		tstb
@@ -215,8 +222,8 @@ cl_too_many_msg	fcn	"Too many arguments provided.\r\n"
 
 ; Initialise variable space to zero
 initBSS		pshs	x,y,a
-		ldx	#variables_start
-		ldy	#variables_size
+		ldx	#s_globals
+		ldy	#l_globals
 		clra
 
 iniLoop		sta	,x+
@@ -247,19 +254,16 @@ initVars	pshs	x,a
 		
 		puls	x,a,pc
 
-
-
-handle_irq	rti
-handle_firq	rti
-handle_undef	rti
-handle_swi2	rti
-handle_swi3	rti
-handle_nmi	rti
-
-		section endglobals
-
-; This must be the last item in the Globals segment
-;
-variables_size	equ	*-variables_start	
-
-		end section
+		export	handle_irq
+		export	handle_firq
+		export	handle_undef
+		export	handle_swi2
+		export	handle_swi3
+		export	handle_nmi
+handle_irq
+handle_firq
+handle_undef
+handle_swi2
+handle_swi3
+handle_nmi	
+		rti

@@ -15,6 +15,7 @@
 
 		section globals
 
+		export	g.radix
 g.radix		rmb	1		; Hold the current radix
 
 		section code

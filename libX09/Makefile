@@ -11,7 +11,6 @@ LIB_ASM = \
 	binToHexDigit.asm \
 	clearLSN.asm \
 	copyLSN.asm \
-	disk_cmds.asm \
 	getHexByte.asm \
 	getHexDigit.asm \
 	getHexWord.asm \

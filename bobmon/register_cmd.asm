@@ -11,11 +11,17 @@
 
 		section globals
 
+		export	g.regA
 g.regA		rmb	1
+		export	g.regB
 g.regB		rmb	1
+		export	g.regX
 g.regX		rmb	2
+		export	g.regY
 g.regY		rmb	2
+		export	g.regU
 g.regU		rmb	2
+		export	g.regS
 g.regS		rmb	2
 
 

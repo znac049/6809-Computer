@@ -36,4 +36,4 @@ Next		sta	,x+
 		
 Done		puls	a,x,pc
 
-		endsection
+		end section

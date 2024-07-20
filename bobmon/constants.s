@@ -5,8 +5,8 @@
 ; 	(C) Bob Green <bob@chippers.org.uk> 2024
 ;
 
-MAX_LINE		equ	80
-MAX_ARGS		equ	5
+MAX_LINE	equ	80
+MAX_ARGS	equ	5
 
 CTRLC		equ	3
 BELL		equ	7

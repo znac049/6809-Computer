@@ -1,0 +1,6 @@
+define basesympat s_%s
+define lensympat l_%s
+section code load C000
+section vectors load FFF0
+section globals high 7FFF
+section * load 0

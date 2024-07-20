@@ -20,7 +20,9 @@
 
 		section globals
 
+		export	g.blockBuff
 g.blockBuff	rmb	512
+		export	g.LSN
 g.LSN		rmb	4
 
 		section code

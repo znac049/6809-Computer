@@ -7,7 +7,7 @@
 
 		include "constants.s"
 
-		section global
+		section globals
 
 wordValue	rmb	2
 

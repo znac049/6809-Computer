@@ -28,6 +28,8 @@ g.sectorsPerFat	rmb	2
 g.rootDir	rmb	4
 g.currentDir	rmb	4
 g.dirBlock	rmb	4
+
+		export	g.currentDirEnt
 g.currentDirEnt	rmb	2
 
 		section code
