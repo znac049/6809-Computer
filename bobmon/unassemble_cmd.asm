@@ -22,12 +22,8 @@ g.unassembleAddress rmb	2
 
 		section code
 
-		export	unassembleMinArgs
-		export	unassembleMaxArgs
 		export	unassembleCommand
 		export	unassembleHelp
-unassembleMinArgs equ	0
-unassembleMaxArgs equ	1
 unassembleCommand fcn	"unassemble"
 unassembleHelp	fcn	"[<address>]\tUnassemble code"
 

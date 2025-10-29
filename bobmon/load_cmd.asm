@@ -36,12 +36,8 @@ g.loadXsum	rmb	1
 
 		section code
 
-		export	loadMinArgs
-		export	loadMaxArgs
 		export	loadCommand
 		export	loadHelp
-loadMinArgs	equ	0
-loadMaxArgs	equ	1
 loadCommand	fcn	"load"
 loadHelp	fcc	"[ <filename> ]\tload from either console or disk:\r\n"
 		fcc	"\tif filename supplied, load file in DECB format from disk\r\n"

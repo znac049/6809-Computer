@@ -10,16 +10,19 @@
 
 command		macro
 		import	{1}Fn
-		import  {1}MinArgs
-		import	{1}MaxArgs
 		import  {1}Command
 		import	{1}Help
 		endm
 
 		import	putChar
+		import  putStr
 		import	putNL
+		import	printNum
 		import	getChar
 		import	getLChar
+
+zobMinArgs	equ	0
+zobMaxArgs 	equ	0
 
 		command binary
 		command	boot
@@ -35,6 +38,7 @@ command		macro
 		command registers
 		command unassemble
 		command window
+		command zob
 		command	help
 
 		section globals
@@ -52,72 +56,77 @@ g.commandLine	rmb	MAX_LINE
 		export	cmd_table
 ; Main command table
 cmd_table	fdb	binaryFn
-		fcb	binaryMinArgs,binaryMaxArgs
+		fcb	0,0
 		fdb	binaryCommand
 		fdb	binaryHelp
 
 		fdb	bootFn
-		fcb	bootMinArgs,bootMaxArgs
+		fcb	0,0
 		fdb	bootCommand
 		fdb	bootHelp
 
 		fdb	cpuFn
-		fcb	cpuMinArgs,cpuMaxArgs
+		fcb	0,0
 		fdb	cpuCommand
 		fdb	cpuHelp
 
 		fdb	decimalFn
-		fcb	decimalMinArgs,decimalMaxArgs
+		fcb	0,0
 		fdb	decimalCommand
 		fdb	decimalHelp
 
 		fdb	diskFn
-		fcb	diskMinArgs,diskMaxArgs
+		fcb	0,0
 		fdb	diskCommand
 		fdb	diskHelp
 
 		fdb	dumpFn
-		fcb	dumpMinArgs,dumpMaxArgs
+		fcb	0,2
 		fdb	dumpCommand
 		fdb	dumpHelp
 
 		fdb	goFn
-		fcb	goMinArgs,goMaxArgs
+		fcb	0,1
 		fdb	goCommand
 		fdb	goHelp
 
 		fdb	hexadecimalFn
-		fcb	hexadecimalMinArgs,hexadecimalMaxArgs
+		fcb	0,0
 		fdb	hexadecimalCommand
 		fdb	hexadecimalHelp
 
 		fdb	loadFn
-		fcb	loadMinArgs,loadMaxArgs
+		fcb	0,1
 		fdb	loadCommand
 		fdb	loadHelp
 
 		fdb	radixFn
-		fcb	radixMinArgs,radixMaxArgs
+		fcb	0,1
 		fdb	radixCommand
 		fdb	radixHelp
 
 		fdb	registersFn
-		fcb	registersMinArgs,registersMaxArgs
+		fcb	0,0
 		fdb	registersCommand
 		fdb	registersHelp
 
 		fdb	unassembleFn
-		fcb	unassembleMinArgs,unassembleMaxArgs
+		fcb	0,1
 		fdb	unassembleCommand
 		fdb	unassembleHelp
 
 		fdb	windowFn
-		fcb	windowMinArgs,windowMaxArgs
+		fcb	0,1
 		fdb	windowCommand
 		fdb	windowHelp
 
+		fdb	zobFn
+		fcb	0,0
+		fdb	zobCommand
+		fdb	zobHelp
+
 		fdb	helpFn
-		fcb	helpMinArgs,helpMaxArgs
+		fcb	0,0
 		fdb	helpCommand
 		fdb	helpHelp
 
@@ -252,22 +261,62 @@ rclPrintable	lbsr	putChar
 		clr	,x
 		bra	rclNextChar	
 
-rclEOL		lbsr	putNL
+rclEOL		
+		lbsr	putNL
 		puls	a,x,pc
 
-		end section
-;
-; Command handlers
-;
-		* include "commands/boot_cmd.s"
-		* include "commands/cpu_cmd.s"
-		* include "commands/disk_cmds.s"
-		* include "commands/dump_cmd.s"
-		* include "commands/go_cmd.s"
-		* include "commands/help_cmd.s"
-		* include "commands/load_cmd.s"
-		* include "commands/radix_cmds.s"
-		* include "commands/register_cmd.s"
-		* include "commands/unassemble.s"
-		* include "commands/window_cmd.s"
 
+		ifdef	DEBUGGING
+
+*******************************************************************
+* dumpCommandTable -
+*
+* on entry: 
+*
+*  trashes: nothing
+*
+*  returns: nothing
+*
+		export dumpCommandTable
+dumpCommandTable
+		pshs	x,y,a,b
+
+		leax	dtIntro,pcr
+		lbsr	putStr
+
+		leay	cmd_table,pcr
+
+dctNext		tst	,y
+		beq	dctDone
+
+		ldx	4,y
+		lbsr	putStr
+
+		lda	#SPACE
+		lbsr	putChar
+
+		ldb	2,y
+		sex
+		lbsr	printNum
+
+		lda	#','
+		lbsr	putChar
+
+		ldb	3,y
+		sex
+		lbsr	printNum
+
+		lbsr	putNL
+
+		leay	8,y
+		bra	dctNext
+
+dctDone		lbsr	putNL
+		
+		puls	x,y,a,b,pc
+
+dtIntro		fcn	"\r\nCommand table:\r\n"
+
+		endc
+
+		end section

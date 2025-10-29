@@ -31,7 +31,9 @@
 		import	readCommandLine
 		import	isBlankLine
 		import	makeArgs
+		import  dumpArgs
 		import  matchCommand
+		import  dumpCommandTable
 		import	preInitConsole
 		import	initDevices
 		import	printNum
@@ -119,6 +121,10 @@ app_terminated_ok_msg
 
 loop		lds	#system_stack
 
+		ifdef	DEBUGGING
+		lbsr	dumpCommandTable
+		endc
+
 		leax	prompt_msg,pcr
 		lbsr	putStr
 
@@ -130,7 +136,11 @@ loop		lds	#system_stack
 
 		leax	g.commandLine,pcr
 		lbsr	makeArgs
-		* lbsr	dumpArgs
+		
+		ifdef	DEBUGGING
+		lbsr	dumpArgs
+		endc
+
 		lda	g.argc
 		beq	loop		; No command
 
@@ -210,8 +220,7 @@ doQuickEnd
 
 prompt_msg	fcn	"> "
 system_ready_msg
-		fcc	"\r\nBobMon 6x09 Monitor, version 1.04\r\n"
-		fcn	"Copyright (C) Bob Green, 2016-2024\r\n"
+		fcn	"\r\nBobMon 6x09 Monitor, version 1.04\r\nCopyright (C) Bob Green, 2016-2025\r\n"
 cl_ambiguous_msg	
 		fcn 	"Command is ambiguous\r\n"
 cl_unknown_msg

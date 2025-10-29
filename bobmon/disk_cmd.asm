@@ -21,12 +21,8 @@
 
 		section code
 
-		export	diskMinArgs
-		export	diskMaxArgs
 		export	diskCommand
 		export  diskHelp
-diskMinArgs	equ	0
-diskMaxArgs	equ	0
 diskCommand	fcn	"disk"
 diskHelp	fcn	"\tDisk stuff!"
 

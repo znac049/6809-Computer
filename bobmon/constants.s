@@ -8,6 +8,7 @@
 MAX_LINE	equ	80
 MAX_ARGS	equ	5
 
+EOS		equ	0
 CTRLC		equ	3
 BELL		equ	7
 BS		equ	8

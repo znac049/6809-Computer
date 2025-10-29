@@ -10,14 +10,10 @@
 
 		import	putStr
 
-		export	bootMinArgs
-		export	bootMaxArgs
 		export	bootCommand
 		export	bootHelp
 
 		section code
-bootMinArgs	equ	0
-bootMaxArgs	equ	0
 bootCommand	fcn	"boot"
 bootHelp	fcb	TAB
 		fcn	"\tAttempt to boot from disk"

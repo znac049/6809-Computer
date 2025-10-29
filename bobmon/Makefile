@@ -4,6 +4,8 @@ LWAR=lwar
 LWASM=lwasm
 LWLINK=lwlink
 
+LWASMFLAGS=--pragma=cescapes
+
 SOURCES=\
 	args.asm \
 	bobmon.asm \
@@ -27,7 +29,8 @@ SOURCES=\
 	syscalls.asm \
 	system_vectors.asm \
 	unassemble_cmd.asm \
-	window_cmd.asm
+	window_cmd.asm \
+	zob_cmd.asm
 
 OBJECTS_809 = $(SOURCES:.asm=.809_o)
 OBJECTS_309 = $(SOURCES:.asm=.309_o)
@@ -45,9 +48,11 @@ all: bobmon809.decb bobmon309.decb
 
 bobmon809.decb: $(OBJECTS_809)
 	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon809.map --library-path=../libX09 --library=809 $(OBJECTS_809)
+	conv -i bobmon809.decb -f dragon -o bobmon809.hex -t ihex --verbose
 
 bobmon309.decb: $(OBJECTS_309)
 	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon309.map --library-path=../libX09 --library=309 $(OBJECTS_309)
+	conv -i bobmon309.decb -f dragon -o bobmon309.hex -t ihex --verbose
 
 disks:
 	rm -f disk1.img disk2.img
@@ -55,4 +60,4 @@ disks:
 	mkfs.msdos -C -n Utils ./disk2.img 256000
 	
 clean:
-	rm -f *.hex *.809_o *.309_o *.lst *~
+	rm -f *.hex *.809_o *.309_o *.lst *.lst8 *.lst3 *~

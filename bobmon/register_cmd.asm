@@ -27,12 +27,8 @@ g.regS		rmb	2
 
 		section code
 		
-		export	registersMinArgs
-		export	registersMaxArgs
 		export	registersCommand
 		export	registersHelp
-registersMinArgs equ	0
-registersMaxArgs equ	0
 registersCommand fcn	"registers"
 registersHelp	fcn	"\tDisplay system registers"
 

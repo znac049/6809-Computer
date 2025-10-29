@@ -22,13 +22,9 @@
 
 		section code
 
-		export	dumpMinArgs
-		export	dumpMaxArgs
 		export	dumpCommand
 		export	dumpHelp
 
-dumpMinArgs	equ	0
-dumpMaxArgs	equ	2
 dumpCommand	fcn	"dump"
 dumpHelp	fcn	"[<address> [<number of bytes to dump>]]\tdisplay contents of memory"
 

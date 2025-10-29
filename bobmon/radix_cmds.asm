@@ -20,43 +20,26 @@ g.radix		rmb	1		; Hold the current radix
 
 		section code
 
-		export	radixMinArgs
-		export	radixMaxArgs
 		export	radixCommand
 		export	radixHelp
-radixMinArgs	equ	0
-radixMaxArgs	equ	1
-
 radixCommand	fcn	"radix"
 radixHelp	fcn	"\tDiaplay the current radix"
 
 
-		export	decimalMinArgs
-		export	decimalMaxArgs
 		export	decimalCommand
 		export	decimalHelp
-decimalMinArgs	equ	0
-decimalMaxArgs	equ	0
 decimalCommand	fcn	"decimal"
 decimalHelp	fcn	"\tChange the diaply radix to decimal"
 
 
-		export	binaryMinArgs
-		export	binaryMaxArgs
 		export	binaryCommand
 		export	binaryHelp
-binaryMinArgs	equ	0
-binaryMaxArgs	equ	0
 binaryCommand	fcn	"binary"
 binaryHelp	fcn	"\tChange the diaply radix to binary"
 
 
-		export	hexadecimalMinArgs
-		export	hexadecimalMaxArgs
 		export	hexadecimalCommand
 		export	hexadecimalHelp
-hexadecimalMinArgs	equ	0
-hexadecimalMaxArgs	equ	0
 hexadecimalCommand fcn	"hexadecimal"
 hexadecimalHelp	fcn	"\tChange the diaply radix to hexadecimal"
 

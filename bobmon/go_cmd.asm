@@ -17,12 +17,8 @@
 
 		section code
 
-		export	goMinArgs
-		export	goMaxArgs
 		export	goCommand
 		export	goHelp
-goMinArgs	equ	0
-goMaxArgs	equ	1
 goCommand	fcn	"go"
 goHelp		fcn	"<address>\tRun code starting at <address>"
 

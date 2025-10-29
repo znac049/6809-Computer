@@ -9,12 +9,8 @@
 
 		section code
 
-		export	windowMinArgs
-		export	windowMaxArgs
 		export	windowCommand
 		export	windowHelp
-windowMinArgs	equ	0
-windowMaxArgs 	equ	1
 windowCommand	fcn	"window"
 windowHelp	fcn	"[<# lines>]\tThe numer of lines to display at a time"
 

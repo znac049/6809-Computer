@@ -16,12 +16,8 @@
 
 		section code
 
-		export	helpMinArgs
-		export	helpMaxArgs
 		export	helpCommand
 		export	helpHelp
-helpMinArgs	equ	0
-helpMaxArgs	equ	0
 helpCommand	fcn	"help"
 helpHelp	fcn	"\tDisplay this help"
 

@@ -13,12 +13,8 @@
 
 		section code
 
-		export	cpuMinArgs
-		export	cpuMaxArgs
 		export  cpuCommand
 		export  cpuHelp
-cpuMinArgs	equ	0
-cpuMaxArgs	equ	0
 cpuCommand	fcn	"cpu"
 cpuHelp		fcn	"\tDetect CPU - 6809 or 6309"
 
