@@ -9,12 +9,10 @@
 
 		section code
 
-		export	zobMinArgs
-		export	zobMaxArgs
 		export	zobCommand
 		export	zobHelp
 zobCommand	fcn	"zob"
-zobHelp		fcn	"\tRun latest test code"
+zobHelp		fcn	"\tRun latest test code."
 
 		export	zobFn
 zobFn		lda	$8000
