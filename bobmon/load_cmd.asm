@@ -24,6 +24,7 @@
 		import 	getChar
 		import	getHexByte
 		import	getHexWord
+		import  printNum
 
 		section globals
 
@@ -42,12 +43,14 @@ loadCommand	fcn	"load"
 loadHelp	fcc	"[ <filename> ]\tload from either console or disk:\r\n"
 		fcc	"\tif filename supplied, load file in DECB format from disk\r\n"
 		fcc	"\totherwise load intel hex records (types 0 and 1 only) or Motorola\r\n"
-		fcn	"S-records from the terminal"
+		fcn	"\tS-records from the terminal"
 
 		export	loadFn
-loadFn		lda	g.argc
-		cmpa	#2
-		bne	dlSerial
+loadFn		ldb	g.argc
+		* sex
+		* lbsr	printNum
+		cmpb	#1
+		beq	dlSerial		* If no argument then look on the serial port
 
 dlDisk		leax	attempt_msg,pcr
 		lbsr	putStr
@@ -229,7 +232,8 @@ lihNoMoreData	bsr	getiHexChecksum
 		bra	lihEnd
 
 
-lihEndRecord	lbsr	putNL
+lihEndRecord	lbsr	getiHexChecksum
+		lbsr	putNL
 * 		lbsr	skipLine
 * 		bsr	getiHexChecksum	
 * 		bne	lihBadXsum	; The checksum didn't match the calculated checksum

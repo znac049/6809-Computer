@@ -15,8 +15,7 @@
 
 		section code
 bootCommand	fcn	"boot"
-bootHelp	fcb	TAB
-		fcn	"\tAttempt to boot from disk"
+bootHelp	fcn	"\tAttempt to boot from disk"
 
 			
 		export bootFn

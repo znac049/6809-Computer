@@ -3,6 +3,7 @@
 LWAR=lwar
 LWASM=lwasm
 LWLINK=lwlink
+CONV=conv
 
 LWASMFLAGS=--pragma=cescapes
 
@@ -47,12 +48,12 @@ OBJECTS_309 = $(SOURCES:.asm=.309_o)
 all: bobmon809.decb bobmon309.decb
 
 bobmon809.decb: $(OBJECTS_809)
-	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon809.map --library-path=../libX09 --library=809 $(OBJECTS_809)
-	conv -i bobmon809.decb -f dragon -o bobmon809.hex -t ihex --verbose
+	$(LWLINK) --decb --script=bobmon.lnk --output=$@ --map=bobmon809.map --library-path=../libX09 --library=809 $(OBJECTS_809)
+	$(CONV) -i bobmon809.decb -f dragon -o bobmon809.hex -t ihex -r 0 --start-address=0xc000 --end-address=0xffff
 
 bobmon309.decb: $(OBJECTS_309)
-	lwlink --decb --script=bobmon.lnk --output=$@ --map=bobmon309.map --library-path=../libX09 --library=309 $(OBJECTS_309)
-	conv -i bobmon309.decb -f dragon -o bobmon309.hex -t ihex --verbose
+	$(LWLINK) --decb --script=bobmon.lnk --output=$@ --map=bobmon309.map --library-path=../libX09 --library=309 $(OBJECTS_309)
+	$(CONV) -i bobmon309.decb -f dragon -o bobmon309.hex -t ihex -r 0 --start-address=0xc000 --end-address=0xffff
 
 disks:
 	rm -f disk1.img disk2.img

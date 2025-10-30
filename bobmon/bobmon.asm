@@ -220,7 +220,7 @@ doQuickEnd
 
 prompt_msg	fcn	"> "
 system_ready_msg
-		fcn	"\r\nBobMon 6x09 Monitor, version 1.04\r\nCopyright (C) Bob Green, 2016-2025\r\n"
+		fcn	"\r\nBobMon 6x09 Monitor, version 1.05\r\nCopyright (C) Bob Green, 2016-2025\r\n"
 cl_ambiguous_msg	
 		fcn 	"Command is ambiguous\r\n"
 cl_unknown_msg
