@@ -1,34 +1,46 @@
-.PHONY: all clean
+.PHONY: all clean disks install mount unmount
 
-%.hex: %.asm
-	asm6809 --hex --6809 --listing=$*.lst --output=$@ $<
+MOUNTPOINT=/home/bob/src/6809-Computer/test
+CF1=$(MOUNTPOINT)/cf1
+CF2=$(MOUNTPOINT)/cf2
 
-%.hex: %.s
-	asm6809 --hex --6809 --listing=$*.lst --output=$@ $<
+OBJS=hello.hex \
+		cftest.hex
 
-%.srec: %.asm
-	asm6809 --srec --6809 --listing=$*.lst --output=$@ $<
+%.hex: %.bin
+	conv -i $< -o $@ -f dragon -t ihex --verbose
 
-%.srec: %.s
-	asm6809 --srec --6809 --listing=$*.lst --output=$@ $<
-
-%.decb: %.asm
+%.bin: %.asm
 	asm6809 --coco --6809 --listing=$*.lst --output=$@ $<
 
-%.decb: %.s
+%.bin: %.s
 	asm6809 --coco --6809 --listing=$*.lst --output=$@ $<
 
-all: cftest.srec hello.decb
+all: cftest.bin hello.bin
 
-testdisk: disk1.img
-	sudo mount -o loop ./disk1.img /mnt
-	sudo cp hello.decb /mnt/hello.bin
-	sudo cp hello.asm /mnt
-	sudo umount /mnt
+disks: cf_1.img cf_2.img
 
-disk1.img: hello.decb
-	truncate disk1.img -s 32M
-	mkfs.fat -S512 -s1 -n TestDisk disk1.img
+cf_1.img:
+	truncate cf_1.img -s 32M
+	mkfs.fat -S512 -s1 -n CF1 cf_1.img
+
+cf_2.img:
+	truncate cf_2.img -s 64M
+	mkfs.fat -S1024 -s1 -n CF2 cf_2.img
+
+install: disks $(OBJS)
+	mkdir -p $(CF1)
+	sudo mount -o loop ./cf_1.img $(CF1)
+	sudo cp hello.bin $(CF1)/
+	sudo cp cftest.bin $(CF1)/
+	sudo cp *.asm $(CF1)/
+	sudo umount $(CF1)
+
+mount:
+	sudo mount -o loop ./cf_1.img $(CF1)
+
+unmount:
+	sudo umount $(CF1)
 
 clean:
-	rm -f *.hex *.srec *.decb *.lst *~
+	rm -f *.hex *.srec *.decb *.bin *.lst *.img *~

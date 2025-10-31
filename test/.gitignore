@@ -2,3 +2,7 @@
 *.link
 *.map
 *.o
+*.hex
+*.srec
+*.decb
+*.bin
